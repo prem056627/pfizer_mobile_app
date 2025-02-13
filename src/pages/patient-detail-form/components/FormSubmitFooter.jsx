@@ -24,7 +24,7 @@ function FormSubmitFooter({ formik, setCurrentState }) {
 	const currentStep = useSelector(selectCurrentStep);
 
 	const handleSubmit = () => {
-        if (currentStep === 5) {
+        if (currentStep === 2) {
             // Redirect to another page
 
 			
@@ -51,7 +51,7 @@ function FormSubmitFooter({ formik, setCurrentState }) {
 					type="button"
 					onClick={onsubmitReverse}
 					disabled={currentStep === 1}
-					className={`h-12 w-12 rounded-full bg-[#CEF1F0] p-4 text-red-500 ${currentStep === 1 ? 'opacity-30' : 'opacity-100'
+					className={`h-12 w-12 rounded-full bg-primary-light p-4 text-red-500 ${currentStep === 1 ? 'opacity-30' : 'opacity-100'
 						}`}
 				>
 					<FormSubmitLeftArrow className='text-white' />
@@ -64,7 +64,7 @@ function FormSubmitFooter({ formik, setCurrentState }) {
 
 					onClick={handleSubmit}
 				>
-					{currentStep === 5 ? <span>Submit</span> : <span>Save & Next</span>}
+					{currentStep === 2 ? <span>Submit</span> : <span>Save & Next</span>}
 
 					<RightArrow />
 				</button>

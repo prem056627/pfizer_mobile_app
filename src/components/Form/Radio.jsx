@@ -7,8 +7,9 @@ const Radio = ({
 	radioData,
 	formik,
 	bottomLabel,
+	isMadetory = true,
 	checkboxType = 'circle',
-	onChange = () => {},
+	onChange = () => { },
 	...props
 }) => {
 	const [field] = useField({ ...props, name, type: 'radio' });
@@ -21,13 +22,13 @@ const Radio = ({
 
 	return (
 		<div className="my-1 flex flex-col items-start">
-			<label className="font-open-sans text-form-md text-[#283A46]">{label}</label>
-			<div className="flex gap-6">
+			<label className="font-open-sans text-form-md text-[#283A46]">{label} {isMadetory && <span className="text-red-500">*</span>}</label>
+			<div className="flex-col md:flex-row gap-6  ">
 				{radioData.map(({ id, value, label, description, onSelectMessage }) => (
-					<div key={id} className="flex flex-col">
+					<div key={id} className="flex flex-col ">
 						<label
 							htmlFor={id}
-							className="relative flex items-start gap-4 pt-4"
+							className="relative flex items-start gap-4  pt-4"
 						>
 							{/* Circle or Square Radio Indicator */}
 							{
@@ -74,7 +75,9 @@ const Radio = ({
 					</div>
 				))}
 			</div>
-			<p className="text-[#283A46] p-1 pt-4">{bottomLabel}</p>
+			{bottomLabel && (
+            <p className="text-[#283A46] p-1 pt-4">{bottomLabel}</p>
+             )}
 
 			{/* Error message display */}
 			{formik.errors[name] && (

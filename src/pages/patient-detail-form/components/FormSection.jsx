@@ -14,11 +14,11 @@ const FormSection = ({
     <Disclosure
       as="div"
       defaultOpen={isDefaultOpen}
-      className="opacity-100 mt-2"
+      className="opacity-100 mt-1"
     >
       {({ open, close }) => (
         <>
-          <Disclosure.Button className="flex w-full items-center justify-between bg-white px-6 py-6 text-left text-sm font-medium text-black shadow-md hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+          <Disclosure.Button className="flex w-full items-center justify-between bg-white px-6 py-4 text-left text-sm font-medium text-black shadow-md hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
             <div className="flex items-center justify-center gap-4">
               <span className="text-base font-bold text-[#283A46] inline-flex items-center">
                 {title}
@@ -41,7 +41,7 @@ const FormSection = ({
               className={`${open ? 'rotate-180 transform' : ''} h-8 w-8`}
             />
           </Disclosure.Button>
-          <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+          <Disclosure.Panel className="px-4 pb-8 pt-4 text-sm text-gray-500">
             {React.cloneElement(children, { closeAccordion: close })}
           </Disclosure.Panel>
         </>

@@ -67,8 +67,10 @@ module.exports = {
 				3: 3,
 			},
 			colors: {
-				primary: '#14b8a6',
-				secondary: '#E1D6AE', // TODO: Change per needed
+				primary: '#0101C8',
+				'primary-light': '#CCCCF4',
+				// primary-disable: '#0101C8',
+				secondary: '#0190FF', // TODO: Change per needed
 				'danger-red': '#AA2113',
 				'dark-gray': '#696969',
 				'medium-gray': '#9A9A9A',

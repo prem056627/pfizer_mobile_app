@@ -45,17 +45,19 @@ function Home() {
   return (
     <div className="bg-[#FBFCFF]">
       <div className="w-full file:">
-        <div className="bg-white flex justify-between items-center h-16 px-6 border-b-1 border-gray-200 shadow-sm">
-          <div className="">
-            <a href="/">
-              <img width={90} src="/medidect_logo_tm.svg" alt="logo" className="cursor-pointer" />
-            </a>
-          </div>
-          <div className="cursor-pointer flex items-center gap-1" >
-            <img src="/icon/profile-icon.svg" alt="profile-icon" />
-            <img src="/icon/right-arrow.svg" alt="right-arrow" />
-          </div>
-        </div>
+      <div className="bg-white flex justify-center items-center h-20 px-6   w-full">
+      <div className="flex justify-center items-center">
+        <img 
+          width={90} 
+          src="/pfizer_logo.svg" 
+          alt="Pfizer Logo" 
+          className="cursor-pointer"
+        />
+      </div>
+    </div>
+
+
+        
 
         {/* <div className="md:container mx-auto md:px-6 py-4 relative">
 
