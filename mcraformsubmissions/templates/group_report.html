@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group MCRA Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      header,
+      footer {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #555;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+      .parent {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: table; width: 100%; margin-bottom: 20px;">
+      <div style="display: table-cell; vertical-align: middle; text-align: left; width: 80%; white-space: nowrap;">
+        <p style="padding: 10px; background-color: #ffffff; border: 2px solid #09bfbb; border-radius: 10px; font-weight: 700; display: inline-block; margin: 0; white-space: nowrap;">
+          Group Multi-Cancer Risk Assessment (MCRA) Report
+        </p>
+      </div>
+      <div style="display: table-cell; vertical-align: middle; text-align: right; width: 20%;">
+        <img style="width: 100px;" src="data:image/png;base64,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" alt="logo"/>
+      </div>
+    </div>
+    
+    <div style="background-color: #09bfbb; padding: 12pt; color: white; line-height: 1.5; margin: 6pt 0; width: 100%; margin-top: 50px; margin-bottom: 50px;">
+      <!-- First Row -->
+      <div style="width: 100%; display: table; margin-bottom: 10px;">
+        <div style="display: table-cell; width: 33.33%; font-size: 14px;">
+          <div style="font-size: 16px; font-weight: 500; text-transform: uppercase;">NAME:</div>
+          <div style="margin-bottom: 30px;">{{full_name}}</div>
+        </div>
+        <div style="display: table-cell; width: 33.33%; font-size: 14px;">
+          <div style="font-size: 16px; font-weight: 500; text-transform: uppercase;">EMAIL ID:</div>
+          <div style="margin-bottom: 5px;">{{email}}</div>
+        </div>
+        <div style="display: table-cell; width: 33.33%; font-size: 14px;">
+          <div style="font-size: 16px; font-weight: 500; text-transform: uppercase;">MOBILE:</div>
+          <div style="margin-bottom: 5px;">{{mobile_number}}</div>
+        </div>
+      </div>
+      
+      <!-- Second Row -->
+      <div style="width: 100%; display: table;">
+        <div style="display: table-cell; width: 66.67%; font-size: 14px;">
+          <div style="font-size: 16px; font-weight: 500; text-transform: uppercase;">Address:</div>
+          <div style="margin-bottom: 5px;">{{address}}</div>
+        </div>
+        <div style="display: table-cell; width: 33.33%; font-size: 14px;">
+          <div style="font-size: 16px; font-weight: 500; text-transform: uppercase;">REPORT DATE:</div>
+          <div style="margin-bottom: 5px;">{{report_date}}</div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Dear {{ full_name }}</h2>
+      <p style="color: black; font-size: 18px;">
+        Thank you for enrolling your group nominees in our Multi-Cancer Early
+        Detection (MCED) program. This report gives you insights into the key
+        factors that are known to increase the risk of developing cancer. These
+        factors are classified as potentially modifiable (e.g., lifestyle
+        factors, tobacco use and excess body weight) and other factors that are
+        not non-modifiable (e.g., inherited cancer risk) but preventable through
+        early & timely detection of silent growing dangerous tumors.
+      </p>
+      <p style="color: black; font-size: 18px; padding-bottom: 20px;">
+        We appreciate your interest in taking a step towards protecting your
+        group from the potential onset of cancer!
+      </p>
+      <div style="width: 100%; border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
+        <div style="display: table; width: 100%; height: 65px;">
+            <div style="display: table-cell; width: 50%; background-color: #09bfbb; color: white; text-align: center; vertical-align: middle; font-size: larger; padding: 10px;">
+                Total No. of Screened Candidates:
+            </div>
+            <div style="display: table-cell; width: 50%; background-color: white; color: #09bfbb; text-align: center; vertical-align: middle; font-size: larger; font-weight: bold; padding: 10px;">
+                {{ total_screened }}
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    </section>
+
+    <section style="margin-top: 50px;">
+      <table>
+        <thead>
+          <th
+            colspan="4"
+            style="
+              text-align: center;
+              background-color: #09bfbb;
+              color: #ffffff;
+              height: 50px;
+            "
+          >
+            Group MCRA Risk Profile
+          </th>
+          <tr style="height: 60px;">
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Risk Factors</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Low Risk</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Medium Risk</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">High Risk</th>
+        </tr>
+        
+        
+        </thead>
+        <tbody>
+
+          <tr style="height: 60px;">
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Number of screened candidates in the group</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ low_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ medium_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ high_count }}</th>
+        </tr>
+
+        
+        </tbody>
+      </table>
+    </section>
+
+    <section style="margin-top: 50px;">
+      <table>
+        <thead>
+          <th
+            colspan="5"
+            style="
+              text-align: center;
+              background-color: #09bfbb;
+              color: #ffffff;
+              height: 50px;
+            "
+          >
+          Group Age Profile
+          </th>
+          <tr style="height: 60px;">
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Age</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">&lt; 20 years</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">20-40 years</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">41-60 Years</th>
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">&gt; 60 Years</th>
+        </tr>
+        
+        
+        </thead>
+        <tbody>
+
+          <tr style="height: 60px;">
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Number of candidates in the group</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ under_20_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ twenty_to_40_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ forty_one_to_60_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ over_60_count }}</th>
+        </tr>
+
+        
+        </tbody>
+      </table>
+    </section>
+
+
+    <section style="margin-top: 50px;">
+      <table>
+        <thead>
+          <th
+            colspan="5"
+            style="
+              text-align: center;
+              background-color: #09bfbb;
+              color: #ffffff;
+              height: 50px;
+            "
+          >
+          Group BMI Profile
+          </th>
+      
+
+          <tr style="height: 60px;">
+            <th style="background-color: #FFFCE5; color: #3DB6A2; text-align: center;">Risk Categories</th>
+            <th style="background-color: #FFFCE5; color: #3DB6A2; text-align: center;">
+                Normal <div style="color: #808080;">(18.5 to 22.9)</div>
+            </th>
+            <th style="background-color: #FFFCE5; color: #3DB6A2; text-align: center;">
+                Overweight <div style="color: #808080;">(23 to 24.9)</div>
+            </th>
+            <th style="background-color: #FFFCE5; color: #3DB6A2; text-align: center;">
+                Pre-Obese <div style="color: #808080;">(25 to 29.9)</div>
+            </th>
+            <th style="background-color: #FFFCE5; color: #3DB6A2; text-align: center;">
+                Obese <div style="color: #808080;">(&gt;30)</div>
+            </th>
+        </tr>
+        
+        
+        
+        
+        
+        </thead>
+        <tbody>
+
+          <tr style="height: 70px;">
+            <th style="background-color: #FFFCE5 ; color: #3DB6A2; text-align: center;">Number of screened candidates in the group</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ normal_bmi_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ overweight_bmi_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ pre_obese_bmi_count }}</th>
+            <th style="background-color: #FFFCE5 ; color: black; text-align: center;">{{ obese_bmi_count }}</th>
+        </tr>
+
+        
+        </tbody>
+      </table>
+    </section>
+
+
+
+    <section style="margin-top: 200px;">
+      <h3 style="border: 2px solid #0CBFBB; padding: 10px; color: #0CBFBB; text-align: center; margin-bottom: 50px;">Key Factors Known to Increase Risk of Developing Cancer</h3>
+
+      <table>
+        <thead>
+          <th
+          colspan="6"
+          style="
+            text-align: center;
+            background-color: #09bfbb;
+            color: #ffffff;
+            font-size: 18px;
+          "
+        >
+          Controllable Cancer Risk Exposure Factors <br> (Number of screened candidates in the group)
+        </th>
+        
+        <tr style="height: 60px; background-color: #FFFCE5; color: #0CBFBB;">
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Risk Factors</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Risk Profile</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Low Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Medium Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">High Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Total Candidates</th>
+      </tr>
+      
+        
+        
+        
+        </thead>
+        <tbody>
+          <tr>
+            <td style="background-color: #FFFCE5; color: black;">Tobacco Consumption</td>
+            <td style="background-color: #FFFCE5; color: black;">Modifiable</td>
+            <td style="background-color: #FFFCE5; color: black;">{{ tobacco_consumption_low }}</td>
+            <td style="background-color: #FFFCE5; color: black;">{{ tobacco_consumption_medium }}</td>
+            <td style="background-color: #FFFCE5; color: black;">{{ tobacco_consumption_high }}</td>
+            <td style="background-color: #FFFCE5; color: black;">{{ tobacco_consumption_low|add:tobacco_consumption_medium|add:tobacco_consumption_high }}</td>
+        </tr>
+        
+        <tr style="background-color: #FFFCE5; color: black;">
+          <td>Alcohol Consumption</td>
+          <td>Modifiable</td>
+          <td>{{ alcohol_consumption_low }}</td>
+          <td>{{ alcohol_consumption_medium }}</td>
+          <td>{{ alcohol_consumption_high }}</td>
+          <td>{{ alcohol_consumption_low|add:alcohol_consumption_medium|add:alcohol_consumption_high }}</td>
+      </tr>
+      <tr style="background-color: #FFFCE5; color: black;">
+          <td>Body Mass Index (BMI)</td>
+          <td>Modifiable</td>
+          <td>{{ bmi_low }}</td>
+          <td>{{ bmi_medium }}</td>
+          <td>{{ bmi_high }}</td>
+          <td>{{ bmi_low|add:bmi_medium|add:bmi_high }}</td>
+      </tr>
+      <tr style="background-color: #FFFCE5; color: black;">
+          <td>Physical Inactivity</td>
+          <td>Modifiable</td>
+          <td>{{ physical_inactivity_low }}</td>
+          <td>{{ physical_inactivity_medium }}</td>
+          <td>{{ physical_inactivity_high }}</td>
+          <td>{{ physical_inactivity_low|add:physical_inactivity_medium|add:physical_inactivity_high }}</td>
+      </tr>
+
+      <tr style="background-color: #FFFCE5; color: black;">
+        <td>Unhealthy Diet </td>
+        <td>Modifiable</td>
+        <td>{{ unhealthy_diet_low }}</td>
+        <td>{{ unhealthy_diet_medium }}</td>
+        <td>{{ unhealthy_diet_high }}</td>
+        <td>{{ unhealthy_diet_low|add:unhealthy_diet_medium|add:unhealthy_diet_high }}</td>
+    </tr>
+
+      
+      <tr style="background-color: #FFFCE5; color: black; height: 50px;">
+        <td style="font-weight: 600">Toxic Exposure</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    
+    <tr style="background-color: #FFFCE5; color: black;">
+      <td>
+          <ul>
+              <li>Secondhand Smoke Exposure</li>
+          </ul>
+      </td>
+      <td>Modifiable</td>
+      <td>{{ secondhand_smoke_exposure_low }}</td>
+      <td>{{ secondhand_smoke_exposure_medium }}</td>
+      <td>{{ secondhand_smoke_exposure_high }}</td>
+      <td>{{ secondhand_smoke_exposure_low|add:secondhand_smoke_exposure_medium|add:secondhand_smoke_exposure_high }}</td>
+  </tr>
+  
+  <tr style="background-color: #FFFCE5; color: black;">
+    <td>
+        <ul>
+            <li>Environmental Toxin Exposure</li>
+        </ul>
+    </td>
+    <td>Modifiable</td>
+    <td>{{ environmental_toxin_exposure_low }}</td>
+    <td>{{ environmental_toxin_exposure_medium }}</td>
+    <td>{{ environmental_toxin_exposure_high }}</td>
+    <td>{{ environmental_toxin_exposure_low|add:environmental_toxin_exposure_medium|add:environmental_toxin_exposure_high }}</td>
+</tr>
+
+<tr style="background-color: #FFFCE5; color: black;">
+  <td>
+      <ul>
+          <li>Occupational Toxin Exposure</li>
+      </ul>
+  </td>
+  <td>Modifiable</td>
+  <td>{{ occupational_toxin_exposure_low }}</td>
+  <td>{{ occupational_toxin_exposure_medium }}</td>
+  <td>{{ occupational_toxin_exposure_high }}</td>
+  <td>{{ occupational_toxin_exposure_low|add:occupational_toxin_exposure_medium|add:occupational_toxin_exposure_high }}</td>
+</tr>
+
+    
+          <!-- Add similar rows for other risk factors -->
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <table>
+        <thead>
+          <th
+          colspan="6"
+          style="
+            text-align: center;
+            background-color: #09bfbb;
+            color: #ffffff;
+            font-size: 18px;
+          "
+        >
+          Inherited Cancer Risk & Warning Signs <br> (Number of screened candidates in the group)
+        </th>
+        
+        <tr style="height: 60px; text-align: center; background-color: #FFFCE5; color: #0CBFBB;">
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Risk Factors</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Risk Profile</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Low Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Medium Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">High Risk</th>
+          <th style="background-color: #FFFCE5; color: #0CBFBB; text-align: center;">Total Candidates</th>
+      </tr>
+      
+        </thead>
+        <tbody>
+          <tr style="background-color: #FFFCE5; color: black;">
+            <td>Personal & Family Cancer History</td>
+            <td>Non-Modifiable</td>
+            <td>{{ personal_family_cancer_history_low }}</td>
+            <td>{{ personal_family_cancer_history_medium }}</td>
+            <td>{{ personal_family_cancer_history_high }}</td>
+            <td>{{ personal_family_cancer_history_low|add:personal_family_cancer_history_medium|add:personal_family_cancer_history_high }}</td>
+        </tr>
+        <tr style="background-color: #FFFCE5; color: black;">
+            <td>Known DNA Susceptibility</td>
+            <td>Non-Modifiable</td>
+            <td>{{ known_dna_susceptibility_low }}</td>
+            <td>{{ known_dna_susceptibility_medium }}</td>
+            <td>{{ known_dna_susceptibility_high }}</td>
+            <td>{{ known_dna_susceptibility_low|add:known_dna_susceptibility_medium|add:known_dna_susceptibility_high }}</td>
+        </tr>
+        <tr style="background-color: #FFFCE5; color: black;">
+            <td>Age and Cancer</td>
+            <td>Non-Modifiable</td>
+            <td>{{ age_and_cancer_low }}</td>
+            <td>{{ age_and_cancer_medium }}</td>
+            <td>{{ age_and_cancer_high }}</td>
+            <td>{{ age_and_cancer_low|add:age_and_cancer_medium|add:age_and_cancer_high }}</td>
+        </tr>
+        <tr style="background-color: #FFFCE5; color: black;">
+            <td>
+                Recognizing present warning signs, cancer risk & health concerns.
+            </td>
+            <td>Requires Immediate Action</td>
+            <td>{{ recognizing_warning_signs_low }}</td>
+            <td>{{ recognizing_warning_signs_medium }}</td>
+            <td>{{ recognizing_warning_signs_high }}</td>
+            <td>{{ recognizing_warning_signs_low|add:recognizing_warning_signs_medium|add:recognizing_warning_signs_high }}</td>
+        </tr>
+        
+          <!-- Add similar rows for other risk factors -->
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+
+      <div style="width: 100%; margin: 0 auto; text-align: left;">
+        <h2 style="font-weight: bold; text-align: left; padding-top: 30px; padding-bottom: 10px; font-size: 18px;">PLEASE NOTE</h2>
+        
+        <p style="margin-bottom: 15px;">
+            Cancer can occur in individuals without known risk factors, while exposure to emerging cancer risk factors may not always result in cancer.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            The Multi-Cancer Risk Assessment (MCRA) tool helps individuals and health professionals to assess each candidate’s exposure to the risk of developing multiple cancers i.e. the risk of silent tumor growth going undetected till late stages of metastatic cancer.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            The MCRA is a tool to help healthy individuals to personalize their individual exposure to multiple causes & factors leading to silent dangerous tumor growth.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            Since symptoms usually don't show up till late stages of cancer development, early detection through regular multicancer screenings and maintaining a healthy lifestyle are essential preventive actions leading to the reduction of the risk of silent growth of dangerous tumors.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            Personal choices individuals make about the way they live can result in a reduced cancer risk exposure, thus improving survival rates for those detected in early stages of localized cancerous tumor growth.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            Undergoing screening for multiple cancers simultaneously and adopting a cancer risk reduction lifestyle are the easiest ways to protect everyone from the risk of silent tumor growth undetected.
+        </p>
+
+        <p style="margin-bottom: 15px;">
+            To get tested with PanTum® Detect, please register for eligibility check, informed consent, and scheduling sample collection: 
+            <a href="https://www.medidect.com/book-pantum-test/" target="_blank" style="font-weight: bold; color: blue; text-decoration: none;">
+                https://www.medidect.com/book-pantum-test/
+            </a>
+        </p>
+    </div>
+      <!-- <p style="text-align: left">
+
+        <strong style="text-align: left; font-size: 18px; padding-top: 10px; padding-bottom: 10px;">PLEASE NOTE:</strong><br />
+
+        Cancer can occur in individuals without known risk factors, while
+        exposure to emerging cancer risk factors may not always result in
+        cancer.<br />
+        <br />
+        The Multi-Cancer Risk Assessment (MCRA) tool helps individuals and
+        health professionals to assess each candidate’s exposure to the risk of
+        developing multiple cancers i.e. the risk of silent tumor growth going
+        undetected till late stages of metastatic cancer. <br />
+        <br />
+        The MCRA is a tool to help healthy individuals to personalize their
+        individual exposure to multiple causes & factors leading to silent
+        dangerous tumor growth. <br />
+        <br />
+        Since symptoms usually don't show up till late stages of cancer
+        development, early detection through regular multicancer screenings and
+        maintaining a healthy lifestyle are essentials preventive actions
+        leading to reduction of the risk of silent growth of dangerous tumors.
+        <br />
+        <br />
+        Personal choices individuals make about the way they live can result in
+        a reduced cancer risk exposure thus improving survival rates for those
+        detected in early-stages of localized cancerous tumor growth. <br />
+        <br />
+        Undergoing screening for multiple cancers simultaneously and adopting
+        cancer risk reduction lifestyle are the easiest ways to protect everyone
+        from the risk of silent tumor growth undetected. To get tested with
+        PanTum® Detect, please register for eligibility check, informed consent
+        and scheduling sample
+      </p>
+      <p style="text-align: left">
+        To get tested with PanTum® Detect, please register for eligibility
+        check, informed consent and scheduling sample collection:
+        <a href="https://www.medidect.com/book-pantum-test/" target="_blank"
+          >https://www.medidect.com/book-pantum-test/</a
+        >
+      </p>
+      <div style="width: 100%; background-color: black; height: 2px; margin-top: 20px; margin-bottom: 10px;"></div>
+      <address>
+        <strong>Medidect™ India </strong>  - A Unit of Millennium Oncology India Private Limited<br />
+        Address - Plot No.112, First Floor, Udyog Vihar, Phase - 1, Gurgaon, Haryana, India, 122016 | Tel: 0124 421 0144 | Email: info@medidect.com  
+      </address> -->
+    </footer>
+  </body>
+</html>

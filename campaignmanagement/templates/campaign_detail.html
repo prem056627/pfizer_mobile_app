@@ -1,0 +1,115 @@
+{% extends 'crud/detail.html' %}
+
+
+{% block detail_view_side_content %}  
+
+
+<style>
+    .report-button {
+       display: inline-flex;
+       padding: 10px 20px;
+       background-color: #1e607a; /* Primary color */
+       color: white;
+       text-decoration: none;
+       border-radius: 6px;
+       font-weight: 500;
+       transition: background-color 0.2s ease;
+       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+       position: relative; /* Ensure positioning context for the loading bar */
+       overflow: hidden; /* Prevent the loading bar from spilling out */
+   }
+   .button-content {
+       margin-right: 8px; /* Adjust the spacing between the icon and the text */
+   }
+   
+   .report-button:hover {
+       background-color: #155a6f; /* Darker shade for hover effect */
+   }
+   
+   .loading-bar {
+       display: none; /* Hidden by default */
+       position: absolute;
+       bottom: 0;
+       left: 0;
+       height: 4px;
+       width: 0;
+       background-color: white;
+       animation: loading-bar 1.5s linear infinite;
+   }
+   
+   .report-button.loading .loading-bar {
+       display: block;
+       width: 100%; /* Full width while animating */
+   }
+   
+   .report-button.loading .button-text {
+       opacity: 0.5; /* Dim the text to indicate loading */
+   }
+   
+   @keyframes loading-bar {
+       0% {
+           transform: translateX(-100%);
+       }
+       100% {
+           transform: translateX(100%);
+       }
+   }
+   
+   .button-text {
+       font-size: 14px;
+       font-family: Lato;
+       white-space: nowrap; 
+       font-weight: bold;
+   }
+   .icon {
+       font-family: Lato;
+       vertical-align: middle; /* Align the icon vertically with the text */
+   }
+   </style>
+   
+<a class="report-button" href="#">
+    <span class="button-text">Download Report</span>
+    <span class="loading-bar"></span>
+</a>
+
+<script>
+    $(document).ready(function () {
+    $('.report-button').on('click', function (e) {
+        e.preventDefault(); // Prevent the default link behavior
+        const button = $(this);
+        button.addClass('loading'); // Show the loading bar
+
+        // Fetch the PDF file
+        fetch('/mcraformsubmissions/api/generate-group-pdf/?campaign_uuid={{ object_uuid }}', {
+            method: 'GET',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob(); // Get the response as a blob
+            })
+            .then((blob) => {
+                // Create a temporary link to download the blob
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Group report_{{ customer_name }}_{{ object_name }}.pdf'; // Change the filename as needed
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error('Error downloading PDF:', error);
+                alert('Failed to download the report. Please try again.');
+            })
+            .finally(() => {
+                button.removeClass('loading'); // Hide the loading bar after download or error
+            });
+    });
+});
+
+
+</script>
+{% endblock %}

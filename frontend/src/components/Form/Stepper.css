@@ -1,0 +1,62 @@
+.group .size-7,
+.group .h-px {
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.hs-stepper-active .size-7,
+.hs-stepper-final .size-7,
+.hs-stepper-final-radio .size-7 {
+  position: relative;
+  background-color: transparent; /* No background color */
+}
+
+.hs-stepper-active .size-7::before,
+.hs-stepper-final .size-7::before,
+.hs-stepper-final-radio .size-7::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px; /* Inner circle size */
+  height: 12px;
+  background-color: #BE2BBB; /* Tailwind blue-600 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hs-stepper-active .size-7::after,
+.hs-stepper-final .size-7::after,
+.hs-stepper-final-radio .size-7::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px; /* Outer circle size */
+  height: 24px;
+  border: 2px solid #BE2BBB; /* Tailwind blue-600 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hs-stepper-completed .size-7 {
+  background-color: #BE2BBB; /* Tailwind teal-500 */
+  color: white;
+}
+
+.hs-stepper-completed .h-px {
+  background-color: #BE2BBB; /* Tailwind teal-500 */
+}
+
+/* Custom styling for radio button appearance */
+.radio-button {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #e5e7eb; /* Tailwind gray-200 */
+}
+
+.radio-button.completed {
+  background-color: #BE2BBB; /* Tailwind teal-500 */
+}
