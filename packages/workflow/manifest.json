@@ -1,7 +1,0 @@
-{
-    "version": "0.3.2",
-    "zango": ">=0.4.0",
-    "dependencies": {
-        "crud": ">=0.4.0"
-    }
-}
