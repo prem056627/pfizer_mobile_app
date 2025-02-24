@@ -275,3 +275,13 @@ input[type="number"] {
 .DateRangePickerInput {
   border-radius: 6px;
 }
+
+
+.SingleDatePickerInput__withBorder {
+  border-radius: 2px;
+  border: none !important;
+}
+
+html, body {
+  height: 100%;
+}

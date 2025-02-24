@@ -3,13 +3,11 @@ import Stepper from "../../components/Stepper";
 // import PatientDetailForm from "../patient-detail-form";
 import { selectCurrentStep } from "../../slice/patient-detail-form";
 import MobProgressSteps from "../../components/MobProgressSteps";
-// import Thankspage from "../../components/Thankspage";
+// import SuccessPage from "../../components/SuccessPage";
 import { Outlet } from "react-router-dom";
-
 
 function Home() {
   const currentStep = useSelector(selectCurrentStep);
-
 
   // const steps = [
   //   {
@@ -41,23 +39,19 @@ function Home() {
   //   },
   // ];
 
-
   return (
     <div className="bg-[#FBFCFF]">
       <div className="w-full file:">
-      <div className="bg-white flex justify-center items-center h-20 px-6   w-full">
-      <div className="flex justify-center items-center">
-        <img 
-          width={90} 
-          src="/pfizer_logo.svg" 
-          alt="Pfizer Logo" 
-          className="cursor-pointer"
-        />
-      </div>
-    </div>
-
-
-        
+        <div className="bg-white flex justify-center items-center h-20 px-6   w-full">
+          <div className="flex justify-center items-center">
+            <img
+              width={90}
+              src="/pfizer_logo.svg"
+              alt="Pfizer Logo"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
 
         {/* <div className="md:container mx-auto md:px-6 py-4 relative">
 
@@ -86,10 +80,9 @@ function Home() {
         <main className=" container mx-auto md:px-14 py-4">
           <Outlet />
         </main>
-
       </div>
     </div>
-  )
+  );
 }
 
 export default Home;

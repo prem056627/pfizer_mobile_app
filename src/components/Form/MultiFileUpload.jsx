@@ -49,7 +49,7 @@ export default function MultiFileUpload({
 				<label className="text-xs leading-4 text-dark-gray">{label}</label>
 				<label
 					htmlFor={id}
-					className={`flex w-full items-center justify-between gap-[16px] truncate rounded-md border border-dashed border-[#D5D5D5] px-[12px] py-[16px] pr-[14px] font-lato leading-5 text-medium-gray`}
+					className={`flex w-full text-[14px] items-center justify-between gap-[16px] truncate rounded-md border border-dashed border-[#D5D5D5] px-[12px] py-[16px] pr-[14px] font-lato leading-5 text-medium-gray`}
 				>
 					{get(formik.values, id, [])?.length <= 1 ? (
 						<span>Click to Upload</span>
@@ -78,7 +78,7 @@ export default function MultiFileUpload({
 								href={eachFile?.name}
 								target="_blank"
 								rel="noreferrer"
-								className="w-[300px] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary"
+								className=" overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary"
 							>
 								{/* {eachFile?.name} */}
 								Uploaded File

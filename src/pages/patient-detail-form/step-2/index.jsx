@@ -28,6 +28,10 @@ const CaregiverDetailsForm = () => {
     ...getCaregiverDetailsInitialValues(formData.cancer_risk_factors)
   };
 
+  // let initiaData = useSelector(selectPatientDetails);
+  // console.log('initiaDatainitiaDatainitiaDatainitiaDatainitiaDatainitiaData',initiaData?.data?.enrollment_details.step_data
+  // );
+
   const onSubmit = async (values) => {
     console.log("Form submitted with values:", values);
 
@@ -38,6 +42,8 @@ const CaregiverDetailsForm = () => {
 
     delete postData.currentStep;
 
+   
+
     setFormData({
       ...formData,
       cancer_risk_factors: values,
@@ -46,7 +52,7 @@ const CaregiverDetailsForm = () => {
 
     try {
       const { response, success } = await triggerApi({
-        url: `/patient-initialize/`,
+        url: `/api/patient/enrol/`,
         type: "POST",
         loader: true,
         payload: postData,
