@@ -104,16 +104,18 @@ const PhysicalVerification = () => {
 
         {/* Time Picker */}
         <div className="w-full pt-4">
-          <label className="text-sm text-gray-600 mb-1 block">Select Time</label>
-          <div className="relative">
+          <label htmlFor='physical-verification-time' className="text-sm text-gray-600 mb-1 block">Select Time
+          {/* <div className="relative"> */}
             {/* Make sure time input field is clickable */}
             <input
               type="time"
+              name='physical-verification-time'
               value={selectedTime}
               onChange={handleTimeChange}
               className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 cursor-pointer z-10" // Added z-10 for z-index control
             />
-          </div>
+          {/* </div> */}
+          </label>
         </div>
 
         {/* Submit Button */}

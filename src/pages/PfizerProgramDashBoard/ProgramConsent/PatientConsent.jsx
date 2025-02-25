@@ -1,13 +1,13 @@
 import { handleRequest } from 'msw'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { setSchemaShown } from '../../../slice/patient-detail-form'
+import { setDocUploadStatus } from '../../../slice/patient-detail-form'
 
 function PatientConsent() {
   const dispatch =useDispatch()
 
   function handleRequest(){
-dispatch(setSchemaShown(true));
+dispatch(setDocUploadStatus("scheme_enroll_doc"));
   }
 
   return (

@@ -12,7 +12,7 @@ let initialData = {
 	// 	status: 'Complete KYC',
 	// },
 	is_Program_enrollment_submited: false,
-	is_Concent_Submitted: false,
+	// is_Concent_Submitted: false,
 	// is_ekyc_completed: true,
 	is_profile_completed: true,
 	// is_document_submitted : false,

@@ -3,15 +3,15 @@ import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import Radio from '../../components/Form/Radio';
 import { useDispatch } from 'react-redux';
-import { setProgramEnrollmentConsent, setSchemaShown } from '../../slice/patient-detail-form';
-import { useNavigate } from 'react-router-dom';
+import { setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setSchemaShown } from '../../slice/patient-detail-form';
+// import { useNavigate } from 'react-router-dom';
 // import Radio from './Radio';
 // import MultiFileUpload from './MultiFileUpload';
 
 const PfizerUploadForm = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const radioData = [
     {
@@ -75,7 +75,8 @@ const PfizerUploadForm = () => {
     
     // Only navigate to submission after documents are submitted
     console.log('Form submitted:', values);
-    navigate("submission");
+    // navigate("submission");
+    dispatch(setProgramEnrollmentSuccess(true));
     setSubmitting(false);
   };
 
@@ -86,7 +87,7 @@ const PfizerUploadForm = () => {
       onSubmit={handleSubmit}
     >
       {(formik) => (
-        <form onSubmit={formik.handleSubmit} className="relative flex flex-col min-h-screen">
+        <form onSubmit={formik.handleSubmit} className="relative flex flex-col pt-6 ">
           {/* Pfizer Logo */}
           <div>
           {/* <div className="bg-white flex justify-center items-center h-20 px-6   w-full">
@@ -151,9 +152,9 @@ const PfizerUploadForm = () => {
           {/* Action Buttons */}
 
           {/* Fixed Footer */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
             <div className="max-w-2xl mx-auto">
-              <div className="flex items-center gap-4 p-4 h-[80px]">
+              <div className="flex items-center gap-4 px-4 py-8">
                 <button
                   type="button" 
                   className="flex-1 py-3 px-4 border shadow-[inset_0_0_0_1px_#0101C8] text-primary rounded-md"

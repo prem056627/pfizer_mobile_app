@@ -43,7 +43,7 @@ const PatientDetailForm = () => {
     }
   };
   return (
-    <div className="w-full pb-24">
+    <div className="w-full pb-24 max-h-screen">
       {/* <div className="bg-white flex justify-between items-center h-16 px-6 border-b-1 border-gray-200 shadow-sm">
 				<div className="">
 					<a href="/">

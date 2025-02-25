@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch } from 'react-redux';
-import { setUploadInvoiceModalOpen } from '../../slice/patient-detail-form';
+import { setRequestFocModalOpen, setUploadInvoiceModalOpen } from '../../slice/patient-detail-form';
 // import { setUploadInvoiceModalOpen } from '../../redux/actions';
 
-function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
+function RequestFOCForm({ setStep, fetchProgramDetails }) {
     const dispatch = useDispatch();
 
     const initialValues = {
@@ -21,7 +21,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
 
     const onSubmit = (values, { setSubmitting }) => {
         console.log('Form Submitted', values);
-        dispatch(setUploadInvoiceModalOpen(false));
+        dispatch(setRequestFocModalOpen(false));
         setSubmitting(false);
     };
 
@@ -38,7 +38,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 formik={formik}
                                 id="BrowseFiles"
                                 name="BrowseFiles"
-                                label="Invoice"
+                                label="Prescription"
                                 description="The file must be in jpg/pdf/png format. Maximum size of the document should be 2MB."
                             />
                         </div>
@@ -61,4 +61,4 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
     );
 }
 
-export default UploadInvoiceForm;
+export default RequestFOCForm;

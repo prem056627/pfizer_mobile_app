@@ -5,6 +5,8 @@ import Modal from '../../components/Modal/Modal';
 // import UploadInvoiceForm from './UploadInvoiceForm';
 import InvoiceModal from '../../components/Modal/InvoiceModal';
 import PhysicalVerification from './PhysicalVerification';
+import { selectPhysicalVerificationModalOpen, setPhysicalVerificationModalOpen } from '../../slice/patient-detail-form';
+import { useDispatch, useSelector } from 'react-redux';
 // import RequestOrderModalForm from './RequestOrderForm';
 // import Modal from '../../../components/Modal/Modal';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -15,20 +17,20 @@ import PhysicalVerification from './PhysicalVerification';
 // import PatientConsent from './PatientConsent';
 
 function PhysicalVerificationModal() {
-    // const profilePageOpen = useSelector(selectIsProfilePageOpen); 
-    // const dispatch = useDispatch(); 
+    const PhysicalVerificationModalOpen = useSelector(selectPhysicalVerificationModalOpen); 
+    const dispatch = useDispatch(); 
 
-    // function closeModal() {
-    //     dispatch(isProfilePageOpen(false)); // Dispatch the close action
-    //     console.log("Modal closed");
-    // }
+    function closeModal() {
+        dispatch(setPhysicalVerificationModalOpen(false)); // Dispatch the close action
+        console.log("Modal closed");
+    }
 
     return (
         <Modal
             label={'Physical Verification'}
             labelType="center"
-            show={true}
-            closeModal={false}
+            show={PhysicalVerificationModalOpen}
+            closeModal={closeModal}
             ModalBody={<PhysicalVerification />}
             // ModalBody={< RequestCallBackForm />}
             // isScroll = false"

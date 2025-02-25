@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import useApi from "../../../hooks/useApi";
 import {
@@ -9,6 +9,7 @@ import {
   changeStep,
   selectCurrentStep,
   selectPatientDetails,
+  setPatientEnrollmentSuccessModalOpen,
 } from "../../../slice/patient-detail-form";
 import { combinedValidationSchema } from "./validationSchemas";
 import { getCaregiverDetailsInitialValues } from "./initialValues";
@@ -19,7 +20,7 @@ import CaregiverDetails from "./CaregiverDetails";
 
 const CaregiverDetailsForm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const triggerApi = useApi();
   const currentStep = useSelector(selectCurrentStep);
   const [formData, setFormData] = useLocalStorage("formData", {});
@@ -59,7 +60,8 @@ const CaregiverDetailsForm = () => {
       });
 
       if (success && response) {
-        navigate("submission");
+        // navigate("submission");
+        dispatch(setPatientEnrollmentSuccessModalOpen(true));
       }
     } catch (error) {
       console.error("Error during API call:", error);

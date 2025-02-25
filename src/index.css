@@ -285,3 +285,14 @@ input[type="number"] {
 html, body {
   height: 100%;
 }
+
+
+
+.rdp-month{
+  display: flex
+;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 15px;
+}

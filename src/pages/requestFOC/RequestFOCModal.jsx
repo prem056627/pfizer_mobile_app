@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Modal from '../../components/Modal/Modal';
-import UploadInvoiceForm from './UploadInvoiceForm';
+// import UploadInvoiceForm from './UploadInvoiceForm';
 import InvoiceModal from '../../components/Modal/InvoiceModal';
-import { selectUploadInvoiceModalOpen, setUploadInvoiceModalOpen } from '../../slice/patient-detail-form';
+import { selectRequestFocModalOpen, setRequestFocModalOpen,  } from '../../slice/patient-detail-form';
 import { useDispatch, useSelector } from 'react-redux';
+import RequestFOCForm from './RequestFOCForm';
 // import RequestOrderModalForm from './RequestOrderForm';
 // import Modal from '../../../components/Modal/Modal';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -15,22 +16,22 @@ import { useDispatch, useSelector } from 'react-redux';
 // import ProfileModalForm from './ProfileModalForm';
 // import PatientConsent from './PatientConsent';
 
-function UploadInvoiceModal() {
-    const profilePageOpen = useSelector(selectUploadInvoiceModalOpen); 
+function RequestFOCModal() {
+    const RequestFocOpen = useSelector(selectRequestFocModalOpen); 
     const dispatch = useDispatch(); 
 
     function closeModal() {
-        dispatch(setUploadInvoiceModalOpen(false)); // Dispatch the close action
+        dispatch(setRequestFocModalOpen(false)); // Dispatch the close action
         console.log("Modal closed");
     }
 
     return (
         <InvoiceModal
-            label={'Upload Invoice'}
+            label={'Upload Prescription'}
             labelType="center"
-            show={profilePageOpen}
+            show={RequestFocOpen}
             closeModal={closeModal}
-            ModalBody={<UploadInvoiceForm />}
+            ModalBody={<RequestFOCForm />}
             // ModalBody={< RequestCallBackForm />}
             // isScroll = false"
             type="center"
@@ -39,4 +40,4 @@ function UploadInvoiceModal() {
     );
 }
 
-export default UploadInvoiceModal;
+export default RequestFOCModal;
