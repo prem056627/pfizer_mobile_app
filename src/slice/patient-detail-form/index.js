@@ -46,7 +46,12 @@ export const ProgramEnrollmentSlice = createSlice({
       state.patientDetails = action.payload;
     },
     setInitializeData: (state, action) => {
-      state.initializeData = { ...action?.payload };
+      state.initializeData = { ...action.payload };
+
+      // Map API response to state
+      const enrollmentDetails = action.payload?.response?.enrollment_details || {};
+      state.currentStep = enrollmentDetails?.current_step || 1;
+      state.current_page_state = action.payload?.response?.current_state || "enrollment_not_complete";
     },
     setCurrentPageState: (state, action) => {
       state.current_page_state = action.payload;

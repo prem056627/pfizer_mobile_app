@@ -93,13 +93,14 @@ const Notifications = () => {
   };
 
   return (
-    <div className="bg-white relative font-['Open_Sans'] pt-6">
+    <div className="bg-white relative font-['Open_Sans'] pt-6 no-scrollbar">
       {/* Transaction Section */}
       <div className="px-2 bg-white mx-4 rounded-[20px]">
       {notifications.length !== 0 ? <h2 className="text-lg font-semibold w-full mb-4">Transaction</h2> : null}
         
         {loading ? (
-          <div className="p-4 text-center">Loading notifications...</div>
+          // <div className="p-4 text-center">Loading notifications...</div>
+          <div className="overlay-spinner" />
         ) : notifications.length === 0 ? (
           <div className="flex justify-center items-center h-[60vh]">
            <div className='p-4 text-center  flex flex-col items-center gap-4'>

@@ -42,7 +42,7 @@ function FormSubmitFooter({ formik, setCurrentState }) {
 		}
 	};
 
-	console.log("formik", formik.isValid, formik.dirty, formik);
+	// console.log("formik", formik.isValid, formik.dirty, formik);
 
 	return (
 		<div className="fixed bottom-0 left-0 z-50 flex justify-center w-full border-t bg-white px-6 py-6">

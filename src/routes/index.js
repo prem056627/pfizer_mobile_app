@@ -13,7 +13,7 @@ import PhysicalVerificationModal from "../pages/physicalVerification/PhysicalVer
 import MenuScreen from "../pages/Profile/MenuScreen";
 import Notifications from "../pages/Notification/Notifications";
 import useApi from "../hooks/useApi";
-import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus } from "../slice/patient-detail-form";
+import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData } from "../slice/patient-detail-form";
 import ProgramEnrollSuccessModal from "../pages/PfizerProgramDashBoard/ProgramEnrolllmentSuccessModal/ProgramEnrollSuccessModal";
 import ShortFallDoc from "../pages/PfizerProgramDashBoard/ShortFallDoc";
 import RequestFOCModal from "../pages/requestFOC/RequestFOCModal";
@@ -24,7 +24,7 @@ const AppNavigation = () => {
 
   const currentView = useSelector(selectCurrentView) ;
 
-  console.log('currentViewcurrentViewcurrentViewcurrentViewcurrentView',currentView);
+
   // const [currentView, setCurrentView] = useState("menu");
   const [isLoading, setIsLoading] = useState(true);
   
@@ -34,26 +34,36 @@ const AppNavigation = () => {
   const current_page_state = useSelector(selectCurrentPageState);
   const   doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
+
+  console.log('initalizeeeeeee!!!',initialData)
   
   // Get role from localStorage
   const current_role = localStorage.getItem('role');
 
   // Initialize data
   const makeApiCall = async () => {
-    setIsLoading(true);
-    const { response, success } = await triggerApi({
-      url: `/patient-initialize/`,
-      type: 'GET',
-      loader: true,
-    });
-    
-    if (success && response) {
-      // Add any additional initialization logic here
-      // dispatch(setInitializeData(response));
-      // dispatch(setCurrentPageState(response.data.current_state));
+    try {
+      setIsLoading(true);
+  
+      const { response, success } = await triggerApi({
+        url: `/patient-initialize/`,
+        type: "GET",
+        loader: true,
+      });
+  
+      if (success && response) {
+        dispatch(setInitializeData(response));
+        // dispatch(setCurrentPageState(response.data.current_state)); // Uncomment if needed
+      } else {
+        console.error("API call failed or returned no data.");
+      }
+    } catch (error) {
+      console.error("Error in makeApiCall:", error);
+    } finally {
+      setIsLoading(false); // Ensure loading state is reset
     }
-    setIsLoading(false);
   };
+  
 
   useEffect(() => {
     makeApiCall();
@@ -63,7 +73,7 @@ const AppNavigation = () => {
 
   // Render content based on current view and app state
   const renderContent = () => {
-    console.log('Rendering content for view:', currentView, 'State:', current_page_state);
+    // console.log('Rendering content for view:', currentView, 'State:', current_page_state);
     
     // First check the view state for UI navigation
     if (currentView === "menu") {
@@ -97,13 +107,11 @@ const AppNavigation = () => {
   };
 
   // Loading state
-  if (isLoading || !initialData.data) {
+  if (isLoading || initialData.data) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-white p-6 pt-11">
         <div className="flex-col justify-center">
-          <div className="text-center text-[20px] font-bold text-black">
-            Loading...
-          </div>
+        <div className="overlay-spinner" />
         </div>
       </div>
     );
@@ -113,7 +121,7 @@ const AppNavigation = () => {
   const hideFooter = current_page_state === 'program_unactive' &&   doc_upload_status !== 'scheme_enroll_doc' || 
                      current_page_state === 'enrollment_not_complete';
 
-  console.log('Rendering Home with hideFooter:', hideFooter);
+  // console.log('Rendering Home with hideFooter:', hideFooter);
                     
   // Return the Home layout with the content
   return (

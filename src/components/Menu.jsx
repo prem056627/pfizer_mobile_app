@@ -6,7 +6,7 @@ import { useDashboard } from '../context/DashboardContextProvider';
 const Menu = ({ MenuItems }) => {
 	const { userRoleData } = useDashboard();
 	return (
-		<div className="complete-hidden-scroll-style flex grow flex-col overflow-y-auto md:hidden">
+		<div className="complete-hidden-scroll-style flex grow flex-col overflow-y-auto md:hidden ">
 			<header className="px-6 pt-30 pb-8 font-invention-app text-xl font-bold">
 				Menu
 			</header>

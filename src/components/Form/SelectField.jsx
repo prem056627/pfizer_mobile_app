@@ -19,14 +19,18 @@ export default function SelectField({
 	const { styles, attributes } = usePopper(referenceElement, popperElement);
 
 	const [searchTerm, setSearchTerm] = useState('');
+	const initialValueSet = useRef(false);
 
 	let availableSkus = optionsData;
 
+	// Store the initial value to be used later if optionsData isn't loaded yet
+	const initialValue = useRef(value);
+
 	const [selected, setSelected] = useState(
 		optionsData?.find((eachData) => eachData.id === value) || {
-			label: 'Select',
-			id: '',
-			unavailable: true,
+			label: value ? ` ${value}` : 'Select', // Show the ID if we have a value but no matching option yet
+			id: value || '',
+			unavailable: !value,
 		}
 	);
 
@@ -40,43 +44,65 @@ export default function SelectField({
 
 	const handleChange = (value) => {
 		if (!disabled) { 
-		setSelected(value);
-		formik.setFieldValue(props.id, value.id);
+			setSelected(value);
+			formik.setFieldValue(props.id, value.id);
 		}
 	};
 
+	// This effect handles initial value selection and updates when optionsData or value changes
 	useEffect(() => {
-		
-		
-		if (
-			optionsData &&
-			value &&
-			optionsData.find((eachData) => eachData?.id === value)
-		) {
-			console.log(
-				'value',
-				optionsData,
-				value,
-				optionsData.find((eachData) => eachData?.id === value)
+		// If we have optionsData and a value
+		if (optionsData?.length > 0 && value) {
+			// Try to find the matching option
+			const matchingOption = optionsData.find((eachData) => eachData?.id === value);
+			
+			if (matchingOption) {
+				console.log('Found matching option for value:', value, matchingOption);
+				setSelected(matchingOption);
+				initialValueSet.current = true;
+			} else if (!initialValueSet.current) {
+				// If no matching option but we have a value, create a temporary option
+				console.log('No matching option found for value:', value);
+				setSelected({
+					label: `${value}`,
+					id: value,
+					unavailable: false,
+					isTemporary: true
+				});
+			}
+		} else if (optionsData?.length > 0 && initialValue.current && !initialValueSet.current) {
+			// Check if we can now find the initial value in the options
+			const matchingInitialOption = optionsData.find(
+				(eachData) => eachData?.id === initialValue.current
 			);
-			setSelected(optionsData.find((eachData) => eachData?.id === value));
-		}
-
-		if (!value) {
+			
+			if (matchingInitialOption) {
+				console.log('Found matching option for initial value:', initialValue.current);
+				setSelected(matchingInitialOption);
+				initialValueSet.current = true;
+			}
+		} else if (!value) {
+			// Reset to default when no value
+			console.log('No value, setting default selection');
 			setSelected({
 				label: 'Select',
 				id: '',
 				unavailable: true,
 			});
+			initialValueSet.current = false;
 		}
 	}, [value, optionsData]);
 
 	const itemRef = useRef();
 
 	function handleItemSize(index) {
+		if (!itemRef.current || !optionsData || !optionsData[index]) {
+			return 40; // Default size if data isn't available
+		}
+		
 		itemRef.current.innerHTML = optionsData[index]['label'];
 		let size = itemRef.current.getBoundingClientRect().height;
-		return size;
+		return size || 40; // Return default if calculation fails
 	}
 
 	return (
@@ -142,51 +168,55 @@ export default function SelectField({
 										</div>
 									)}
 								</div>
-								<List
-									height={
-										filteredOptions.length < 10
-											? filteredOptions.length * 40
-											: 300
-									}
-									width={'100%'}
-									itemCount={filteredOptions.length}
-									itemSize={handleItemSize}
-									itemData={filteredOptions}
-									className="complete-hidden-scroll-style"
-								>
-									{({ index, style }) => (
-										<Listbox.Option
-											key={index}
-											style={style}
-											className={({ active }) =>
-												`relative cursor-default select-none p-2  text-[#171717]  ${
-													active ? '' : ''
-												}`
-											}
-											value={filteredOptions[index]}
-											disabled={filteredOptions[index].unavailable || false}
-										>
-											{({ selected }) => (
-												<>
-													<span
-														className={`block cursor-pointer rounded-md  py-2 font-lato text-portal-sm text-[#283A46]  ${
-															selected ? 'font-bold' : 'font-open-sans'
-														} ${
-															filteredOptions[index].unavailable || false
-																? 'opacity-50'
-																: 'cursor-pointer'
-														}`}
-													>
-														{filteredOptions[index].label}
-													</span>
-													{selected ? (
-														<span className="absolute inset-y-0 left-0  flex items-center"></span>
-													) : null}
-												</>
-											)}
-										</Listbox.Option>
-									)}
-								</List>
+								{filteredOptions && filteredOptions.length > 0 ? (
+									<List
+										height={
+											filteredOptions.length < 10
+												? filteredOptions.length * 40
+												: 300
+										}
+										width={'100%'}
+										itemCount={filteredOptions.length}
+										itemSize={handleItemSize}
+										itemData={filteredOptions}
+										className="complete-hidden-scroll-style"
+									>
+										{({ index, style }) => (
+											<Listbox.Option
+												key={index}
+												style={style}
+												className={({ active }) =>
+													`relative cursor-default select-none p-2  text-[#171717]  ${
+														active ? '' : ''
+													}`
+												}
+												value={filteredOptions[index]}
+												disabled={filteredOptions[index].unavailable || false}
+											>
+												{({ selected }) => (
+													<>
+														<span
+															className={`block cursor-pointer rounded-md  py-2 font-lato text-portal-sm text-[#283A46]  ${
+																selected ? 'font-bold' : 'font-open-sans'
+															} ${
+																filteredOptions[index].unavailable || false
+																	? 'opacity-50'
+																	: 'cursor-pointer'
+															}`}
+														>
+															{filteredOptions[index].label}
+														</span>
+														{selected ? (
+															<span className="absolute inset-y-0 left-0  flex items-center"></span>
+														) : null}
+													</>
+												)}
+											</Listbox.Option>
+										)}
+									</List>
+								) : (
+									<div className="py-2 px-1 text-gray-500">No options available</div>
+								)}
 							</Listbox.Options>
 						</Transition>
 					</div>

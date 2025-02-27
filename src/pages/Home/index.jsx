@@ -62,7 +62,7 @@ function Home({ hideFooter, children }) {
       </div>
 
       {/* Content */}
-      <main className="flex-1 overflow-y-auto container mx-auto md:px-14 py-24">
+      <main className="flex-1 overflow-y-auto container mx-auto md:px-14 py-24 ">
         {children}
       </main>
 

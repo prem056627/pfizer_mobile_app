@@ -7,6 +7,7 @@ import FormSection from "../components/FormSection";
 import {
   changeStep,
   selectCurrentStep,
+  selectInitializeData,
 } from "../../../slice/patient-detail-form";
 import { combinedValidationSchema } from "./validationSchemas";
 import useLocalStorage from "../../../hooks/useLocalstorage";
@@ -25,13 +26,39 @@ const FormDebugger = ({ values, errors, touched }) => {
   return null;
 };
 
+
+
+
+
+
+
+
+
+
 const PersonalDetails = () => {
   const dispatch = useDispatch();
   const currentStep = useSelector(selectCurrentStep);
-  const [formData, setFormData] = useLocalStorage("formData", {});
+
+  const initialDataa = useSelector(selectInitializeData);
+// Avoid accessing undefined properties
+const step1Data = initialDataa?.enrollment_details?.step_data?.personal_details || {};
+
+// Debugging to confirm correct data structure
+console.log("Step 1 Data:", step1Data);
+  
+
+const [formData, setFormData] = useLocalStorage("formData", step1Data);
+
+// Ensure formData is updated when Redux state changes
+React.useEffect(() => {
+  setFormData(step1Data);
+}, [step1Data]);
+
+  
+  
   
   // Get initial values from stored data
-  const initialValues = getProfileInitialValues(formData?.profile_details);
+  const initialValues = getProfileInitialValues(formData);
   // Get initial values directly from stored data
   // const initialValues = formData?.profile_details || {
   //   // Personal Details
@@ -156,6 +183,10 @@ const PersonalDetails = () => {
       fields: fieldGroups.idDetails
     },
   ];
+
+  // const initialDataaaaa = useSelector(selectInitializeData);
+
+  // console.log( "initialaaaaaa!!!!!",initialDataaaaa);
 
   return (
     <div className="w-full pb-24">

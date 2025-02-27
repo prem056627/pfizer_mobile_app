@@ -31,60 +31,56 @@ export const handlers = [
 	}),
 
 	http.get('/patient-initialize/', () => {
-        return HttpResponse.json({
-            success: true,
-            response: {
-                uid: '12345', // Unique ID for the user
-                current_state: 'patient_enrollment', // Options: tnc_pending, patient_enrollment
-                enrollment_details: {
-                    steps: [
-                        // 'terms_and_conditions',
-                        'personal_details',
-                        'caregiver_details'
-                    ],
-                    completed_steps: ['terms_and_conditions', 'patient_details'],
-                    current_step: 'patient_details',
-                    step_data: {
-                        terms_and_conditions: 'Yes', // Can be "yes", "no"
-                        personal_details: {
-                            current_addressline1: "Address Line 1 is required",
-                            current_city: "City is required",
-                            current_pincode: "Pincode is required",
-                            current_state: "State is required",
-                            date_of_birth: "Date of Birth is required",
-                            email: "Email ID is required",
-                            full_name: "Full Name is required",
-                            gender: "Gender is required",
-                            id_card_type: "ID Card Type is required",
-                            id_number: "ID Number is required",
-                            mobile_number: "Mobile Number is required",
-                            nationality: "Nationality is required",
-                            permanent_addressline1: "Address Line 1 is required",
-                            permanent_city: "City is required",
-                            permanent_pincode: "Pincode is required",
-                            permanent_state: "State is required"
-                        },
-                        Care_giver_details: {
-                            caregiver_email: "pk@gmail.com",
-                            caregiver_mobile: "9894906630",
-                            caregiver_mobile_verify: "9894906630",
-                            caregiver_name: "prem",
-                            relationship: "other"
-                        }
-                    },
-                    dropdown_options: {
-                        states: [
-                            { code: 'NY', name: 'New York' },
-                            { code: 'CA', name: 'California' },
-                            { code: 'TX', name: 'Texas' },
-                            { code: 'FL', name: 'Florida' }
-                        ]
-                    },
-                    completed: false // Whether the process is fully completed
-                }
-            }
-        });
-    }),
+		return HttpResponse.json({
+			success: true,
+			response: {
+				uid: '12345', // Unique ID for the user
+				current_state: 'patient_enrollment', // Options: tnc_pending, patient_enrollment
+				enrollment_details: {
+					steps: [
+						// 'terms_and_conditions',
+						'personal_details',
+						'caregiver_details'
+					],
+					completed_steps: ['terms_and_conditions', 'patient_details'],
+					current_step: 'patient_details',
+					step_data: {
+						terms_and_conditions: 'Yes', // Can be "yes", "no"
+						personal_details: {
+							full_name: "John Doe",
+							gender: "Male",
+							date_of_birth: "1990-05-15",
+							mobile_number: "9876543210",
+							email: "johndoe@example.com",
+							nationality: "American",
+							permanent_addressline1: "123 Main Street",
+							permanent_addressline2: "Apt 4B",
+							permanent_city: "New York",
+							permanent_state: "NY",
+							permanent_pincode: "100401",
+							same_as_permanent: false,
+							current_addressline1: "456 Elm Street",
+							current_addressline2: "Suite 2A",
+							current_city: "Los Angeles",
+							current_state: "CA",
+							current_pincode: "900123",
+							id_card_type: "Passport",
+							id_number: "A12345678"
+						},
+						caregiver_details: {
+							caregiver_email: "pk@gmail.com",
+							caregiver_mobile: "9894906630",
+							caregiver_mobile_verify: "9894906630",
+							caregiver_name: "Prem",
+							relationship: "Brother"
+						}
+					},
+					completed: false // Whether the process is fully completed
+				}
+			}
+		});
+	}),
+	
     
 	http.post('api/patient/enrol', () => {
 		initialData = { ...initialData };
