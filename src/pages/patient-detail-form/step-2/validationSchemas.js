@@ -11,7 +11,7 @@
 
 //   [`caregiver_${id}_mobile`]: Yup.string()
 //     .matches(/^\d{10}$/, "Enter a valid 10-digit mobile number")
-//     .required(`Caregiver ${id} mobile is required`),
+//     .required(`Caregiver ${id} mobile is required`).nullable(),
 
 //   [`caregiver_${id}_email`]: Yup.string()
 //     .trim()

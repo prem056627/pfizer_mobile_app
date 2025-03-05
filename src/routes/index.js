@@ -10,14 +10,19 @@ import ProgramEnrollSucess from "../pages/PfizerProgramDashBoard/ProgramEnrollSu
 import OrderHistory from "../pages/uploadInvoice/OrderHistory";
 import UploadInvoiceModal from "../pages/uploadInvoice/UploadInvoiceModal";
 import PhysicalVerificationModal from "../pages/physicalVerification/PhysicalVerificationModal";
-import MenuScreen from "../pages/Profile/MenuScreen";
+import MenuScreen from "../pages/Menu/MenuScreen";
 import Notifications from "../pages/Notification/Notifications";
 import useApi from "../hooks/useApi";
-import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData } from "../slice/patient-detail-form";
+import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus } from "../slice/patient-detail-form";
 import ProgramEnrollSuccessModal from "../pages/PfizerProgramDashBoard/ProgramEnrolllmentSuccessModal/ProgramEnrollSuccessModal";
 import ShortFallDoc from "../pages/PfizerProgramDashBoard/ShortFallDoc";
 import RequestFOCModal from "../pages/requestFOC/RequestFOCModal";
 import PatientEnrollmentSuccessModal from "../pages/patient-detail-form/patientErollmentSuccess/PatientEnrollmentSuccessModal";
+import FabButtonModal from "../pages/FabButton/FabButtonModal";
+import ProfileModal from "../pages/Menu/Profile/ProfileModal";
+import MoreProgramModal from "../pages/Menu/MorePrograms/MoreProgramModal";
+import { ToastContainer } from 'react-toastify';
+import EkyModal from "../pages/Ekyc/EkyModal";
 
 const AppNavigation = () => {
   // Component state
@@ -35,8 +40,8 @@ const AppNavigation = () => {
   const   doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
 
-  console.log('initalizeeeeeee!!!',initialData)
-  
+  console.log('initalizeeeeeee!!!',current_page_state)
+  console.log('doc_upload_status!!!',doc_upload_status)
   // Get role from localStorage
   const current_role = localStorage.getItem('role');
 
@@ -53,7 +58,8 @@ const AppNavigation = () => {
   
       if (success && response) {
         dispatch(setInitializeData(response));
-        // dispatch(setCurrentPageState(response.data.current_state)); // Uncomment if needed
+        dispatch(setCurrentPageState(response.current_page_state)); // Uncomment if needed
+        dispatch(setProgramStatus(response.program_status)); // Uncomment if needed
       } else {
         console.error("API call failed or returned no data.");
       }
@@ -102,7 +108,7 @@ const AppNavigation = () => {
       return <PhysicalVerificationModal    />;
     } else {
       // Default fallback - redirect to enrolment
-      return <PatientDetailForm    />;
+      // return <PatientDetailForm    />;
     }
   };
 
@@ -128,12 +134,17 @@ const AppNavigation = () => {
     <Home 
       hideFooter={hideFooter} 
     >
+        <ToastContainer />  {/* Add this line */}
       {renderContent()}
       <ProgramEnrollSuccessModal/>
       <PatientEnrollmentSuccessModal/>
       <UploadInvoiceModal/>
       <RequestFOCModal/>
       <PhysicalVerificationModal/> 
+      <FabButtonModal/>
+      <ProfileModal/>
+      <MoreProgramModal/>
+      <EkyModal/>
     </Home>
   );
 };

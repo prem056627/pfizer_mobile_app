@@ -11,6 +11,7 @@ import {
   selectProgramStatus,
   selectViewingOrderHistory,
   setDocUploadStatus,
+  setIsEkySuccessModalOpen,
   setPhysicalVerificationModalOpen,
   setProgramEnrollmentConsent,
   setSelectedProgram,
@@ -91,6 +92,10 @@ const PfizerProgram = () => {
   const handlePhysicalVerification = () => {
     dispatch(setPhysicalVerificationModalOpen(true));
   };
+
+  const handleEkyRequest = ()=>{
+    dispatch(setIsEkySuccessModalOpen(true));
+  }
 
   // If viewing order history, render OrderHistory component instead
   if (viewingOrderHistory) {
@@ -237,7 +242,7 @@ const PfizerProgram = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium">
+              <button onClick={handleEkyRequest} className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium">
                 INITIATE YOUR EKYC VERIFICATION
               </button>
             </div>

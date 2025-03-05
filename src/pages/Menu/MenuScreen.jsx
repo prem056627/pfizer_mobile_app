@@ -5,7 +5,63 @@ import { ReactComponent as Print } from "../../assets/images/menus1/print.svg";
 import { ReactComponent as History } from "../../assets/images/menus1/history.svg";
 import { ReactComponent as File } from "../../assets/images/menus1/file.svg";
 import { ReactComponent as Logout } from "../../assets/images/menus1/logout.svg";
+import { useDispatch } from 'react-redux';
+import { setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
+
 const MenuScreen = () => {
+
+  const dispatch = useDispatch();
+  // Handle menu item clicks
+  const handleMenuClick = (menuId, menuTitle) => {
+    console.log(`Clicked on menu: ${menuTitle} (ID: ${menuId})`);
+
+    function handleProfilePage(){
+      console.log("Navigating to profile page");
+      dispatch(setIsProfilePageOpen(true))
+  
+    }
+
+    function handleMoreProgram(){
+      console.log("Navigating to handleMoreProgram");
+      dispatch(setIsMoreProgramPageOpen(true))
+  
+    }
+    
+    // Add specific functionality for each menu item
+    switch(menuId) {
+      case 1: // Profile
+       
+        handleProfilePage()
+        // Add your profile navigation logic here
+        break;
+      case 2: // Customer Care
+        console.log("Opening customer care support");
+        // Add your customer care logic here, perhaps open email client
+        window.location.href = "mailto:support@1mg.com";
+        break;
+      case 3: // Completed Verification
+        console.log("Showing completed verifications");
+        // Add your verification history logic here
+        break;
+      case 4: // KYC History
+        console.log("Opening KYC history");
+        // Add your KYC history logic here
+        break;
+      case 5: // View More Programs
+        console.log("Viewing additional programs");
+        handleMoreProgram()
+        // Add your programs view logic here
+        break;
+      case 6: // Logout
+        console.log("Logging out");
+        // Add your logout logic here
+        // Example: logoutUser() function call
+        break;
+      default:
+        break;
+    }
+  };
+
   const menuItems = [
     {
       id: 1,
@@ -26,7 +82,7 @@ const MenuScreen = () => {
       id: 3,
       title: 'Completed Verification',
       icon: (
-       < Print className="w-6 h-6"/>
+       <Print className="w-6 h-6"/>
       )
     },
     {
@@ -40,7 +96,7 @@ const MenuScreen = () => {
       id: 5,
       title: 'View More Programs',
       icon: (
-        <File  className="w-6 h-6"/>
+        <File className="w-6 h-6"/>
       )
     },
     {
@@ -53,12 +109,9 @@ const MenuScreen = () => {
   ];
 
   return (
-    <div className=" bg-white max-h-max  relative  font-['Open_Sans'] pt-6">
- 
-
+    <div className="bg-white max-h-max relative font-['Open_Sans'] pt-6">
       {/* Menu Title */}
       <div className="px-6 mb-6">
-        {/* <h1 className="text-2xl font-bold">Menu</h1> */}
         <h2 className="text-lg font-semibold w-full">Menu</h2>
       </div>
 
@@ -70,7 +123,10 @@ const MenuScreen = () => {
               key={item.id}
               className={`flex items-center justify-between py-4 ${
                 index !== menuItems.length - 1 ? 'border-b border-[#F6F6F6]' : ''
-              }`}
+              } cursor-pointer hover:bg-gray-50 rounded-lg px-2`}
+              onClick={() => handleMenuClick(item.id, item.title)}
+              role="button"
+              aria-label={`Menu item: ${item.title}`}
             >
               <div>
                 <h2 className="text-gray-800 font-medium">{item.title}</h2>
@@ -83,8 +139,6 @@ const MenuScreen = () => {
           ))}
         </div>
       </div>
-
-     
     </div>
   );
 };

@@ -309,3 +309,90 @@ html, body {
     scrollbar-width: none;  /* Firefox */
   }
 }
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+    .rdp-root{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    input[type="time"]::-webkit-datetime-edit {
+      color: black; /* Change text color */
+    }
+    
+  
+    
+    /* toast */
+
+    .custom-toast-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      /* padding: 12px; */
+      border-radius: 8px;
+      /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+      width: 100%;
+    }
+    
+    .custom-toast-content {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .toast-image {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .toast-text p {
+      font-size: 15px;
+      margin: 0;
+    }
+    
+    .subtext {
+      font-size: 12px;
+      /* color: gray; */
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: auto;
+    }
+    
+
+    .Toastify__toast-theme--light {
+      background: var(--toastify-color-light);
+      color: var(--toastify-text-color-light);
+      display: flex
+  ;
+      justify-content: center;
+      /* padding: 0px 10px 0px 0px; */
+  }
+
+  .Toastify__toast-theme--light {
+
+    padding: 0px;
+  }
+
+  .Toastify__toast-theme--light{
+    padding: 0px !important;
+    
+  }
+
+
+  .Toastify__progress-bar-theme--light {
+    /* background: var(--toastify-color-progress-light); */
+    background: white !important;
+}

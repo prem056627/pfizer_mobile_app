@@ -14,10 +14,11 @@ export const ProgramEnrollmentSlice = createSlice({
         },
       },
     },
-    current_page_state: 'enrollment_not_complete',
-    // current_page_state: "program_dashboard",
+    // current_page_state: 'enrollment_not_complete',
+    current_page_state: "program_dashboard",
     // program_status: 'un_active', // program status
     // program_status: "active", // program status
+    program_name :'Opdyta',
     program_status: 'doc_shortfall', // program status
     // program_status: 'profile_under_review', // program status
     // Programs Enroll dashboard
@@ -29,7 +30,7 @@ export const ProgramEnrollmentSlice = createSlice({
 
     /////////// upload_file render flags
     doc_upload_status: "",
-    // doc_upload_status : 'scheme_enroll_doc'
+    // doc_upload_status : 'scheme_enroll_doc',
     // doc_upload_status : 'short_fall_doc'
 
     selectedProgram: null, // new property to store selected program
@@ -37,6 +38,10 @@ export const ProgramEnrollmentSlice = createSlice({
     upload_invoice_modal_open: false,
     request_foc_modal_open: false,
     physical_verification_modal_open: false,
+    isFabButtonOpen:false,
+    isProfilePageOpen:false,
+    isMoreProgramPageOpen:false,
+    isEkySuccessModalOpen:false,
   },
   reducers: {
     changeStep: (state, action) => {
@@ -51,7 +56,8 @@ export const ProgramEnrollmentSlice = createSlice({
       // Map API response to state
       const enrollmentDetails = action.payload?.response?.enrollment_details || {};
       state.currentStep = enrollmentDetails?.current_step || 1;
-      state.current_page_state = action.payload?.response?.current_state || "enrollment_not_complete";
+      state.current_page_state = action.payload?.response?.current_page_state ;
+      state.program_status = action.payload?.response?.program_status ;
     },
     setCurrentPageState: (state, action) => {
       state.current_page_state = action.payload;
@@ -91,8 +97,18 @@ export const ProgramEnrollmentSlice = createSlice({
     setPhysicalVerificationModalOpen: (state, action) => {
       state.physical_verification_modal_open = action.payload;
     },
-    // end of new reducers
-
+    setIsFabButtonOpen: (state, action) => {
+      state.isFabButtonOpen = action.payload;
+    },
+    setIsProfilePageOpen: (state, action) => {
+      state.isProfilePageOpen = action.payload;
+    },
+    setIsMoreProgramPageOpen:(state, action)=>{
+      state.isMoreProgramPageOpen = action.payload;
+    },
+setIsEkySuccessModalOpen:(state, action)=>{
+  state.isEkySuccessModalOpen = action.payload;
+}
 
   },
 });
@@ -113,6 +129,10 @@ export const {
   setRequestFocModalOpen,
   setPatientEnrollmentSuccessModalOpen,
   setPhysicalVerificationModalOpen,
+  setIsFabButtonOpen,
+  setIsProfilePageOpen,
+  setIsMoreProgramPageOpen,
+  setIsEkySuccessModalOpen
 } = ProgramEnrollmentSlice.actions;
 
 export const selectCurrentStep = (state) => state.patientDetailForm.currentStep;
@@ -151,7 +171,15 @@ export const selectPatientEnrollmentModalOpen = (state) =>
   state.patientDetailForm.patient_enrollemnt_success;
 export const selectPhysicalVerificationModalOpen = (state) =>
   state.patientDetailForm.physical_verification_modal_open;
+export const selectIsFabButtonOpen = (state) =>
+  state.patientDetailForm.isFabButtonOpen;
 
+export const selectIsProfilePageOpen = (state) =>
+  state.patientDetailForm.isProfilePageOpen;
+export const selectIsMoreProgramPageOpen = (state) =>
+  state.patientDetailForm.isMoreProgramPageOpen;
+export const selectIsEkySuccessModalOpen = (state) =>
+  state.patientDetailForm.isEkySuccessModalOpen;
 
 
 export default ProgramEnrollmentSlice.reducer;

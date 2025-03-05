@@ -34,8 +34,17 @@ export const handlers = [
 		return HttpResponse.json({
 			success: true,
 			response: {
-				uid: '12345', // Unique ID for the user
-				current_state: 'patient_enrollment', // Options: tnc_pending, patient_enrollment
+				uid: '12345', // Unique ID for the user "enrollment_not_complete"
+				current_page_state: "program_dashboard", // Options: tnc_pending, patient_enrollment
+				// program_status: 'un_active', // program status
+                // program_status: "active", // program status
+                program_name :'Opdyta',
+            	// program_status: 'profile_under_review', // program status
+				// current_state: "program_dashboard",
+				// doc_shortfall
+				// doc_upload_status: "",
+				program_status: 'active',
+
 				enrollment_details: {
 					steps: [
 						// 'terms_and_conditions',

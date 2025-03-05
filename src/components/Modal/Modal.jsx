@@ -97,19 +97,8 @@ function Modal({
 									</div>
 								) : null}
 
-								<Dialog.Title as="div" className="flex flex-col gap-2 ">
-									{/* <div className="flex flex-col gap-[2px]  ">
-										<h3
-											className={`font-open-sans font-bold text-start  text-[#403939] text-xl  ${
-												{
-													center: 'text-center',
-													start: 'text-start',
-												}[labelType]
-											}`}
-										>
-											  {typeof label === 'string' ? <h2>{label}</h2> : label}
-										</h3>
-									</div> */}
+								{/* <Dialog.Title as="div" className="flex flex-col gap-2 ">
+									
 									<div className="flex flex-col gap-[2px]">
 										<h3
 											className={`text-start font-open-sans text-xl font-bold text-[#403939] ${
@@ -122,7 +111,7 @@ function Modal({
 											{label}
 										</h3>
 									</div>
-								</Dialog.Title>
+								</Dialog.Title> */}
 								{ModalBody}
 							</Dialog.Panel>
 						</div>

@@ -27,7 +27,7 @@ function PhysicalVerificationModal() {
 
     return (
         <Modal
-            label={'Physical Verification'}
+            // label={'Physical Verification'}
             labelType="center"
             show={PhysicalVerificationModalOpen}
             closeModal={closeModal}

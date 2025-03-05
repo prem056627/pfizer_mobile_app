@@ -2,6 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import CustomToast from './CustomToast';
+import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-form';
+import { useDispatch } from 'react-redux';
+
 
 const PhysicalVerification = () => {
   // Default date range (from today to 5 days later)
@@ -15,7 +22,8 @@ const PhysicalVerification = () => {
 
   const calendarRef = useRef(); // Ref for calendar container
   const inputRef = useRef(); // Ref for input field
-
+  const timeInputRef = useRef(); // Ref for time input
+const dispatch = useDispatch()
   // Handle selecting a day in the calendar
   const handleDateChange = (date) => {
     if (!selectedDate.from) {
@@ -27,6 +35,20 @@ const PhysicalVerification = () => {
     }
   };
 
+
+    // toastify
+    const notify = () => {
+      toast(({ closeToast }) => (
+        <CustomToast date="24-02-2024" time="2.40 PM" closeToast={closeToast} />
+      ), {
+        position: "top-right",
+        autoClose: 5000, // Closes after 5 seconds
+        closeOnClick: false,
+        progressStyle: { backgroundColor: "white" }, // Change progress bar to white
+      });
+    };
+    
+    
   const handleTimeChange = (e) => {
     setSelectedTime(e.target.value);
     console.log('Selected Time:', e.target.value);
@@ -39,8 +61,15 @@ const PhysicalVerification = () => {
       endDate: moment(selectedDate.to).format('DD/MM/YYYY'),
       time: selectedTime,
     });
+    // closing modal
+    dispatch(setPhysicalVerificationModalOpen(false)); 
+
+    // Trigger the toast notification
+  // ();
+    
   };
 
+  //     onClick={}
   // Toggle calendar visibility when input is clicked
   const handleInputClick = () => {
     setCalendarVisible((prev) => !prev); // Toggle visibility
@@ -56,7 +85,15 @@ const PhysicalVerification = () => {
   // Close calendar when clicking outside the input or calendar
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target) && !inputRef.current.contains(event.target)) {
+      // Only close if click is outside both calendar and date input
+      if (
+        calendarRef.current && 
+        !calendarRef.current.contains(event.target) && 
+        inputRef.current && 
+        !inputRef.current.contains(event.target) &&
+        timeInputRef.current && 
+        !timeInputRef.current.contains(event.target)
+      ) {
         setCalendarVisible(false); // Close calendar if clicked outside
       }
     };
@@ -70,9 +107,20 @@ const PhysicalVerification = () => {
     };
   }, []);
 
+
+
+
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-sm">
+     
       <form onSubmit={handleSubmit} className="">
+        <div className='py-4 pb-8'> 
+          <h1 className="pb-2 font-open-sans text-[20px] font-semibold text-[#403939]">
+            Physical Verification
+          </h1>
+          <div className="h-[4px] w-11 rounded-full bg-primary"></div>
+        </div>
+
         {/* Date Picker */}
         <div className="w-full relative">
           <label className="text-sm text-gray-600 mb-1 block">Select Date Range</label>
@@ -104,24 +152,26 @@ const PhysicalVerification = () => {
 
         {/* Time Picker */}
         <div className="w-full pt-4">
-          <label htmlFor='physical-verification-time' className="text-sm text-gray-600 mb-1 block">Select Time
-          {/* <div className="relative"> */}
-            {/* Make sure time input field is clickable */}
-            <input
-              type="time"
-              name='physical-verification-time'
-              value={selectedTime}
-              onChange={handleTimeChange}
-              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 cursor-pointer z-10" // Added z-10 for z-index control
-            />
-          {/* </div> */}
-          </label>
+          <label htmlFor='physical-verification-time' className="text-sm text-gray-600 mb-1 block">Select Time</label>
+          <input
+            ref={timeInputRef}
+            type="time"
+            name='physical-verification-time'
+            value={selectedTime}
+            onChange={handleTimeChange}
+            onClick={(e) => {
+              e.target.showPicker(); // Ensures the picker opens on click
+              e.stopPropagation(); // Prevent closing other dropdowns
+            }}
+            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary cursor-pointer z-10"
+          />
         </div>
 
         {/* Submit Button */}
         <button
+   onClick={notify}
           type="submit"
-          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors mt-10"
+          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary transition-colors mt-10"
         >
           Submit Date & Time
         </button>
@@ -131,3 +181,4 @@ const PhysicalVerification = () => {
 };
 
 export default PhysicalVerification;
+
