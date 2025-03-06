@@ -23,6 +23,7 @@ import ProfileModal from "../pages/Menu/Profile/ProfileModal";
 import MoreProgramModal from "../pages/Menu/MorePrograms/MoreProgramModal";
 import { ToastContainer } from 'react-toastify';
 import EkyModal from "../pages/Ekyc/EkyModal";
+import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
 
 const AppNavigation = () => {
   // Component state
@@ -40,9 +41,9 @@ const AppNavigation = () => {
   const   doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
 
-  console.log('initalizeeeeeee!!!',current_page_state)
-  console.log('doc_upload_status!!!',doc_upload_status)
-  // Get role from localStorage
+  // console.log('initalizeeeeeee!!!',current_page_state)
+  // console.log('doc_upload_status!!!',doc_upload_status)
+  // // Get role from localStorage
   const current_role = localStorage.getItem('role');
 
   // Initialize data
@@ -145,6 +146,7 @@ const AppNavigation = () => {
       <ProfileModal/>
       <MoreProgramModal/>
       <EkyModal/>
+      <KycHistoryModal/>
     </Home>
   );
 };
