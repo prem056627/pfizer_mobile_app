@@ -7,7 +7,7 @@ import { selectInitializeData } from '../../slice/patient-detail-form';
 function FabModalBody() {
 	const initialData = useSelector(selectInitializeData);
 
-    console.log("hi from fabButtonModal modal");
+
 	return (
 		<div className="flex w-full flex-col gap-4 py-4">
 			<div className="flex flex-row flex-wrap items-center justify-between">

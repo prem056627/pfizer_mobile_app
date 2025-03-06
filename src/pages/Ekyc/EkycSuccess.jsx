@@ -7,9 +7,9 @@ function EkycSuccess() {
   return (
     <div className="flex flex-col items-center justify-between  gap-6   h-screen  ">
       <div className=" bg-primary">
-        <div className=" flex flex-col items-center justify-between  bg-white ">
+        <div className=" flex flex-col items-center justify-between  bg-white rounded-b-lg border border-[#DBDBDB]">
           <div className="flex flex-col items-center justify-center gap-4 px-6 pt-10 ">
-            <div className=" flex gap-4 px-6">
+            <div className=" flex gap-4 px-6 pt-6">
               {/* <span className="text-primary font-semibold font-sans text-[18px]"></span>{" "} */}
               <Tick className="ml-1 w-12" />
               <p className="text-gray-700 text-[16px] font-medium font-sans">
@@ -20,14 +20,14 @@ function EkycSuccess() {
             </div>
 
             <div className="flex gap-8 items-center px-6">
-              <Waiting className="w-12 h-12" />
+              <Waiting className="w-16 h-12" />
               <h4 className="text-md text-[28px]  font-sans font-extralight text-[#707070] text-start">
                 Complete your Verification
               </h4>
             </div>
           </div>
 
-          <div className="flex justify-center items-center w-full px-4 rela">
+          <div className="flex justify-center items-center w-full px-4 rela rounded-lg ">
             <ProgramSucess className="w-[350px] h-[250px] top-4" />
           </div>
         </div>

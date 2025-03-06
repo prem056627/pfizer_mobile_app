@@ -5,22 +5,18 @@ import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images
 
 function CustomToast({ date, time, closeToast }) {
   return (
-    <div className="custom-toast-container flex flex-col">
+    <div className="custom-toast-container flex flex-col pt-[20px]">
       <div className="custom-toast-content">
         {/* Left Image */}
         {/* <img src="/your-image-path.png" alt="illustration" className="toast-image" /> */}
-        <Relax className="w-28 h-28 " />
+        <Relax className="w-28 h-16 " />
 
         {/* Text Content */}
-        <div className="toast-text">
-          <p className="text-gray-700 text-[17px] font-medium font-sans">
+        <div className=" mx-2text-center">
+          <p className="text-gray-700 text-[14px] font-medium font-sans mx-6">
             Your <strong className="text-primary">physical verification</strong>{" "}
-            is scheduled for 
+            is scheduled for <span className="text-primary font-semibold font-sans text-[14px]">{date} </span>at<span className="text-primary font-semibold font-sans text-[14px]">{time}</span> <Tick className="ml-1 inline" />
           </p>
-          <span className="text-primary font-semibold font-sans text-[15px]">{date} </span> <span className="text-gray-700 text-[15px] font-medium font-sans">at</span>
-            <span className="inline-flex items-center ml-1">
-              <span className="text-primary font-semibold font-sans text-[15px]">{time}</span> <Tick className="ml-1" />
-            </span>
         </div>
       </div>
       <div className="bg-[#208376] w-full flex py-[2px] justify-center items-center">

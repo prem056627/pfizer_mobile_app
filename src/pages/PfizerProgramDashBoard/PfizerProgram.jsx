@@ -6,7 +6,10 @@ import FabButton from "../../components/FabButton";
 import PatientConsentModal from "./ProgramConsent/PatientConsentModal";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Physicalverification } from "../../assets/images/ProgramCards/physicalverification.svg";
+import { ReactComponent as PhysicalverificationSheduled } from "../../assets/images/ProgramCards/PhysicalverificationSheduled.svg";
 import { ReactComponent as Ekyc } from "../../assets/images/ProgramCards/ekyc.svg";
+import { ReactComponent as Upload } from '../../../src/assets/images/svg/upload.svg';
+import { ReactComponent as Pap } from '../../../src/assets/images/Ekyc/pap.svg';
 import {
   selectProgramStatus,
   selectViewingOrderHistory,
@@ -160,9 +163,15 @@ const PfizerProgram = () => {
        programStatus === "doc_shortfall" &&  <div className="flex justify-center items-center p-2">
        <button
          onClick={handleRequestShortfallProgram}
-         className="text-[14px] w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-4"
+         className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
        >
-         Update new document
+        <div className="">
+        <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
+        <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
+        </div>
+       <div>
+       <Upload/>
+       </div>
        </button>
      </div>
      }
@@ -202,10 +211,56 @@ const PfizerProgram = () => {
           </div>
         ))}
       </div>
-  
+   
+ 
       <div className="w-full pb-20">
         <h2 className="text-lg font-semibold w-full mb-6">Value Added Services</h2>
         <div className="space-y-6 pb-30">
+            {/* physical verification has been sheduled */}
+          <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
+            <div className="flex gap-4  items-center ">
+              <div className="p-3 rounded-lg">
+                <PhysicalverificationSheduled width={70} />
+              </div>
+              <div>
+                
+                <p className="text-[15px] font-sans font-semibold text-[#606060]">
+                Your <span className="text-primary">physical verification</span> has been <span className="text-primary">scheduled</span>  .
+                </p>
+              </div>
+            </div>
+            <button className=" flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
+            <span className="pl-4">
+             <Pap className="w-8 h-8 "/>
+            </span>
+             PAP Team will soon reach out to for verification
+            </button>
+          </div>
+
+      {/* physical verification has been sheduled by Phlebo */}
+      <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
+            <div className="flex gap-4  items-center ">
+              <div className="p-3 rounded-lg">
+                <PhysicalverificationSheduled width={70} />
+              </div>
+              <div>
+            
+                <p className="text-[15px] font-sans font-semibold text-[#606060]">
+                Your <span className="text-primary">physical verification</span>  is scheduled for  <span className="text-primary">24-02-2024</span> at .
+                <span className="text-primary">  2.40PM.</span>
+                
+                </p>
+              </div>
+            </div>
+            <button className=" flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-[2px] rounded-b-[20px] font-medium">
+            <span className="pl-2">
+             <Pap className="w-8 h-8 "/>
+            </span>
+            &lt;Phlebo&gt; Team will soon reach out to for verification
+            </button>
+          </div>
+          {/* defaul physical very card */}
+
           <div className="bg-white rounded-lg shadow-sm p-4 border ">
             <div className="flex gap-4 mb-3">
               <div className="p-3 rounded-lg">
@@ -249,6 +304,8 @@ const PfizerProgram = () => {
           </div>
         </div>
       </div>
+
+      
     </>
   );
 

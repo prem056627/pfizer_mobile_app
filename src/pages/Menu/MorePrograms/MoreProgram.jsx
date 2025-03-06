@@ -5,7 +5,15 @@ import { ReactComponent as Img3 } from '../../../../src/assets/images/more_progr
 import { ReactComponent as Img4 } from '../../../../src/assets/images/more_programs/img-4.svg';
 import { ReactComponent as Img5 } from '../../../../src/assets/images/more_programs/img-5.svg';
 import { ReactComponent as Img6 } from '../../../../src/assets/images/more_programs/img-6.svg';
-
+import { ReactComponent as Img7 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img8 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img9 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img10 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img11 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img12 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img13 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img14 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as Img15 } from '../../../../src/assets/images/more_programs/img-6.svg';
 const programsData = [
   {
     id: 1,
@@ -18,7 +26,6 @@ const programsData = [
     title: "Program-2",
     description: "Advanced clinical trial management and patient care solutions.",
     image: <Img2 />,
-   
   },
   {
     id: 3,
@@ -45,63 +52,59 @@ const programsData = [
     image: <Img6 />,
   },
   {
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
+    id: 7,
+    title: "Program-7",
+    description: "Genomic data analysis and personalized treatment approaches.",
+    image: <Img7 />,
   },
   {
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
+    id: 8,
+    title: "Program-8",
+    description: "AI-driven diagnostics and healthcare automation.",
+    image: <Img8 />,
   },
   {
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
-  },{
-    id: 6,
-    title: "Program-6",
-    description: "Molecular biology and cellular research breakthroughs.",
-    image: <Img6 />,
+    id: 9,
+    title: "Program-9",
+    description: "Bioinformatics and computational biology advancements.",
+    image: <Img9 />,
   },
+  {
+    id: 10,
+    title: "Program-10",
+    description: "Epidemiology and disease prevention strategies.",
+    image: <Img10 />,
+  },
+  {
+    id: 11,
+    title: "Program-11",
+    description: "Telemedicine and remote patient monitoring solutions.",
+    image: <Img11 />,
+  },
+  {
+    id: 12,
+    title: "Program-12",
+    description: "Regenerative medicine and stem cell therapy innovations.",
+    image: <Img12 />,
+  },
+  {
+    id: 13,
+    title: "Program-13",
+    description: "Advanced surgical robotics and minimally invasive procedures.",
+    image: <Img13 />,
+  },
+  {
+    id: 14,
+    title: "Program-14",
+    description: "Nutrigenomics and personalized nutrition research.",
+    image: <Img14 />,
+  },
+  {
+    id: 15,
+    title: "Program-15",
+    description: "Chronic disease management and lifestyle medicine.",
+    image: <Img15 />,
+  }
 ];
 
 function MoreProgram() {

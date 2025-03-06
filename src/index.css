@@ -396,3 +396,7 @@ html, body {
     /* background: var(--toastify-color-progress-light); */
     background: white !important;
 }
+
+.Toastify__progress-bar {
+  background-color: #B4E3D5 !important;
+}

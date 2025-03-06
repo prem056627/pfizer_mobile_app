@@ -6,7 +6,7 @@ import { ReactComponent as History } from "../../assets/images/menus1/history.sv
 import { ReactComponent as File } from "../../assets/images/menus1/file.svg";
 import { ReactComponent as Logout } from "../../assets/images/menus1/logout.svg";
 import { useDispatch } from 'react-redux';
-import { setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
+import { setIsKycHistoryModalOpen, setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
 
 const MenuScreen = () => {
 
@@ -24,6 +24,14 @@ const MenuScreen = () => {
     function handleMoreProgram(){
       console.log("Navigating to handleMoreProgram");
       dispatch(setIsMoreProgramPageOpen(true))
+  
+    }
+
+
+
+    function handleKycHistory(){
+      console.log("Navigating to handleKycHistory");
+      dispatch(setIsKycHistoryModalOpen(true))
   
     }
     
@@ -45,6 +53,7 @@ const MenuScreen = () => {
         break;
       case 4: // KYC History
         console.log("Opening KYC history");
+        handleKycHistory()
         // Add your KYC history logic here
         break;
       case 5: // View More Programs

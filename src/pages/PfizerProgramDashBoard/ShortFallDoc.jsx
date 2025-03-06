@@ -3,6 +3,8 @@ import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch } from 'react-redux';
 import { setDocUploadStatus, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setProgramStatus, setSchemaShown } from '../../slice/patient-detail-form';
+import { toast } from 'react-toastify';
+import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 
 const ShortFallDoc = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
@@ -11,6 +13,7 @@ const ShortFallDoc = () => {
   const uploadFields = [
     { id: 'idProof', label: 'ID Proof' },
     { id: 'addressProof', label: 'Address Proof' },
+    
   ];
 
   const initialValues = {
@@ -28,13 +31,46 @@ const ShortFallDoc = () => {
     return errors;
   };
 
+
+  const notify = () =>
+		toast('You have successfully uploaded your documents.', {
+			duration: 6000,
+			position: 'top-right',
+
+			// Styling
+			style: {
+				borderBottom: '1.5px solid #86C4B6',
+				fontFamily: 'open sans',
+				fontSize: '14px',
+				padding: '16px',
+				fontWeight: '800',
+				color: '#156352',
+				background: '#E6FAF3',
+				width: '100%',
+			},
+			className: 'custom-toast',
+      progressStyle: { background: '#B4E3D5' },
+
+			// Custom Icon
+			icon: <Tick className="w-16 h-12" />,
+
+			// Aria
+			ariaProps: {
+				role: 'status',
+				'aria-live': 'polite',
+			},
+		});
+
   const handleSubmit = (values, { setSubmitting }) => {
     console.log('Form submitted with values:', values);
     setSubmitting(false);
-
+    notify();
      dispatch(setDocUploadStatus('profile_under_review'));
      dispatch(setProgramStatus('profile_under_review'));
   };
+
+
+
 
   return (
     <Formik initialValues={initialValues} validate={validate} onSubmit={handleSubmit}>

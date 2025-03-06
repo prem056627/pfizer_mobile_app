@@ -42,6 +42,7 @@ export const ProgramEnrollmentSlice = createSlice({
     isProfilePageOpen:false,
     isMoreProgramPageOpen:false,
     isEkySuccessModalOpen:false,
+    isKycHistoryModalOpen:false,
   },
   reducers: {
     changeStep: (state, action) => {
@@ -108,8 +109,10 @@ export const ProgramEnrollmentSlice = createSlice({
     },
 setIsEkySuccessModalOpen:(state, action)=>{
   state.isEkySuccessModalOpen = action.payload;
+},
+setIsKycHistoryModalOpen:(state, action)=>{
+  state.isKycHistoryModalOpen = action.payload;
 }
-
   },
 });
 
@@ -132,7 +135,8 @@ export const {
   setIsFabButtonOpen,
   setIsProfilePageOpen,
   setIsMoreProgramPageOpen,
-  setIsEkySuccessModalOpen
+  setIsEkySuccessModalOpen,
+  setIsKycHistoryModalOpen
 } = ProgramEnrollmentSlice.actions;
 
 export const selectCurrentStep = (state) => state.patientDetailForm.currentStep;
@@ -181,5 +185,7 @@ export const selectIsMoreProgramPageOpen = (state) =>
 export const selectIsEkySuccessModalOpen = (state) =>
   state.patientDetailForm.isEkySuccessModalOpen;
 
+export const selectIsKycHistoryModalOpen= (state) =>
+  state.patientDetailForm.isKycHistoryModalOpen;
 
 export default ProgramEnrollmentSlice.reducer;

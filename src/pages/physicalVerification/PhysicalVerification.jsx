@@ -44,7 +44,7 @@ const dispatch = useDispatch()
         position: "top-right",
         autoClose: 5000, // Closes after 5 seconds
         closeOnClick: false,
-        progressStyle: { backgroundColor: "white" }, // Change progress bar to white
+        progressStyle: { backgroundColor: "white" }, 
       });
     };
     

@@ -5,6 +5,9 @@ import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch } from 'react-redux';
 import { setUploadInvoiceModalOpen } from '../../slice/patient-detail-form';
 // import { setUploadInvoiceModalOpen } from '../../redux/actions';
+import { toast } from 'react-toastify';
+import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
+
 
 function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
     const dispatch = useDispatch();
@@ -19,10 +22,43 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
             .required('File upload is required'),
     });
 
+
+
+
+      const notify = () =>
+            toast('You have successfully uploaded your invoice documents.', {
+                duration: 6000,
+                position: 'top-right',
+    
+                // Styling
+                style: {
+                    borderBottom: '1.5px solid #86C4B6',
+                    fontFamily: 'open sans',
+                    fontSize: '14px',
+                    padding: '16px',
+                    fontWeight: '800',
+                    color: '#156352',
+                    background: '#E6FAF3',
+                    width: '100%',
+                },
+                className: 'custom-toast',
+          progressStyle: { background: '#B4E3D5' },
+    
+                // Custom Icon
+                icon: <Tick className="w-16 h-12" />,
+    
+                // Aria
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                },
+            });
+
     const onSubmit = (values, { setSubmitting }) => {
         console.log('Form Submitted', values);
         dispatch(setUploadInvoiceModalOpen(false));
         setSubmitting(false);
+        notify();
     };
 
     return (

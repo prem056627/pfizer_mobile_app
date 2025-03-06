@@ -110,18 +110,11 @@ const OrderHistory = () => {
       <div className="h-20 w-full flex justify-between items-center px-4">
         <button 
           onClick={handleBack}
-          className="text-[18px] font-bold flex w-full items-center gap-4"
+          className="text-[18px] font-bold flex w-full items-center gap-[2px] "
         >
-          <Back/>Order History
+          <Back className="w-7 h-7 bg-[#F2F2FF] mr-2 rounded-md " />Back
         </button>
-        {/* <div className="flex justify-center items-center">
-          <img
-            width={100}
-            src="/pfizer_logo.svg"
-            alt="Pfizer Logo"
-            className="cursor-pointer"
-          />
-        </div> */}
+      
         <div className="w-10"></div> {/* Empty div for flex spacing */}
       </div>
 
@@ -158,7 +151,7 @@ const OrderHistory = () => {
 
       {/* Order History Section */}
       <div className="px-6">
-        {/* <h2 className="text-[18px] font-bold mb-4">Order History</h2> */}
+        <h2 className="text-[18px] font-bold mb-4">Order History</h2>
         {/* Tabs */}
         <div className="flex border-b mb-4">
           <button

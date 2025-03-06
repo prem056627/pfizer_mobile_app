@@ -45,7 +45,7 @@ function EkycSuccessModal({
                         leaveFrom="scale-100 opacity-100"
                         leaveTo="scale-95 opacity-0"
                     >
-                        <Dialog.Panel className="w-full max-w-md mx-4 transform overflow-hidden rounded-[22px] bg-white shadow-xl transition-all">
+                        <Dialog.Panel className="w-full max-w-md mx-4 transform overflow-hidden rounded-[12px] bg-white shadow-xl transition-all">
                             {/* Header */}
                             <div className="relative px-6 border-b bg-[#F6F6F6]">
                                 <Dialog.Title className="text-[18px] font-open-sans font-bold text-[#3B3B3B]">
@@ -65,7 +65,7 @@ function EkycSuccessModal({
                             </div>
 
                             {/* Content */}
-                            <div className="pt-6">
+                            <div className="">
                                 {ModalBody}
                             </div>
                         </Dialog.Panel>

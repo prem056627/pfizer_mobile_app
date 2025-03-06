@@ -11,7 +11,7 @@ export default function FabModal({
 	type = 'side',
 }) {
 
-    console.log("hi from fabButtonModal modal");
+
 	return (
 	
 
