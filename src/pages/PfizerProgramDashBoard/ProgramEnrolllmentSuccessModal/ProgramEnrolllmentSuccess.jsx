@@ -34,7 +34,7 @@ function ProgramEnrolllmentSuccess() {
           </h2>
           <h4 className="text-md text-[36px]  font-open-sans font-extralight text-[#707070] text-center">
             {" "}
-            Now Sit Back!
+            Redirecting..!
           </h4>
           <p className="text-[22px] font-open-sans font-extralight italic text-[#C4C4C4] max-w-[568px] text-center ">
           while we verify your submitted documents.

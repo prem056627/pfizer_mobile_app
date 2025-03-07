@@ -40,12 +40,13 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                     color: '#156352',
                     background: '#E6FAF3',
                     width: '100%',
+                 
                 },
-                className: 'custom-toast',
+                // className: 'custom-toast-container',
           progressStyle: { background: '#B4E3D5' },
     
                 // Custom Icon
-                icon: <Tick className="w-16 h-12" />,
+                icon: <Tick className="w-16 h-12 " />,
     
                 // Aria
                 ariaProps: {

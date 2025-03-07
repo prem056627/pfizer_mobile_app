@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import Radio from '../../components/Form/Radio';
 import { useDispatch } from 'react-redux';
-import { setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setSchemaShown } from '../../slice/patient-detail-form';
+import { setCurrentPageState, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setSchemaShown } from '../../slice/patient-detail-form';
 // import { useNavigate } from 'react-router-dom';
 // import Radio from './Radio';
 // import MultiFileUpload from './MultiFileUpload';
@@ -65,8 +65,8 @@ const PfizerUploadForm = () => {
 
   const handleSubmit = (values, { setSubmitting }) => {
     // dispatch(setSchemaShown(false));
-    //  dispatch(setProgramEnrollmentConsent(false));
-
+    // dispatch(setProgramEnrollmentConsent(false));
+    
     if (!showUploadFields) {
       setShowUploadFields(true);
       setSubmitting(false);
@@ -76,9 +76,25 @@ const PfizerUploadForm = () => {
     // Only navigate to submission after documents are submitted
     console.log('Form submitted:', values);
     // navigate("submission");
+    
+    // Show success modal
     dispatch(setProgramEnrollmentSuccess(true));
+    
+    // Close modal and change page state after 5 seconds
+    setTimeout(() => {
+      dispatch(setProgramEnrollmentSuccess(false));
+      setCurrentPageState('program_enrolment');
+       // Refresh the page
+    window.location.reload();
+    }, 5000);
+    
+    
     setSubmitting(false);
   };
+
+
+  // setProgramEnrollmentSuccess(false)
+  // setCurrentPageState('program_enrolment')
 
   return (
     <Formik

@@ -4,73 +4,70 @@ import { ReactComponent as RightArrow } from '../../../assets/images/svg/right-a
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-	setPatientDetails,
-	changeStep,
-	selectCurrentStep,
-	selectPatientDetails,
+  setPatientDetails,
+  changeStep,
+  selectCurrentStep,
+  selectPatientDetails,
+  selectCurrentPageState,
+  setCurrentPageState,
+//   setCurrentPageState,
 } from '../../../slice/patient-detail-form';
-// import { useNavigate } from "react-router-dom";
-// import useApi from '../../../hooks/useApi';
 
 
 
-function FormSubmitFooter({ formik, setCurrentState }) {
+function FormSubmitFooter({ formik }) {
+  const dispatch = useDispatch();
+  
+  // Get the current page state from Redux store
+  const currentPageState = useSelector(selectCurrentPageState);
 
+//   console.log("currentPageStatecurrentPageState!",currentPageState)
+  
+  const handleSubmit = () => {
+    if (currentPageState === 'caregiver_addition') {
+      // This is the final page, submit the form
+      // Add your submission logic here
+    } else {
+      // Move to the next page based on current page state
+    //   const nextPageState = 'caregiver_addition';
+    //   setCurrentPageState(nextPageState);
+    }
+  };
+  
+  const onsubmitReverse = () => {
+    if (currentPageState === 'caregiver_addition') {
+      // Go back to patient enrollment page
+      dispatch(setCurrentPageState('patient_enrolment'))
+    }
+  };
 
-	const dispatch = useDispatch();
-	// const navigate = useNavigate();
-	// const triggerApi = useApi();
-
-	const currentStep = useSelector(selectCurrentStep);
-
-	const handleSubmit = () => {
-        if (currentStep === 2) {
-            // Redirect to another page
-
-			
-
-        } else {
-            // Handle save and next
-            // const nextStep = currentStep + 1;
-            // dispatch(changeStep(nextStep));
-        }
-    };
-	const onsubmitReverse = () => {
-		const previousStep = currentStep - 1;
-		if (previousStep >= 1) {
-			dispatch(changeStep(previousStep));
-		}
-	};
-
-	// console.log("formik", formik.isValid, formik.dirty, formik);
-
-	return (
-		<div className="fixed bottom-0 left-0 z-50 flex justify-center w-full border-t bg-white px-6 py-6">
-			<div className="max-w-screen-lg flex w-full justify-between ">
-				<button
-					type="button"
-					onClick={onsubmitReverse}
-					disabled={currentStep === 1}
-					className={`h-12 w-12 rounded-full bg-primary-light p-4 text-red-500 ${currentStep === 1 ? 'opacity-30' : 'opacity-100'
-						}`}
-				>
-					<FormSubmitLeftArrow className='text-white' />
-				</button>
-				<button
-					type="submit"
-					disabled={!formik.isValid && !formik.dirty}
-					className={`${!formik.isValid && !formik.dirty ? 'opacity-30' : 'opacity-100'
-						} flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white disabled:opacity-75 font-open-sans font-semibold tracking-wide`}
-
-					onClick={handleSubmit}
-				>
-					{currentStep === 2 ? <span>Submit</span> : <span>Save & Next</span>}
-
-					<RightArrow />
-				</button>
-			</div>
-		</div>
-	);
+  return (
+    <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full border-t bg-white px-6 py-6">
+      <div className="max-w-screen-lg flex w-full justify-between">
+        <button
+          type="button"
+          onClick={onsubmitReverse}
+          disabled={currentPageState === 'patient_enrolment'}
+          className={`h-12 w-12 rounded-full bg-primary-light p-4 text-red-500 ${
+            currentPageState === 'patient_enrolment' ? 'opacity-30' : 'opacity-100'
+          }`}
+        >
+          <FormSubmitLeftArrow className='text-white' />
+        </button>
+        <button
+          type="submit"
+          disabled={!formik.isValid && !formik.dirty}
+          className={`${
+            !formik.isValid && !formik.dirty ? 'opacity-30' : 'opacity-100'
+          } flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white disabled:opacity-75 font-open-sans font-semibold tracking-wide`}
+          onClick={handleSubmit}
+        >
+          {currentPageState === 'caregiver_addition' ? <span>Submit</span> : <span>Save & Next</span>}
+          <RightArrow />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default FormSubmitFooter;

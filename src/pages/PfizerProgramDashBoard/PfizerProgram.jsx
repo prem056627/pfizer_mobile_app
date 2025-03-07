@@ -74,6 +74,45 @@ const ACTIVE_PROGRAMS = [
   },
 ];
 
+// Sample data for inactive/unenrolled programs
+const UNENROLLED_PROGRAMS = [
+  {
+    id: 1,
+    name: "Palbace",
+    type: ["Oncology", "Patient Assistance"],
+    icon: ProgramCard1
+  },
+  {
+    id: 2,
+    name: "Xeljanz",
+    type: ["Rheumatology", "Patient Assistance"],
+    icon: ProgramCard1
+  },
+  {
+    id: 3,
+    name: "Ibrance",
+    type: ["Oncology", "Free Trial"],
+    icon: ProgramCard1
+  },
+  {
+    id: 4,
+    name: "Enbrel",
+    type: ["Immunology", "Cost Sharing"],
+    icon: ProgramCard1
+  },
+  {
+    id: 5,
+    name: "Revlimid",
+    type: ["Oncology", "Patient Assistance"],
+    icon: ProgramCard1
+  },
+  {
+    id: 6,
+    name: "Humira",
+    type: ["Immunology", "Cost Sharing"],
+    icon: ProgramCard1
+  }
+];
 const PfizerProgram = () => {
   const dispatch = useDispatch();
   const programStatus = useSelector(selectProgramStatus);
@@ -105,32 +144,70 @@ const PfizerProgram = () => {
     return <OrderHistory />;
   }
 
-  const renderUnactiveProgram = () => (
-    <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
-      <div className="p-4 flex gap-4">
-        <div>
-          <ProgramCard1 />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-md font-semibold">Palbace</h3>
-          <div className="flex gap-2 mt-2">
-            <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
-              Oncology
-            </span>
-            <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
-              Patient Assistance
-            </span>
+  // const renderUnactiveProgram = () => (
+  //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
+  //     <div className="p-4 flex gap-4">
+  //       <div>
+  //         <ProgramCard1 />
+  //       </div>
+  //       <div className="flex-1">
+  //         <h3 className="text-md font-semibold">Palbace</h3>
+  //         <div className="flex gap-2 mt-2">
+  //           <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
+  //             Oncology
+  //           </span>
+  //           <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
+  //             Patient Assistance
+  //           </span>
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <button
+  //       onClick={handleRequest}
+  //       className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
+  //     >
+  //       ENROL
+  //     </button>
+  //   </div>
+  // );
+
+
+  // Component to render all unactive/unenrolled programs
+const renderUnactiveProgram = () => (
+  <div className="space-y-4 w-full pb-20">
+    {/* <h2 className="text-lg font-semibold mb-2">Unenrolled Programs</h2>
+    <p className="text-sm text-gray-600 mb-4">These programs are available for enrollment. Click ENROL to begin the process.</p>
+     */}
+    {UNENROLLED_PROGRAMS.map((program) => (
+      <div key={program.id} className="w-full bg-white rounded-lg shadow-md border">
+        <div className="p-4 flex gap-4">
+          <div>
+            {React.createElement(program.icon)}
+          </div>
+          <div className="flex-1">
+            <h3 className="text-md font-semibold">{program.name}</h3>
+            <div className="flex gap-2 mt-2">
+              {program.type.map((type, index) => (
+                <span 
+                  key={index} 
+                  className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded"
+                >
+                  {type}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
+        <button
+          onClick={() => handleRequest(program)}
+          className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
+        >
+          ENROL
+        </button>
       </div>
-      <button
-        onClick={handleRequest}
-        className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
-      >
-        ENROL
-      </button>
-    </div>
-  );
+    ))}
+  </div>
+);
 
   const renderShortfallProgram = () => (
     <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
@@ -313,7 +390,7 @@ const PfizerProgram = () => {
   
   return (
     <div className="flex flex-col items-center   p-4  max-h-screen bg-white">
-      <h2 className="text-lg font-semibold w-full">Programs</h2>
+      <h2 className="text-lg font-semibold w-full py-4">Programs</h2>
 
       {programStatus === "un_active" && renderUnactiveProgram()}
       {(programStatus === "doc_shortfall" || programStatus === "profile_under_review") && renderShortfallProgram()}

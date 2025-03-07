@@ -2,11 +2,26 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { selectCurrentStep } from "../slice/patient-detail-form";
+import { selectCurrentPageState } from "../slice/patient-detail-form";
 
 const Stepper = ({ steps }) => {
-  const currentStep = useSelector(selectCurrentStep);
+  const currentPageState = useSelector(selectCurrentPageState);
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  // Function to determine the current step index based on page state
+  const getCurrentStepIndex = () => {
+    if (currentPageState === "patient_enrolment") {
+      return 1; // 1st step
+    } else if (currentPageState === "caregiver_addition") {
+      return 2; // 2nd step
+    } else {
+      // Handle any other states that might be added in the future
+      // Default to the first step if state is unknown
+      return 1;
+    }
+  };
+
+  const currentStep = getCurrentStepIndex();
 
   return (
     <>

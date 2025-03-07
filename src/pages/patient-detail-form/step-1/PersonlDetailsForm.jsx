@@ -13,7 +13,7 @@ const genderOptions = [
 
 export default function PersonalDetailsForm({ formik }) {
 
-  console.log(formik.values.gender,"formik.values.gender")
+  // console.log(formik.values.gender,"formik.values.gender")
   return (
     <div className="flex grow flex-col gap-[16px]">
       <InputField

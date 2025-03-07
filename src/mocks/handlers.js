@@ -6,107 +6,190 @@ import { http, delay, HttpResponse } from 'msw';
 // import bg1 from '../assets/images/svg/bg_image/bg-1.png'; // Import the background image
 // import bg2 from '../assets/images/svg/bg_image/bg-2.png';
 
-let initialData = {
-	// message: 'Consent Flag',
-	// ekyc_details: {
-	// 	status: 'Complete KYC',
-	// },
-	is_Program_enrollment_submited: false,
-	// is_Concent_Submitted: false,
-	// is_ekyc_completed: true,
-	is_profile_completed: true,
-	// is_document_submitted : false,
-	is_document_status: true,
+// let initialData = {
+// 	// message: 'Consent Flag',
+// 	// ekyc_details: {
+// 	// 	status: 'Complete KYC',
+// 	// },
+// 	is_Program_enrollment_submited: false,
+// 	// is_Concent_Submitted: false,
+// 	// is_ekyc_completed: true,
+// 	is_profile_completed: true,
+// 	// is_document_submitted : false,
+// 	is_document_status: true,
 
-	// "patient_id": "10005",    
-    //   "current_state": "terms_and_conditions",
-};
+// 	// "patient_id": "10005",    
+//     //   "current_state": "terms_and_conditions",
+// };
+
+
+let initialData ={
+    response: {
+    
+            current_step: "patient_enrolment"
+			// caregiver_addition
+      
+    },
+    success: true
+}
 
 export const handlers = [
-	http.get('/patient/initialize-dashboard/', async () => {
+	// http.get('/patient/initialize-dashboard/', async () => {
+	// 	return HttpResponse.json({
+	// 		response: initialData,
+	// 		success: true,
+	// 	});
+	// }),
+
+
+	http.get('/patient_dashboard/?current_step=initialize', async () => {
 		return HttpResponse.json({
 			response: initialData,
 			success: true,
 		});
 	}),
 
-	http.get('/patient-initialize/', () => {
-		return HttpResponse.json({
-			success: true,
-			response: {
-				uid: '12345', // Unique ID for the user "enrollment_not_complete"
-				current_page_state: "program_dashboard", // Options: tnc_pending, patient_enrollment
-				// program_status: 'un_active', // program status
-                // program_status: "active", // program status
-                program_name :'Opdyta',
-            	// program_status: 'profile_under_review', // program status
-				// current_state: "program_dashboard",
-				// doc_shortfall
-				// doc_upload_status: "",
-				program_status: 'active',
-
-				enrollment_details: {
-					steps: [
-						// 'terms_and_conditions',
-						'personal_details',
-						'caregiver_details'
-					],
-					completed_steps: ['terms_and_conditions', 'patient_details'],
-					current_step: 'patient_details',
-					step_data: {
-						terms_and_conditions: 'Yes', // Can be "yes", "no"
-						personal_details: {
-							full_name: "John Doe",
-							gender: "Male",
-							date_of_birth: "1990-05-15",
-							mobile_number: "9876543210",
-							email: "johndoe@example.com",
-							nationality: "American",
-							permanent_addressline1: "123 Main Street",
-							permanent_addressline2: "Apt 4B",
-							permanent_city: "New York",
-							permanent_state: "NY",
-							permanent_pincode: "100401",
-							same_as_permanent: false,
-							current_addressline1: "456 Elm Street",
-							current_addressline2: "Suite 2A",
-							current_city: "Los Angeles",
-							current_state: "CA",
-							current_pincode: "900123",
-							id_card_type: "Passport",
-							id_number: "A12345678"
-						},
-						caregiver_details: {
-							caregiver_email: "pk@gmail.com",
-							caregiver_mobile: "9894906630",
-							caregiver_mobile_verify: "9894906630",
-							caregiver_name: "Prem",
-							relationship: "Brother"
-						}
-					},
-					completed: false // Whether the process is fully completed
-				}
-			}
-		});
-	}),
 	
-    
-	http.post('api/patient/enrol', () => {
-		initialData = { ...initialData };
-		return HttpResponse.json({
-			success: true,
-			response: {
-				message: 'Form submitted Successfully',
-			},
-		});
-	}),
+
+	// http.get('/patient-initialize/', () => {
+	// 	return HttpResponse.json({
+	// 		success: true,
+	// 		response: {
+	// 			uid: '12345', // Unique ID for the user "enrollment_not_complete"
+	// 			current_page_state: "enrollment_not_complete", 
+	// 			// program_status: 'un_active',
+    //             // program_status: "active",
+	// 			// program_status: 'profile_under_review', 
+	// 			// program_status: 'doc_shortfall', 
+    //             program_name :'Opdyta',
+            
+	// 			// current_state: "program_dashboard",
+	// 			// current_state: "enrollment_not_complete",
+	// 			program_status: 'active',
+
+	// 			enrollment_details: {
+	// 				steps: [
+	// 					// 'terms_and_conditions',
+	// 					'personal_details',
+	// 					'caregiver_details'
+	// 				],
+	// 				completed_steps: ['terms_and_conditions', 'patient_details'],
+	// 				current_step: 'patient_details',
+	// 				step_data: {
+	// 					terms_and_conditions: 'Yes', // Can be "yes", "no"
+	// 					personal_details: {
+	// 						full_name: "John Doe",
+	// 						gender: "Male",
+	// 						date_of_birth: "1990-05-15",
+	// 						mobile_number: "9876543210",
+	// 						email: "johndoe@example.com",
+	// 						nationality: "American",
+	// 						permanent_addressline1: "123 Main Street",
+	// 						permanent_addressline2: "Apt 4B",
+	// 						permanent_city: "New York",
+	// 						permanent_state: "NY",
+	// 						permanent_pincode: "100401",
+	// 						same_as_permanent: false,
+	// 						current_addressline1: "456 Elm Street",
+	// 						current_addressline2: "Suite 2A",
+	// 						current_city: "Los Angeles",
+	// 						current_state: "CA",
+	// 						current_pincode: "900123",
+	// 						id_card_type: "Passport",
+	// 						id_number: "A12345678"
+	// 					},
+	// 					caregiver_details: {
+	// 						caregiver_email: "pk@gmail.com",
+	// 						caregiver_mobile: "9894906630",
+	// 						caregiver_mobile_verify: "9894906630",
+	// 						caregiver_name: "Prem",
+	// 						relationship: "Brother"
+	// 					}
+	// 				},
+	// 				completed: false // Whether the process is fully completed
+	// 			}
+	// 		}
+	// 	});
+	// }),
+	
+   // Mock server implementation
+   http.post('/patient_dashboard/', async ({ request }) => {
+	try {
+	  // Get the current_step from URL query parameters
+	  const url = new URL(request.url);
+	  const currentStep = url.searchParams.get('current_step');
+	  
+	  // Make sure request has a body before trying to parse it
+	  let requestBody = {};
+	  try {
+		const contentType = request.headers.get('Content-Type');
+		if (contentType && contentType.includes('application/json')) {
+		  const text = await request.text();
+		  if (text) {
+			requestBody = JSON.parse(text);
+		  }
+		}
+	  } catch (e) {
+		console.error('Error parsing request body:', e);
+	  }
+	  
+	  let responseData;
+	  if (currentStep === "patient_enrolment") {
+		responseData = {
+		  current_step: "caregiver_addition",
+		  patient_data: requestBody
+		};
+	  }else if (currentStep === "caregiver_addition") {
+		responseData = {
+		  current_step: "program_enrolment",
+		  program_status:"un_active",
+		//   un_active
+		  patient_data: requestBody
+		};
+	  } else {
+		responseData = {
+		  current_step: currentStep || "unknown",
+		  ...requestBody
+		};
+	  }
+	  
+	  // Return proper JSON response
+	  return new HttpResponse(
+		JSON.stringify({
+		  response: responseData,
+		  success: true,
+		  message: "Data updated successfully"
+		}),
+		{
+		  status: 200,
+		  headers: {
+			'Content-Type': 'application/json'
+		  }
+		}
+	  );
+	} catch (error) {
+	  console.error('Mock server error:', error);
+	  return new HttpResponse(
+		JSON.stringify({
+		  success: false,
+		  message: "Server error",
+		  error: error.message
+		}),
+		{
+		  status: 500,
+		  headers: {
+			'Content-Type': 'application/json'
+		  }
+		}
+	  );
+	}
+  })
+  
 	// http.get('/patient/get-programs/', () => {
 	// 	return HttpResponse.json({
 	// 		success: true,
 	// 		response: {
 	// 			foc_ekyc_completed: false,
-	// 			// program_enrolment_type: 'self_pay',
-
 	// 			available_programs: [
 	// 				{
 	// 					// logo: WinForPatient,
@@ -129,8 +212,6 @@ export const handlers = [
 	// 					program_name: 'AARAMBH',
 	// 				},
 	// 			],
-	// 			// changes
-
 	// 			all_orders: [
 	// 				{
 	// 					order_code: 202,
@@ -258,56 +339,6 @@ export const handlers = [
 	// 					pharmacy: 'free',
 	// 				},
 	// 			],
-	// 			current_order: {
-	// 				order_code: 146,
-	// 				order_date: '05 Mar 2024',
-	// 				dispensed_date: '17 June’ 22',
-	// 				dosage: '240 mg',
-	// 				distributor: 'XYZ',
-	// 				pharmacy: 'Medi Pharmacy',
-	// 				order_type: 'paid',
-	// 				order_status: 'Dispatch',
-	// 			},
-	// 			applied_programs: {
-	// 				title: 'AARAMBH',
-	// 				program_id: '22321',
-	// 				enrolled_date: '31 May’ 22',
-	// 				remaining_infusions: '2 nos',
-	// 				doctor_name: 'Dr. levis',
-	// 				program_name: 'AARAMBH',
-	// 			},
-	// 			pap_informations: [
-	// 				{
-	// 					tag: 'PV Reporting',
-	// 					icon: PlayIcon,
-	// 					date: '31th May, 2022',
-	// 					desc: `How to Access Your Medicines...`,
-	// 					bg: bg1,
-	// 				},
-	// 				{
-	// 					tag: 'How to administer tutorial',
-	// 					icon: PlayIcon,
-	// 					date: '31th May, 2022',
-	// 					desc: `How to Access Your Medicines...`,
-	// 					bg: bg2,
-	// 				},
-	// 				{
-	// 					tag: 'PV Reporting',
-	// 					icon: PlayIcon,
-	// 					date: '31th May, 2022',
-	// 					desc: `How to Access Your Medicines...`,
-	// 					bg: bg1,
-	// 				},
-	// 				{
-	// 					tag: 'How to administer tutorial',
-	// 					icon: PlayIcon,
-	// 					date: '31th May, 2022',
-	// 					desc: `How to Access Your Medicines...`,
-	// 					bg: bg2,
-	// 				},
-	// 				// Add more card objects here as needed
-	// 			],
-
 	// 			paid_order: [
 	// 				{
 	// 					order_code: 101,
@@ -364,170 +395,6 @@ export const handlers = [
 	// 					pharmacy: 'paid',
 	// 				},
 	// 			],
-
-	// 			// SAP PAID ORDER
-	// 			// paid_order: [
-	// 			// 	{
-	// 			// 		order_uid: '10121',
-	// 			// 		order_id: 121,
-	// 			// 		invoice_file: '',
-	// 			// 		status_track: {
-	// 			// 			'Claim Disbursement': {
-	// 			// 				Amount: '75000',
-	// 			// 				is_latest: false,
-	// 			// 				'Recipient Name': 'test',
-	// 			// 				'Date Of Reimbursement': '05:00 PM',
-	// 			// 			},
-	// 			// 			'Document shared with TPA': {
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 				is_latest: false,
-	// 			// 			},
-	// 			// 			'Confirmation received from TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Confirmation received from TPA': '23 Jul 2024 06:57 AM',
-	// 			// 				'claim Status': 'Rejected',
-	// 			// 			},
-	// 			// 		},
-	// 			// 		order_generation_date: '23 Jul 2024',
-	// 			// 		order_display_status: 'Closed',
-	// 			// 		order_status: 'closed',
-	// 			// 	},
-	// 			// ],
-
-	// 			// sap_paid_order: [
-	// 			// 	{
-	// 			// 		order_id: 146,
-	// 			// 		order_generation_date: '05 Mar 2024',
-	// 			// 		order_display_status: 'Open',
-	// 			// 		order_uid: '10146',
-	// 			// 		order_status: 'open',
-	// 			// 		invoice_file: '',
-	// 			// 		status_track: {},
-	// 			// 	},
-	// 			// 	{
-	// 			// 		order_id: 146,
-	// 			// 		order_generation_date: '05 Mar 2024',
-	// 			// 		order_display_status: 'Document shared with TPA',
-	// 			// 		order_uid: '10146',
-	// 			// 		order_status: 'extrastatus_1',
-	// 			// 		invoice_file: '',
-	// 			// 		status_track: {
-	// 			// 			'Document shared with TPA': {
-	// 			// 				is_latest: true,
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 			},
-	// 			// 		},
-	// 			// 	},
-	// 			// 	{
-	// 			// 		confirmation_data: {
-	// 			// 			claim_status: 'Approved',
-	// 			// 			confirmation_received_datetime: '23 Jul 2024 06:57 AM',
-	// 			// 		},
-	// 			// 		order_uid: '10121',
-	// 			// 		order_id: 121,
-	// 			// 		invoice_file: '',
-	// 			// 		order_generation_date: '23 Jul 2024',
-	// 			// 		order_display_status: 'Confirmation received from TPA',
-	// 			// 		order_status: 'extrastatus_1',
-	// 			// 		status_track: {
-	// 			// 			'Document shared with TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 			},
-	// 			// 			'Confirmation received from TPA': {
-	// 			// 				is_latest: true,
-	// 			// 				'Confirmation received from TPA': '23 Jul 2024 06:57 AM',
-	// 			// 				'Claim Status': 'Approved',
-	// 			// 			},
-	// 			// 		},
-	// 			// 	},
-	// 			// 	{
-	// 			// 		order_uid: '10121',
-	// 			// 		order_id: 121,
-	// 			// 		invoice_file: '',
-	// 			// 		order_generation_date: '23 Jul 2024',
-	// 			// 		order_display_status: 'Confirmation received from TPA',
-	// 			// 		order_status: 'extrastatus_1',
-	// 			// 		status_track: {
-	// 			// 			'Document shared with TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 			},
-	// 			// 			'Confirmation received from TPA': {
-	// 			// 				is_latest: true,
-	// 			// 				'Confirmation received from TPA': '23 Jul 2024 06:57 AM',
-	// 			// 				'Claim Status': 'Rejected',
-	// 			// 				'Rejection Note': 'Test',
-	// 			// 			},
-	// 			// 		},
-	// 			// 	},
-	// 			// 	{
-	// 			// 		order_uid: '10121',
-	// 			// 		order_id: 121,
-	// 			// 		invoice_file: '',
-	// 			// 		order_generation_date: '23 Jul 2024',
-	// 			// 		order_display_status: 'Claim Disbursement',
-	// 			// 		document_shared_datetime: '23 Jul 2024 06:55 AM',
-	// 			// 		order_status: 'extrastatus_3',
-	// 			// 		status_track: {
-	// 			// 			'Document shared with TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 			},
-	// 			// 			'Confirmation received from TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Confirmation received from TPA': '23 Jul 2024 06:57 AM',
-	// 			// 				'Claim Status': 'Approved',
-	// 			// 			},
-	// 			// 			'Claim Disbursement': {
-	// 			// 				is_latest: true,
-	// 			// 				Amount: '24000',
-	// 			// 				Date_Of_Reimbursement: '23 Jul 2024 06:55 AM',
-	// 			// 				Recipient_Name: 'Simon Matthew',
-	// 			// 			},
-	// 			// 		},
-	// 			// 	},
-	// 			// 	{
-	// 			// 		order_uid: '10121',
-	// 			// 		order_id: 121,
-	// 			// 		invoice_file: '',
-	// 			// 		order_generation_date: '23 Jul 2024',
-	// 			// 		order_display_status: 'Closed',
-	// 			// 		document_shared_datetime: '23 Jul 2024 06:55 AM',
-	// 			// 		order_status: 'close',
-	// 			// 		status_track: {
-	// 			// 			'Document shared with TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Document shared with TPA': '23 Jul 2024 06:55 AM',
-	// 			// 			},
-	// 			// 			'Confirmation received from TPA': {
-	// 			// 				is_latest: false,
-	// 			// 				'Confirmation received from TPA': '23 Jul 2024 06:57 AM',
-	// 			// 				'Claim Status': 'Approved',
-	// 			// 			},
-	// 			// 			'Claim Disbursement': {
-	// 			// 				is_latest: false,
-	// 			// 				Amount: '24000',
-	// 			// 				Date_Of_Reimbursement: '23 Jul 2024 06:55 AM',
-	// 			// 				Recipient_Name: 'Simon Matthew',
-	// 			// 			},
-	// 			// 		},
-	// 			// 	},
-	// 			// ],
-
-	// 			// counselling: [
-	// 			// 	{
-	// 			// 		order_id: 143,
-	// 			// 		counselling_date: '05 Mar 2024',
-	// 			// 		counselling_time: '06:00',
-	// 			// 		order_display_status: 'Open',
-	// 			// 		order_uid: '10142',
-	// 			// 		order_status: 'open',
-	// 			// 		invoice_file: 'url',
-	// 			// 	},
-	// 			// ],
-	// 			// counselling_button_show: false,
-	// 			// has_prescription: true,
 	// 		},
 	// 	});
 	// }),

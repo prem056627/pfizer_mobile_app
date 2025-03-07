@@ -34,15 +34,15 @@ function ProgramEnrollSucess() {
           </h2>
           <h4 className="text-md text-[36px]  font-open-sans font-extralight text-[#707070] text-center">
             {" "}
-            Now Sit Back!
+            Redirecting..!
           </h4>
-          <p className="text-[22px] font-open-sans font-extralight italic text-[#C4C4C4] max-w-[568px] text-center ">
+          {/* <p className="text-[22px] font-open-sans font-extralight italic text-[#C4C4C4] max-w-[568px] text-center ">
           while we verify your submitted documents.
-          </p>
+          </p> */}
         </div>
       </div>
 
-      <div className="flex justify-center items-center w-full px-6 pt-14">
+      <div className="flex justify-center items-center w-full px-6 ">
         <ProgramSucess />
       </div>
       </div>

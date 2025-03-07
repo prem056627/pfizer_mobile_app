@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import PersonlDetailsForm from "./PersonlDetailsForm";
@@ -6,8 +6,10 @@ import FormSubmitFooter from "../components/FormSubmitFooter";
 import FormSection from "../components/FormSection";
 import {
   changeStep,
+  selectCurrentPageState,
   selectCurrentStep,
   selectInitializeData,
+  setCurrentPageState,
 } from "../../../slice/patient-detail-form";
 import { combinedValidationSchema } from "./validationSchemas";
 import useLocalStorage from "../../../hooks/useLocalstorage";
@@ -15,6 +17,7 @@ import AddressProofForm from "./AddressProofForm";
 import CurrentResidentialAddress from "./CurrentResidentialAddress";
 import IDDetails from "./IDDetails";
 import { getProfileInitialValues,fieldGroups } from "./initialValues";
+import useApi from "../../../hooks/useApi";
 
 const FormDebugger = ({ values, errors, touched }) => {
   React.useEffect(() => {
@@ -35,67 +38,75 @@ const FormDebugger = ({ values, errors, touched }) => {
 
 
 
+
 const PersonalDetails = () => {
   const dispatch = useDispatch();
   const currentStep = useSelector(selectCurrentStep);
 
+  const currentPageState = useSelector(selectCurrentPageState);
+
+
   const initialDataa = useSelector(selectInitializeData);
-// Avoid accessing undefined properties
-const step1Data = initialDataa?.enrollment_details?.step_data?.personal_details || {};
+// // Avoid accessing undefined properties
+// const step1Data = initialDataa?.enrollment_details?.step_data?.personal_details || {};
 
-// Debugging to confirm correct data structure
-console.log("Step 1 Data:", step1Data);
-  
 
-const [formData, setFormData] = useLocalStorage("formData", step1Data);
-
-// Ensure formData is updated when Redux state changes
-React.useEffect(() => {
-  setFormData(step1Data);
-}, [step1Data]);
-
-  
-  
+const [formData, setFormData] = useLocalStorage("formData", {});
+const [isLoading, setIsLoading] = useState(true);
+  const triggerApi = useApi();
   
   // Get initial values from stored data
   const initialValues = getProfileInitialValues(formData);
-  // Get initial values directly from stored data
-  // const initialValues = formData?.profile_details || {
-  //   // Personal Details
-  //   full_name: "",
-  //   gender: "",
-  //   date_of_birth: null,
-  //   mobile_number: "",
-  //   email: "",
-  //   nationality: "",
+
+
+
+// And here's the fixed client-side function:
+const makeApiCall = async (values) => {
+  try {
+    setIsLoading(true);
+
+    // Set current_step parameter in the URL
+    const url = `/patient_dashboard/?current_step=patient_enrolment`;
     
-  //   // Address Proof
-  //   permanent_addressline1: "",
-  //   permanent_addressline2: "",
-  //   permanent_city: "",
-  //   permanent_state: "",
-  //   permanent_pincode: "",
-    
-  //   // Current Residential Address
-  //   same_as_permanent: false,
-  //   current_addressline1: "",
-  //   current_addressline2: "",
-  //   current_city: "",
-  //   current_state: "",
-  //   current_pincode: "",
-    
-  //   // ID Details
-  //   id_card_type: "",
-  //   id_number: "",
-  // };
+    const { response, success } = await triggerApi({
+      url: url,
+      type: "POST",
+      data: values || {}, // Make sure we always send a valid object
+      loader: true,
+    });
+
+    if (success && response) {
+      console.log("Form data submitted successfully:", response.current_step);
+      dispatch(setCurrentPageState(response?.current_step))
+      return { success: true, data: response };
+    } else {
+      console.error("API call failed or returned no data.");
+      return { success: false, error: "API call failed" };
+    }
+  } catch (error) {
+    console.error("Error in makeApiCall:", error);
+    return { success: false, error };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const onSubmit = async (values, { setSubmitting }) => {
     try {
+      // Save to local storage
       setFormData({
         ...formData,
         profile_details: values,
       });
-      dispatch(changeStep(currentStep + 1));
+      
+      // Submit data to API
+      const result = await makeApiCall(values);
+      
+      if (result.success) {
+        // Navigate to next step or show success message
+        // dispatch(changeStep(currentStep + 1));
+      }
     } catch (error) {
       console.error("Form submission error:", error);
     } finally {
@@ -225,7 +236,7 @@ React.useEffect(() => {
               ))}
               <FormSubmitFooter
                 formik={formik}
-                step={currentStep}
+               
                 disabled={!formik.isValid || formik.isSubmitting}
               />
             </Form>

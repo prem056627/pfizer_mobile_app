@@ -41,9 +41,8 @@ const AppNavigation = () => {
   const   doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
 
-  // console.log('initalizeeeeeee!!!',current_page_state)
-  // console.log('doc_upload_status!!!',doc_upload_status)
-  // // Get role from localStorage
+  console.log('initialDatainitialData',current_page_state)
+
   const current_role = localStorage.getItem('role');
 
   // Initialize data
@@ -52,15 +51,15 @@ const AppNavigation = () => {
       setIsLoading(true);
   
       const { response, success } = await triggerApi({
-        url: `/patient-initialize/`,
+        url: `/patient_dashboard/?current_step=initialize`,
         type: "GET",
         loader: true,
       });
   
       if (success && response) {
         dispatch(setInitializeData(response));
-        dispatch(setCurrentPageState(response.current_page_state)); // Uncomment if needed
-        dispatch(setProgramStatus(response.program_status)); // Uncomment if needed
+        dispatch(setCurrentPageState(response.response.current_step)); 
+        // dispatch(setProgramStatus(response.program_status)); 
       } else {
         console.error("API call failed or returned no data.");
       }
@@ -74,9 +73,10 @@ const AppNavigation = () => {
 
   useEffect(() => {
     makeApiCall();
+   
   }, []);
 
-
+  console.log("current_page_statecurrent_page_state!!!",current_page_state);
 
   // Render content based on current view and app state
   const renderContent = () => {
@@ -88,13 +88,17 @@ const AppNavigation = () => {
     } else if (currentView === "notifications") {
       return <Notifications  />;
     }
-    
+  
     // Then check app state for workflow navigation
     if (current_role === 'Home') {
       // return <PfizerProgramsPage    />;
-    } else if (current_page_state === 'enrollment_not_complete') {
+    } else if (current_page_state === 'patient_enrolment') {
       return <PatientDetailForm    />;
-    }else if (current_page_state === 'program_dashboard') {
+    }
+    else if (current_page_state === 'caregiver_addition') {
+      return <PatientDetailForm    />;
+    }
+    else if (current_page_state === 'program_enrolment') {
       switch ( doc_upload_status) {
         case 'scheme_enroll_doc':
           return <SchemeEnrollDocUpload />;

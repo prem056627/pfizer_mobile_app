@@ -23,12 +23,12 @@ const ShortFallDoc = () => {
 
   const validate = (values) => {
     const errors = {};
-    uploadFields.forEach(field => {
-      if (!values[field.id]?.length) {
-        errors[field.id] = 'Please upload required document';
-      }
-    });
-    return errors;
+    // uploadFields.forEach(field => {
+    //   if (!values[field.id]?.length) {
+    //     errors[field.id] = 'Please upload required document';
+    //   }
+    // });
+    // return errors;
   };
 
 

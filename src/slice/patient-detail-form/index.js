@@ -15,18 +15,18 @@ export const ProgramEnrollmentSlice = createSlice({
       },
     },
     // current_page_state: 'enrollment_not_complete',
-    current_page_state: "program_dashboard",
+    current_page_state: "patient_enrolment",
     // program_status: 'un_active', // program status
     // program_status: "active", // program status
     program_name :'Opdyta',
-    program_status: 'doc_shortfall', // program status
+    program_status: 'active', // program status
     // program_status: 'profile_under_review', // program status
     // Programs Enroll dashboard
     program_enroll_consent: false,
     program_enrollment_success: false,
     patient_enrollemnt_success: false,
     current_view: "Home",
-    currentStep: 1,
+    // currentStep: 'caregiver_addition',
 
     /////////// upload_file render flags
     doc_upload_status: "",
@@ -55,10 +55,10 @@ export const ProgramEnrollmentSlice = createSlice({
       state.initializeData = { ...action.payload };
 
       // Map API response to state
-      const enrollmentDetails = action.payload?.response?.enrollment_details || {};
-      state.currentStep = enrollmentDetails?.current_step || 1;
-      state.current_page_state = action.payload?.response?.current_page_state ;
-      state.program_status = action.payload?.response?.program_status ;
+      // const enrollmentDetails = action.payload?.response?.enrollment_details || {};
+      // state.currentStep = enrollmentDetails?.current_step || 1;
+      // state.current_page_state = action.payload?.response?.current_page_state ;
+      // state.program_status = action.payload?.response?.program_status ;
     },
     setCurrentPageState: (state, action) => {
       state.current_page_state = action.payload;
