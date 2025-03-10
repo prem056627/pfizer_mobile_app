@@ -8,10 +8,10 @@
 //   // Personal Details
 //   full_name: Yup.string().required("Full Name is required"),
 //   gender: Yup.string().required("Gender is required"),
-//   date_of_birth: Yup.date()
-//     .nullable()
-//     .required("Date of Birth is required")
-//     .max(moment().toDate(), "Date of Birth cannot be in the future"),
+// //   date_of_birth: Yup.date()
+// //     .nullable()
+// //     .required("Date of Birth is required")
+// //     .max(moment().toDate(), "Date of Birth cannot be in the future"),
 //   mobile_number: Yup.string()
 //     .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
 //     .required("Mobile Number is required"),

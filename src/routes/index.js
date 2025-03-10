@@ -41,7 +41,7 @@ const AppNavigation = () => {
   const   doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
 
-  console.log('initialDatainitialData',current_page_state)
+  // console.log('initialDatainitialData',current_page_state)
 
   const current_role = localStorage.getItem('role');
 
@@ -76,7 +76,7 @@ const AppNavigation = () => {
    
   }, []);
 
-  console.log("current_page_statecurrent_page_state!!!",current_page_state);
+  // console.log("current_page_statecurrent_page_state!!!",current_page_state);
 
   // Render content based on current view and app state
   const renderContent = () => {

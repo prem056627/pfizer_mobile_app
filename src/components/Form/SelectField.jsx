@@ -57,12 +57,12 @@ export default function SelectField({
 			const matchingOption = optionsData.find((eachData) => eachData?.id === value);
 			
 			if (matchingOption) {
-				console.log('Found matching option for value:', value, matchingOption);
+				// console.log('Found matching option for value:', value, matchingOption);
 				setSelected(matchingOption);
 				initialValueSet.current = true;
 			} else if (!initialValueSet.current) {
 				// If no matching option but we have a value, create a temporary option
-				console.log('No matching option found for value:', value);
+				// console.log('No matching option found for value:', value);
 				setSelected({
 					label: `${value}`,
 					id: value,

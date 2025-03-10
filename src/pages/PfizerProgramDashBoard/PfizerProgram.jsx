@@ -11,6 +11,7 @@ import { ReactComponent as Ekyc } from "../../assets/images/ProgramCards/ekyc.sv
 import { ReactComponent as Upload } from '../../../src/assets/images/svg/upload.svg';
 import { ReactComponent as Pap } from '../../../src/assets/images/Ekyc/pap.svg';
 import {
+  selectInitializeData,
   selectProgramStatus,
   selectViewingOrderHistory,
   setDocUploadStatus,
@@ -23,100 +24,22 @@ import {
 import OrderHistory from "../uploadInvoice/OrderHistory";
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
-const ACTIVE_PROGRAMS = [
-  {
-    id: 1,
-    name: "Palbace",
-    status: "Active",
-    uid: "10015",
-    enrollmentDate: "9th Jun, 2021",
-    schemes: "9+LFT",
-    doctorName: "Dr. John Doe",
-    orders: "3",
-    nextVisit: "15th Mar, 2025",
-    type: "Oncology",
-  },
-  {
-    id: 2,
-    name: "Xeljanz",
-    status: "Active",
-    uid: "10016",
-    enrollmentDate: "12th Dec, 2021",
-    schemes: "6+LFT",
-    doctorName: "Dr. Sarah Smith",
-    orders: "5",
-    nextVisit: "20th Mar, 2025",
-    type: "Rheumatology",
-  },
-  {
-    id: 3,
-    name: "Ibrance",
-    status: "Active",
-    uid: "10017",
-    enrollmentDate: "3rd Jan, 2022",
-    schemes: "12+LFT",
-    doctorName: "Dr. Michael Chen",
-    orders: "8",
-    nextVisit: "1st Apr, 2025",
-    type: "Oncology",
-  },
-  {
-    id: 4,
-    name: "Enbrel",
-    status: "Active",
-    uid: "10018",
-    enrollmentDate: "15th Feb, 2022",
-    schemes: "3+LFT",
-    doctorName: "Dr. Emily Brown",
-    orders: "2",
-    nextVisit: "10th Mar, 2025",
-    type: "Immunology",
-  },
-];
 
-// Sample data for inactive/unenrolled programs
-const UNENROLLED_PROGRAMS = [
-  {
-    id: 1,
-    name: "Palbace",
-    type: ["Oncology", "Patient Assistance"],
-    icon: ProgramCard1
-  },
-  {
-    id: 2,
-    name: "Xeljanz",
-    type: ["Rheumatology", "Patient Assistance"],
-    icon: ProgramCard1
-  },
-  {
-    id: 3,
-    name: "Ibrance",
-    type: ["Oncology", "Free Trial"],
-    icon: ProgramCard1
-  },
-  {
-    id: 4,
-    name: "Enbrel",
-    type: ["Immunology", "Cost Sharing"],
-    icon: ProgramCard1
-  },
-  {
-    id: 5,
-    name: "Revlimid",
-    type: ["Oncology", "Patient Assistance"],
-    icon: ProgramCard1
-  },
-  {
-    id: 6,
-    name: "Humira",
-    type: ["Immunology", "Cost Sharing"],
-    icon: ProgramCard1
-  }
-];
+
+
 const PfizerProgram = () => {
   const dispatch = useDispatch();
   const programStatus = useSelector(selectProgramStatus);
   const viewingOrderHistory = useSelector(selectViewingOrderHistory);
+
+  const initiaData = useSelector(selectInitializeData)
+
+  const number_of_programs_enrollled = initiaData?.response?.program_data?.enrolled_programs;
+  console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
+const ACTIVE_PROGRAMS = initiaData?.response?.program_data?.active_programs||[];
+
+const AVAILABLE_PROGRAMS = initiaData?.response?.program_data?.available_programs||[];
+console.log('initiaDatainitiaDatainitiaData',ACTIVE_PROGRAMS);
 
   const handleRequest = () => {
     dispatch(setProgramEnrollmentConsent(true));
@@ -144,7 +67,7 @@ const PfizerProgram = () => {
     return <OrderHistory />;
   }
 
-  // const renderUnactiveProgram = () => (
+  // const renderAvailablePrograms = () => (
   //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
   //     <div className="p-4 flex gap-4">
   //       <div>
@@ -173,21 +96,18 @@ const PfizerProgram = () => {
 
 
   // Component to render all unactive/unenrolled programs
-const renderUnactiveProgram = () => (
+const renderAvailablePrograms = () => (
   <div className="space-y-4 w-full pb-20">
-    {/* <h2 className="text-lg font-semibold mb-2">Unenrolled Programs</h2>
-    <p className="text-sm text-gray-600 mb-4">These programs are available for enrollment. Click ENROL to begin the process.</p>
-     */}
-    {UNENROLLED_PROGRAMS.map((program) => (
-      <div key={program.id} className="w-full bg-white rounded-lg shadow-md border">
+    {AVAILABLE_PROGRAMS.map((program) => (
+      <div key={program.program_id} className="w-full bg-white rounded-lg shadow-md border">
         <div className="p-4 flex gap-4">
-          <div>
-            {React.createElement(program.icon)}
-          </div>
+        <div>
+        <img src={program.program_image} alt={program.program_name} className="w-20 h-20" />
+      </div>
           <div className="flex-1">
-            <h3 className="text-md font-semibold">{program.name}</h3>
+            <h3 className="text-md font-semibold">{program.program_name}</h3>
             <div className="flex gap-2 mt-2">
-              {program.type.map((type, index) => (
+              {program.program_type.map((type, index) => (
                 <span 
                   key={index} 
                   className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded"
@@ -209,73 +129,81 @@ const renderUnactiveProgram = () => (
   </div>
 );
 
-  const renderShortfallProgram = () => (
-    <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
-      <div className="flex items-center gap-2 p-4">
-        <h2 className="text-[18px] font-bold">Palbace</h2>
-        <span className="px-2 py-1 bg-red-100 text-red-800 text-sm rounded-full">
-       { programStatus === "doc_shortfall" ? "Document Shortfall" : "Profile under Review "}
-        </span>
-      </div>
-      <div className="px-4 flex gap-4">
-        <div className="space-y-2 text-gray-600 mb-6">
-          <p className="text-[#767676] text-[14px] font-sans font-bold">
-            UID 10015
-          </p>
-          <p className="text-[#767676] text-[14px] font-open-sans">
-            FOC Orders - 01
-          </p>
-          <p className="text-[#767676] text-[14px] font-open-sans">
-            Enrollment Date - 9th Jun, 2021
-          </p>
-          <p className="text-[#767676] text-[14px] font-open-sans">
-            Schemes - 9+LFT
-          </p>
-          <p className="text-[#767676] text-[14px] font-open-sans">
-            Doctor's Name - Dr. John Doe
-          </p>
-        </div>
-      </div>
-     {
-       programStatus === "doc_shortfall" &&  <div className="flex justify-center items-center p-2">
-       <button
-         onClick={handleRequestShortfallProgram}
-         className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
-       >
-        <div className="">
-        <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
-        <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
-        </div>
-       <div>
-       <Upload/>
-       </div>
-       </button>
-     </div>
-     }
-    </div>
-  );
-
+  // const renderShortfallProgram = () => (
+  //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
+  //     <div className="flex items-center gap-2 p-4">
+  //       <h2 className="text-[18px] font-bold">Palbace</h2>
+  //       <span className="px-2 py-1 bg-red-100 text-red-800 text-sm rounded-full">
+  //      { programStatus === "doc_shortfall" ? "Document Shortfall" : "Profile under Review "}
+  //       </span>
+  //     </div>
+  //     <div className="px-4 flex gap-4">
+  //       <div className="space-y-2 text-gray-600 mb-6">
+  //         <p className="text-[#767676] text-[14px] font-sans font-bold">
+  //           UID 10015
+  //         </p>
+  //         <p className="text-[#767676] text-[14px] font-open-sans">
+  //           FOC Orders - 01
+  //         </p>
+  //         <p className="text-[#767676] text-[14px] font-open-sans">
+  //           Enrollment Date - 9th Jun, 2021
+  //         </p>
+  //         <p className="text-[#767676] text-[14px] font-open-sans">
+  //           Schemes - 9+LFT
+  //         </p>
+  //         <p className="text-[#767676] text-[14px] font-open-sans">
+  //           Doctor's Name - Dr. John Doe
+  //         </p>
+  //       </div>
+  //     </div>
+  //    {
+  //      programStatus === "doc_shortfall" &&  <div className="flex justify-center items-center p-2">
+  //      <button
+  //        onClick={handleRequestShortfallProgram}
+  //        className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
+  //      >
+  //       <div className="">
+  //       <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
+  //       <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
+  //       </div>
+  //      <div>
+  //      <Upload/>
+  //      </div>
+  //      </button>
+  //    </div>
+  //    }
+  //   </div>
+  // );
+  console.log('program,program',ACTIVE_PROGRAMS)
   const renderActiveProgram = () => (
     <>
-      <div className="pt-4 w-full ">
-        {ACTIVE_PROGRAMS.map((program) => (
+     <div className="pt-4 w-full">
+      {ACTIVE_PROGRAMS.map((program) => (
+        program.status === 'Active' || program.status === 'Applied' ? (
           <div key={program.id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
             <div className="flex justify-between items-center mb-2">
               <div className="flex gap-4">
                 <h3 className="text-lg font-semibold">{program.name}</h3>
-                <span className="px-4 py-1 bg-[#D9FFD5] text-[#3B3B3B] text-[14px] rounded-full">
-                  Active
+                <span 
+                  className={`px-4 py-1 ${
+                    program.status === 'Active' ? 'bg-[#D9FFD5]' : 'bg-[#fbffd5]'
+                  } text-[#3B3B3B] text-[14px] rounded-full`}
+                >
+                  {program.status}
                 </span>
               </div>
               <div className="flex gap-2 items-center">
-                <button  onClick={() => handleViewHistory(program)} className="text-white bg-primary py-[4px] px-[14px] rounded-[6px] text-sm font-medium">
+                <button 
+                  onClick={() => handleViewHistory(program)} 
+                  className="text-white bg-primary py-[4px] px-[14px] rounded-[6px] text-sm font-medium"
+                >
                   View History
                 </button>
               </div>
             </div>
             <div className="space-y-[6px] text-gray-600">
               <p className="text-[#767676] text-[14px] font-open-sans font-bold">
-                UID {program.uid}
+                UID - {program.uid}
               </p>
               <p className="text-[#767676] text-[14px]">
                 Enrollment Date - {program.enrollmentDate}
@@ -286,15 +214,64 @@ const renderUnactiveProgram = () => (
               </p>
             </div>
           </div>
-        ))}
-      </div>
+        ) : (
+          <div key={program.id} className="w-full bg-white rounded-lg shadow-md mt-4 border mb-6">
+            <div className="flex items-center gap-2 p-4">
+              <h2 className="text-[18px] font-bold">{program.name}</h2>
+              <span
+                className={`px-4 py-1 ${
+                  program.status === 'shortfall' ? 'bg-red-100 text-red-800' : ''
+                } text-[#3B3B3B] text-[14px] rounded-full`}
+              >
+                {program.status === "doc_shortfall" ? "Document Shortfall" : "Profile under Review"}
+              </span>
+            </div>
+            <div className="px-4 flex gap-4">
+              <div className="space-y-2 text-gray-600 mb-6">
+                <p className="text-[#767676] text-[14px] font-sans font-bold">
+                  UID 10015
+                </p>
+                <p className="text-[#767676] text-[14px] font-open-sans">
+                  FOC Orders - 01
+                </p>
+                <p className="text-[#767676] text-[14px] font-open-sans">
+                  Enrollment Date - 9th Jun, 2021
+                </p>
+                <p className="text-[#767676] text-[14px] font-open-sans">
+                  Schemes - 9+LFT
+                </p>
+                <p className="text-[#767676] text-[14px] font-open-sans">
+                  Doctor's Name - Dr. John Doe
+                </p>
+              </div>
+            </div>
+            {programStatus === "doc_shortfall" && (
+              <div className="flex justify-center items-center p-2">
+                <button
+                  onClick={handleRequestShortfallProgram}
+                  className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
+                >
+                  <div>
+                    <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
+                    <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
+                  </div>
+                  <div>
+                    <Upload />
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
+        )
+      ))}
+    </div>
    
  
       <div className="w-full pb-20">
         <h2 className="text-lg font-semibold w-full mb-6">Value Added Services</h2>
-        <div className="space-y-6 pb-30">
+        <div className="space-y-6 pb-30  mb-20">
             {/* physical verification has been sheduled */}
-          <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
+          {/* <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
             <div className="flex gap-4  items-center ">
               <div className="p-3 rounded-lg">
                 <PhysicalverificationSheduled width={70} />
@@ -312,10 +289,10 @@ const renderUnactiveProgram = () => (
             </span>
              PAP Team will soon reach out to for verification
             </button>
-          </div>
+          </div> */}
 
       {/* physical verification has been sheduled by Phlebo */}
-      <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
+      {/* <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
             <div className="flex gap-4  items-center ">
               <div className="p-3 rounded-lg">
                 <PhysicalverificationSheduled width={70} />
@@ -335,8 +312,8 @@ const renderUnactiveProgram = () => (
             </span>
             &lt;Phlebo&gt; Team will soon reach out to for verification
             </button>
-          </div>
-          {/* defaul physical very card */}
+          </div> */}
+          {/* defautl physical very card */}
 
           <div className="bg-white rounded-lg shadow-sm p-4 border ">
             <div className="flex gap-4 mb-3">
@@ -392,10 +369,15 @@ const renderUnactiveProgram = () => (
     <div className="flex flex-col items-center   p-4  max-h-screen bg-white">
       <h2 className="text-lg font-semibold w-full py-4">Programs</h2>
 
-      {programStatus === "un_active" && renderUnactiveProgram()}
-      {(programStatus === "doc_shortfall" || programStatus === "profile_under_review") && renderShortfallProgram()}
+      {(number_of_programs_enrollled ?? 0) > 0 
+    ? renderActiveProgram() 
+    : renderAvailablePrograms()}
 
-      {programStatus === "active" && renderActiveProgram()}
+
+      {/* {AVAILABLE_PROGRAMS && renderAvailablePrograms()} */}
+      {/* {(programStatus === "doc_shortfall" || programStatus === "profile_under_review") && renderShortfallProgram()} */}
+
+      {/* {ACTIVE_PROGRAMS  && renderActiveProgram()} */}
 
       <div className="fixed bottom-24 z-30 w-full">
         <FabButton />

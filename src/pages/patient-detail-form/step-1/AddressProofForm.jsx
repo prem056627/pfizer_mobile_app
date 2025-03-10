@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../../../components/Form/InputField";
+import SelectField from "../../../components/Form/SelectField";
+import { useSelector } from "react-redux";
+import { selectInitializeData } from "../../../slice/patient-detail-form";
 
 const AddressProofForm = ({ formik }) => {
+  let initialDataa = useSelector(selectInitializeData);
+
+  const STATE_MAPPING = initialDataa?.response?.state;
+  const CITY_MAPPING = initialDataa?.response?.city;
+
   return (
     <div className="flex grow flex-col gap-4">
       <InputField
@@ -13,7 +21,10 @@ const AddressProofForm = ({ formik }) => {
         value={formik.values.permanent_addressline1}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.permanent_addressline1 && formik.errors.permanent_addressline1}
+        error={
+          formik.touched.permanent_addressline1 &&
+          formik.errors.permanent_addressline1
+        }
       />
 
       <InputField
@@ -25,31 +36,56 @@ const AddressProofForm = ({ formik }) => {
         value={formik.values.permanent_addressline2}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.permanent_addressline2 && formik.errors.permanent_addressline2}
+        error={
+          formik.touched.permanent_addressline2 &&
+          formik.errors.permanent_addressline2
+        }
       />
 
-      <InputField
+      <SelectField
         key="permanent_city"
-        label="City"
+        label={<>City</>}
         name="permanent_city"
         id="permanent_city"
-        placeholder="Enter City"
-        value={formik.values.permanent_city}
+        formik={formik}
+        placeholder="Select"
+        value={formik.values.city}
+        optionsDataName="permanent_city"
+        optionsData={
+          CITY_MAPPING
+            ? CITY_MAPPING.map((stateItem) => ({
+                id: stateItem[1], // Use the state name as ID
+                label: stateItem[1], // Use the state name as label
+              })).sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
+            : []
+        }
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.permanent_city && formik.errors.permanent_city}
+        className="w-1/2"
+        bottomPadding={false}
       />
 
-      <InputField
+      <SelectField
         key="permanent_state"
-        label="State"
+        label={<>State</>}
         name="permanent_state"
         id="permanent_state"
-        placeholder="Enter State"
-        value={formik.values.permanent_state}
+        formik={formik}
+        placeholder="Select"
+        value={formik.values.state}
+        optionsDataName="permanent_state"
+        optionsData={
+          STATE_MAPPING
+            ? STATE_MAPPING.map((stateItem) => ({
+                id: stateItem[1], // Use the state name as ID
+                label: stateItem[1], // Use the state name as label
+              })).sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
+            : []
+        }
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.permanent_state && formik.errors.permanent_state}
+        className="w-1/2"
+        bottomPadding={false}
       />
 
       <InputField
@@ -61,7 +97,9 @@ const AddressProofForm = ({ formik }) => {
         value={formik.values.permanent_pincode}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.permanent_pincode && formik.errors.permanent_pincode}
+        error={
+          formik.touched.permanent_pincode && formik.errors.permanent_pincode
+        }
       />
     </div>
   );

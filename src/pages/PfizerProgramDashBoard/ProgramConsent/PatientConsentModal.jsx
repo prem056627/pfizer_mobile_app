@@ -10,7 +10,7 @@ import Modal from '../../../components/Modal/Modal';
 // import ProfileModalForm from './ProfileModalForm';
 import PatientConsent from './PatientConsent';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectProgramEnrollmentConsent, setProgramEnrollmentConsent } from '../../../slice/patient-detail-form';
+import { selectProgramEnrollmentConsent, setCurrentView, setProgramEnrollmentConsent } from '../../../slice/patient-detail-form';
 
 function PatientConsentModal() {
     // const profilePageOpen = useSelector(selectIsProfilePageOpen); 
@@ -18,6 +18,7 @@ function PatientConsentModal() {
 
     function closeModal() {
        dispatch(setProgramEnrollmentConsent(false));
+    //    dispatch(setCurrentView("home"));
         console.log("Modal closed");
     }
 const enrollmentConsent =  useSelector(selectProgramEnrollmentConsent);

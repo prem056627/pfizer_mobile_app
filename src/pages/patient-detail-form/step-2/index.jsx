@@ -30,7 +30,7 @@ const CaregiverDetailsForm = () => {
 const [isLoading, setIsLoading] = useState(true);
   const triggerApi = useApi();
   const initialValues = {
-    ...getCaregiverDetailsInitialValues(formData.cancer_risk_factors)
+    ...getCaregiverDetailsInitialValues(formData)
   };
 
   let initiaData = useSelector(selectPatientDetails);

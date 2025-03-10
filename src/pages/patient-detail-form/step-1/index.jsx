@@ -21,9 +21,9 @@ import useApi from "../../../hooks/useApi";
 
 const FormDebugger = ({ values, errors, touched }) => {
   React.useEffect(() => {
-    console.log('Current Values:', values);
-    console.log('Current Errors:', errors);
-    console.log('Touched Fields:', touched);
+    // console.log('Current Values:', values);
+    // console.log('Current Errors:', errors);
+    // console.log('Touched Fields:', touched);
   }, [values, errors, touched]);
 
   return null;
@@ -93,6 +93,8 @@ const makeApiCall = async (values) => {
 
 
   const onSubmit = async (values, { setSubmitting }) => {
+
+    console.log('valuessss!!',values);
     try {
       // Save to local storage
       setFormData({
@@ -114,7 +116,6 @@ const makeApiCall = async (values) => {
     }
   };
 
-  // const formSections = [
   //   {
   //     title: "Personal Details",
   //     isSubmitted: false,

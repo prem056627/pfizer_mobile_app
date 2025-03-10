@@ -1,12 +1,26 @@
 import React from "react";
 import InputField from "../../../components/Form/InputField";
+import SelectField from "../../../components/Form/SelectField";
+import { selectInitializeData } from "../../../slice/patient-detail-form";
+import { useSelector } from "react-redux";
 // import CheckboxField from "../../../components/Form/CheckBox";
 
 const CurrentResidentialAddress = ({ formik }) => {
+
+  let initialDataa = useSelector(selectInitializeData);
+  
+  // console.log("initialDataainitialDataa!!",initialDataa?.response?.state);
+  
+  
+  const STATE_MAPPING = initialDataa?.response?.state
+  const CITY_MAPPING = initialDataa?.response?.city
+  // console.log("Unique current_state values:", [...new Set(Object.values(CITY_MAPPING))]);
+
+
   const handleSameAsPermanentChange = (e) => {
     const isChecked = e.target.checked;
     
-    // Update the checkbox state
+    // Update the checkbox current_state
     formik.setFieldValue("same_as_permanent", isChecked);
 
     if (isChecked) {
@@ -78,7 +92,7 @@ const CurrentResidentialAddress = ({ formik }) => {
         disabled={formik.values.same_as_permanent}
         error={formik.touched.current_addressline2 && formik.errors.current_addressline2}
       />
-
+{/* 
       <InputField
         key="current_city"
         label="City"
@@ -90,20 +104,62 @@ const CurrentResidentialAddress = ({ formik }) => {
         onBlur={formik.handleBlur}
         disabled={formik.values.same_as_permanent}
         error={formik.touched.current_city && formik.errors.current_city}
-      />
+      /> */}
 
-      <InputField
-        key="current_state"
-        label="State"
-        name="current_state"
-        id="current_state"
-        placeholder="Enter State"
-        value={formik.values.current_state}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        disabled={formik.values.same_as_permanent}
-        error={formik.touched.current_state && formik.errors.current_state}
-      />
+   <SelectField
+     key="current_city"
+     label={
+       <>
+         City 
+       </>
+     }
+     name="current_city"
+     id="current_city"
+     formik={formik}
+     placeholder="Select City"
+     
+     value={formik.values.current_city}
+     optionsDataName="current_city"
+     optionsData={
+       CITY_MAPPING 
+         ? CITY_MAPPING.map(stateItem => ({
+             id: stateItem[1], // Use the current_state name as ID
+             label: stateItem[1] // Use the current_state name as label
+           })).sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
+         : []
+     }
+     onChange={formik.handleChange}
+     onBlur={formik.handleBlur}
+     className="w-1/2"
+     bottomPadding={false}
+   />
+   
+   <SelectField
+     key="current_state"
+     label={
+       <>
+         current_state 
+       </>
+     }
+     name="current_state"
+     id="current_state"
+     formik={formik}
+     placeholder="Select"
+     value={formik.values.current_state}
+     optionsDataName="current_state"
+     optionsData={
+       STATE_MAPPING 
+         ? STATE_MAPPING.map(stateItem => ({
+             id: stateItem[1], // Use the current_state name as ID
+             label: stateItem[1] // Use the current_state name as label
+           })).sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
+         : []
+     }
+     onChange={formik.handleChange}
+     onBlur={formik.handleBlur}
+     className="w-1/2"
+     bottomPadding={false}
+   />
 
       <InputField
         key="current_pincode"
