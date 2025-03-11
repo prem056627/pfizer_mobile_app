@@ -51,7 +51,7 @@ const AppNavigation = () => {
       setIsLoading(true);
   
       const { response, success } = await triggerApi({
-        url: `/patient_dashboard/?current_step=initialize`,
+        url: `/patient_dashboard/`,
         type: "GET",
         loader: true,
       });
@@ -89,10 +89,7 @@ const AppNavigation = () => {
       return <Notifications  />;
     }
   
-    // Then check app state for workflow navigation
-    if (current_role === 'Home') {
-      // return <PfizerProgramsPage    />;
-    } else if (current_page_state === 'patient_enrolment') {
+  if (current_page_state === 'patient_enrolment') {
       return <PatientDetailForm    />;
     }
     else if (current_page_state === 'caregiver_addition') {
@@ -108,13 +105,13 @@ const AppNavigation = () => {
           return <PfizerProgram />;
       }
     }
-     else if (current_page_state === 'remote_verification_pending' || 
-              current_page_state === 'physical_verification_pending') {
-      return <PhysicalVerificationModal    />;
-    } else {
-      // Default fallback - redirect to enrolment
-      // return <PatientDetailForm    />;
-    }
+    //  else if (current_page_state === 'remote_verification_pending' || 
+    //           current_page_state === 'physical_verification_pending') {
+    //   return ;
+    // } else {
+    //   // Default fallback - redirect to enrolment
+    //   // return <PatientDetailForm    />;
+    // }
   };
 
   // Loading state
@@ -129,8 +126,8 @@ const AppNavigation = () => {
   }
 
   // Determine if footer should be hidden
-  const hideFooter = current_page_state === 'program_unactive' &&   doc_upload_status !== 'scheme_enroll_doc' || 
-                     current_page_state === 'enrollment_not_complete';
+  const hideFooter =  current_page_state === 'program_enrolment' && doc_upload_status === 'scheme_enroll_doc' || 
+                     current_page_state === 'patient_enrolment';
 
   // console.log('Rendering Home with hideFooter:', hideFooter);
                     

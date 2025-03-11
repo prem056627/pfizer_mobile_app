@@ -41,7 +41,7 @@ const FormDebugger = ({ values, errors, touched }) => {
 
 const PersonalDetails = () => {
   const dispatch = useDispatch();
-  const currentStep = useSelector(selectCurrentStep);
+  // const currentStep = useSelector(selectCurrentStep);
 
   const currentPageState = useSelector(selectCurrentPageState);
 
@@ -62,16 +62,18 @@ const [isLoading, setIsLoading] = useState(true);
 
 // And here's the fixed client-side function:
 const makeApiCall = async (values) => {
+  console.log("form Val!!! " , values ) ;
   try {
     setIsLoading(true);
 
     // Set current_step parameter in the URL
-    const url = `/patient_dashboard/?current_step=patient_enrolment`;
-    
+    const currentStep = currentPageState; // This should be dynamically assigned
+const url = `/patient_dashboard/?current_step=${currentStep}`;
+
     const { response, success } = await triggerApi({
       url: url,
       type: "POST",
-      data: values || {}, // Make sure we always send a valid object
+      payload: values || {},
       loader: true,
     });
 

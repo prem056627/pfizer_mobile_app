@@ -50,12 +50,12 @@ const makeApiCall = async (values) => {
     const { response, success } = await triggerApi({
       url: url,
       type: "POST",
-      data: values || {}, // Make sure we always send a valid object
+      payload: values || {}, // Make sure we always send a valid object
       loader: true,
     });
 
     if (success && response) {
-      console.log("Form data submitted successfully:", response.current_step);
+      console.log("Form data submitted successfully:", response);
       dispatch(setCurrentPageState(response?.current_step))
       dispatch(setProgramStatus(response?.program_status))
       
@@ -74,6 +74,8 @@ const makeApiCall = async (values) => {
 
 
   const onSubmit = async (values) => {
+
+    console.log("current 2nd step vlues" , values)
 
 
      try {
@@ -147,10 +149,10 @@ const makeApiCall = async (values) => {
         <Formik
           initialValues={initialValues}
           validationSchema={combinedValidationSchema}
-          validateOnMount={
-            formData?.cancer_risk_factors && 
-            Object.keys(formData?.cancer_risk_factors).length > 0
-          }
+          // validateOnMount={
+          //   formData?.cancer_risk_factors && 
+          //   Object.keys(formData?.cancer_risk_factors).length > 0
+          // }
           onSubmit={onSubmit}
         >
           {(formik) => (

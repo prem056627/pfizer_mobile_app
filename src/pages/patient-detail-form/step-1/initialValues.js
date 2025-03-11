@@ -9,21 +9,27 @@ export const getProfileInitialValues = (storedData = {}) => {
     mobile_number: storedData.mobile_number || "",
     email: storedData.email || "",
     nationality: storedData.nationality || "",
-    
-    // Address Proof
-    permanent_addressline1: storedData.permanent_addressline1 || "",
-    permanent_addressline2: storedData.permanent_addressline2 || "",
-    permanent_city: storedData.permanent_city || "",
-    permanent_state: storedData.permanent_state || "",
-    permanent_pincode: storedData.permanent_pincode || "",
-    
-    // Current Residential Address
-    same_as_permanent: storedData.same_as_permanent || false,
-    current_addressline1: storedData.current_addressline1 || "",
-    current_addressline2: storedData.current_addressline2 || "",
-    current_city: storedData.current_city || "",
-    current_state: storedData.current_state || "",
-    current_pincode: storedData.current_pincode || "",
+
+    // Address
+    address: {
+      // Permanent Address
+      permanent: {
+        line1: storedData.permanent_line1 || "",
+        line2: storedData.permanent_line2 || "",
+        city: storedData.permanent_city || "",
+        state: storedData.permanent_state || "",
+        pincode: storedData.permanent_pincode || "",
+      },
+      // Current Residential Address
+      current: {
+        same_as_permanent: storedData.same_as_permanent || false,
+        line1: storedData.current_line1 || "",
+        line2: storedData.current_line2 || "",
+        city: storedData.current_city || "",
+        state: storedData.current_state || "",
+        pincode: storedData.current_pincode || "",
+      },
+    },
     
     // ID Details
     id_card_type: storedData.id_card_type || "",
@@ -42,19 +48,19 @@ export const fieldGroups = {
     'nationality'
   ],
   addressProof: [
-    'permanent_addressline1',
-    'permanent_addressline2',
-    'permanent_city',
-    'permanent_state',
-    'permanent_pincode'
+    'address.permanent.addressline1',
+    'address.permanent.addressline2',
+    'address.permanent.city',
+    'address.permanent.state',
+    'address.permanent.pincode'
   ],
   currentResidentialAddress: [
-    'same_as_permanent',
-    'current_addressline1',
-    'current_addressline2',
-    'current_city',
-    'current_state',
-    'current_pincode'
+    'address.current.same_as_permanent',
+    'address.current.addressline1',
+    'address.current.addressline2',
+    'address.current.city',
+    'address.current.state',
+    'address.current.pincode'
   ],
   idDetails: [
     'id_card_type',

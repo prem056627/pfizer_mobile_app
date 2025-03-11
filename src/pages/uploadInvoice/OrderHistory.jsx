@@ -15,55 +15,11 @@ const OrderHistory = () => {
   const dispatch = useDispatch();
   const program = useSelector(selectSelectedProgram);
   
-  // Dummy data for paid orders
-  const paidOrders = [
-    {
-      id: "PO12345",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    },
-    {
-      id: "PO12346",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    },
-    {
-      id: "PO12347",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    }
-  ];
-
-  // Dummy data for FOC orders
-  const focOrders = [
-    {
-      id: "FOC9876",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    },
-    {
-      id: "FOC9877",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    },
-    {
-      id: "FOC9878",
-      uid: program?.uid,
-      enrollmentDate: program?.enrollmentDate,
-      schemes: program?.schemes,
-      doctorName: program?.doctorName
-    }
-  ];
+  // Use actual data from Redux store, no fallback dummy data
+  const paidOrders = program?.orders?.paid_orders || [];
+  const focOrders = program?.orders?.foc_orders || [];
+  
+  console.log('paidOrders,focOrders', paidOrders, focOrders);
   
   // Handle back navigation
   const handleBack = () => {
@@ -71,21 +27,20 @@ const OrderHistory = () => {
   };
 
   const UploadInvoiceHandle = () => {
-    // Implement upload invoice functionality here
     console.log("Upload invoice");
     dispatch(setUploadInvoiceModalOpen(true));
   };
 
   const RequestFocHandle = () => {
-    // Implement request FOC functionality here
     console.log("Request FOC");
-    // Add your request FOC logic here
-
-
     dispatch(setRequestFocModalOpen(true));
   };
 
-
+  // Handle file view
+  const handleFileView = (fileName) => {
+    console.log("Viewing file:", fileName);
+    // Implement file viewing functionality here
+  };
 
   // If no program is selected, show a fallback or redirect
   if (!program) {
@@ -106,7 +61,7 @@ const OrderHistory = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header with Pfizer Logo and Back Button */}
+      {/* Header with Back Button */}
       <div className="h-20 w-full flex justify-between items-center px-4">
         <button 
           onClick={handleBack}
@@ -121,30 +76,30 @@ const OrderHistory = () => {
       {/* Program Details */}
       <div className="px-6 pt-2">
         <div className="flex items-center gap-2 mb-3">
-          <h2 className="text-[18px] font-bold">{program.name}</h2>
+          <h2 className="text-[18px] font-bold">{program.program_name}</h2>
           <span className="px-2 py-1 bg-green-100 text-green-800 text-sm rounded-full">
-            {program.status}
+            {program.program_status}
           </span>
         </div>
 
         <div className="space-y-2 text-gray-600 mb-6">
           <p className="text-[#767676] text-[14px] font-sans font-bold">
-            UID {program.uid}
+            Program ID: {program.order_id || program.program_id || "N/A"}
           </p>
           <p className="text-[#767676] text-[14px] font-open-sans">
-            FOC Orders - {focOrders.length || program.orders || "01"}
+            FOC Orders - {focOrders.length}
           </p>
           <p className="text-[#767676] text-[14px] font-open-sans">
-            Paid Orders - {paidOrders.length || "04"}
+            Paid Orders - {paidOrders.length}
           </p>
           <p className="text-[#767676] text-[14px] font-open-sans">
-            Enrollment Date - {program.enrollmentDate}
+            Enrollment Date - {program.order_date || program.program_enrollmentDate || "N/A"}
           </p>
           <p className="text-[#767676] text-[14px] font-open-sans">
-            Schemes - {program.schemes}
+            Schemes - {program.program_scheme || program.order_scheme || "N/A"}
           </p>
           <p className="text-[#767676] text-[14px] font-open-sans">
-            Doctor's Name - {program.doctorName}
+            Doctor's Name - {program.doctor_name || "N/A"}
           </p>
         </div>
       </div>
@@ -192,34 +147,60 @@ const OrderHistory = () => {
         </div>
         <div className="pb-30">
           {/* Render orders based on active tab */}
-          {(activeTab === "paid" ? paidOrders : focOrders).map((order, index) => (
-            <div key={index} className="bg-white rounded-lg border shadow-sm p-4 mb-4 mt-6">
-              <div className="flex justify-between items-center pb-2">
-                <h3 className="text-[14px] font-bold text-[#212121]">
-                  Order ID {order.id}
-                </h3>
-                {activeTab === "paid" ?  <button className="text-white bg-primary py-[4px] px-[14px] rounded-[6px] text-[12px] font-sans font-medium">
-                  View Invoice
-                </button> :  <button className="text-white bg-primary py-[4px] px-[14px] rounded-[6px] text-[12px] font-sans font-medium">
-                  View RX
-                </button>}
-               
+          {(activeTab === "paid" ? paidOrders : focOrders).length > 0 ? (
+            (activeTab === "paid" ? paidOrders : focOrders).map((order, index) => (
+              <div key={index} className="bg-white rounded-lg border shadow-sm p-4 mb-4 mt-6">
+                <div className="flex justify-between items-center pb-2">
+                  <h3 className="text-[14px] font-bold text-[#212121]">
+                    Order Code: {order.order_id}
+                  </h3>
+                  <p className="text-[#767676] text-[14px] font-open-sans font-bold">
+                    <span 
+                      className={`px-2 py-1 ${
+                        order.order_status === 'Open' ? 'bg-[#D9FFD5] text-green-800' : 'bg-[#f8cdcd] text-red-800'
+                      } text-[12px] rounded-full`}
+                    >
+                      {order.order_status}
+                    </span>
+                  </p>
+                </div>
+       
+                <div className="space-y-[6px] text-gray-600">
+                  <p className="text-[#767676] text-[14px]">
+                    Order Date: {order.order_date}
+                  </p>
+                  <p className="text-[#767676] text-[14px]">
+                    Scheme: {order.order_scheme}
+                  </p>
+                  <p className="text-[#767676] text-[14px]">
+                    Doctor's Name: {order.doctor_name || program.doctor_name || "N/A"}
+                  </p>
+                  
+                  {/* File list section */}
+                  {order.order_file && order.order_file.length > 0 && (
+                    <div className="mt-3 flex gap-4 items-center">
+                      <p className="text-[#767676] text-[14px] ">View Files:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {order.order_file.map((file, fileIndex) => (
+                          <button 
+                            key={fileIndex}
+                            onClick={() => handleFileView(file)}
+                            className="inline-block bg-primary-200 text-primary text-[12px] py-1 px-3 rounded-full border border-primary"
+                          >
+                            {`file-${fileIndex + 1}`}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-
-              <div className="space-y-[6px] text-gray-600">
-                <p className="text-[#767676] text-[14px] font-open-sans font-bold">
-                  UID {order.uid}
-                </p>
-                <p className="text-[#767676] text-[14px]">
-                  Enrollment Date - {order.enrollmentDate}
-                </p>
-                <p className="text-[#767676] text-[14px]">Schemes - {order.schemes}</p>
-                <p className="text-[#767676] text-[14px]">
-                  Doctor's Name - {order.doctorName}
-                </p>
-              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 bg-white rounded-lg shadow-sm">
+              <p className="text-gray-500">No {activeTab === "paid" ? "paid" : "FOC"} orders available</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 

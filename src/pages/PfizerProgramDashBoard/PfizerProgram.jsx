@@ -25,7 +25,7 @@ import OrderHistory from "../uploadInvoice/OrderHistory";
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
 
-
+// APPLIED_PROGRAMS
 
 const PfizerProgram = () => {
   const dispatch = useDispatch();
@@ -36,10 +36,12 @@ const PfizerProgram = () => {
 
   const number_of_programs_enrollled = initiaData?.response?.program_data?.enrolled_programs;
   console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
-const ACTIVE_PROGRAMS = initiaData?.response?.program_data?.active_programs||[];
+const APPLIED_PROGRAMS = initiaData?.response?.program_data?.applied_programs||[];
+
+console.log("Applied Programs",APPLIED_PROGRAMS);
 
 const AVAILABLE_PROGRAMS = initiaData?.response?.program_data?.available_programs||[];
-console.log('initiaDatainitiaDatainitiaData',ACTIVE_PROGRAMS);
+console.log('initiaDatainitiaDatainitiaData',APPLIED_PROGRAMS);
 
   const handleRequest = () => {
     dispatch(setProgramEnrollmentConsent(true));
@@ -50,6 +52,7 @@ console.log('initiaDatainitiaDatainitiaData',ACTIVE_PROGRAMS);
   };
 
   const handleViewHistory = (program) => {
+    // console.log('selected program !!!',program)
     dispatch(setSelectedProgram(program));
     dispatch(setViewingOrderHistory(true));
   };
@@ -174,22 +177,22 @@ const renderAvailablePrograms = () => (
   //    }
   //   </div>
   // );
-  console.log('program,program',ACTIVE_PROGRAMS)
+  console.log('program,program',APPLIED_PROGRAMS)
   const renderActiveProgram = () => (
     <>
      <div className="pt-4 w-full">
-      {ACTIVE_PROGRAMS.map((program) => (
-        program.status === 'Active' || program.status === 'Applied' ? (
-          <div key={program.id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
+      {APPLIED_PROGRAMS.map((program) => (
+        program.status === 'Active' || program.program_status === 'Applied' ? (
+          <div key={program.program_id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
             <div className="flex justify-between items-center mb-2">
               <div className="flex gap-4">
-                <h3 className="text-lg font-semibold">{program.name}</h3>
+                <h3 className="text-lg font-semibold">{program.program_name}</h3>
                 <span 
                   className={`px-4 py-1 ${
-                    program.status === 'Active' ? 'bg-[#D9FFD5]' : 'bg-[#fbffd5]'
+                    program.program_status === 'Active' ? 'bg-[#D9FFD5]' : 'bg-[#fbffd5]'
                   } text-[#3B3B3B] text-[14px] rounded-full`}
                 >
-                  {program.status}
+                  {program.program_status}
                 </span>
               </div>
               <div className="flex gap-2 items-center">
@@ -203,14 +206,14 @@ const renderAvailablePrograms = () => (
             </div>
             <div className="space-y-[6px] text-gray-600">
               <p className="text-[#767676] text-[14px] font-open-sans font-bold">
-                UID - {program.uid}
+                UID - {program.program_id}
               </p>
               <p className="text-[#767676] text-[14px]">
-                Enrollment Date - {program.enrollmentDate}
+                Enrollment Date - {program.program_enrollmentDate}
               </p>
-              <p className="text-[#767676] text-[14px]">Schemes - {program.schemes}</p>
+              <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
               <p className="text-[#767676] text-[14px]">
-                Doctor's Name - {program.doctorName}
+                Doctor's Name - {program.doctor_name}
               </p>
             </div>
           </div>
@@ -229,19 +232,18 @@ const renderAvailablePrograms = () => (
             <div className="px-4 flex gap-4">
               <div className="space-y-2 text-gray-600 mb-6">
                 <p className="text-[#767676] text-[14px] font-sans font-bold">
-                  UID 10015
+                UID - {program.program_id}
                 </p>
+                {/* need to update */}
                 <p className="text-[#767676] text-[14px] font-open-sans">
                   FOC Orders - 01
                 </p>
                 <p className="text-[#767676] text-[14px] font-open-sans">
-                  Enrollment Date - 9th Jun, 2021
+                Enrollment Date - {program.program_enrollmentDate}
                 </p>
+                <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
                 <p className="text-[#767676] text-[14px] font-open-sans">
-                  Schemes - 9+LFT
-                </p>
-                <p className="text-[#767676] text-[14px] font-open-sans">
-                  Doctor's Name - Dr. John Doe
+                Doctor's Name - {program.doctor_name}
                 </p>
               </div>
             </div>
@@ -377,7 +379,7 @@ const renderAvailablePrograms = () => (
       {/* {AVAILABLE_PROGRAMS && renderAvailablePrograms()} */}
       {/* {(programStatus === "doc_shortfall" || programStatus === "profile_under_review") && renderShortfallProgram()} */}
 
-      {/* {ACTIVE_PROGRAMS  && renderActiveProgram()} */}
+      {/* {APPLIED_PROGRAMS  && renderActiveProgram()} */}
 
       <div className="fixed bottom-24 z-30 w-full">
         <FabButton />

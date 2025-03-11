@@ -13,44 +13,44 @@ const AddressProofForm = ({ formik }) => {
   return (
     <div className="flex grow flex-col gap-4">
       <InputField
-        key="permanent_addressline1"
+        key="address.permanent.line1"
         label="Address Line 1"
-        name="permanent_addressline1"
-        id="permanent_addressline1"
+        name="address.permanent.line1"
+        id="address.permanent.line1"
         placeholder="Enter Address Line 1"
-        value={formik.values.permanent_addressline1}
+        value={formik.values.address.permanent.line1}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.permanent_addressline1 &&
-          formik.errors.permanent_addressline1
+          formik.touched.address?.permanent?.line1 &&
+          formik.errors.address?.permanent?.line1
         }
       />
 
       <InputField
-        key="permanent_addressline2"
+        key="address.permanent.line2"
         label="Address Line 2"
-        name="permanent_addressline2"
-        id="permanent_addressline2"
+        name="address.permanent.line2"
+        id="address.permanent.line2"
         placeholder="Enter Address Line 2"
-        value={formik.values.permanent_addressline2}
+        value={formik.values.address.permanent.line2}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.permanent_addressline2 &&
-          formik.errors.permanent_addressline2
+          formik.touched.address?.permanent?.line2 &&
+          formik.errors.address?.permanent?.line2
         }
       />
 
       <SelectField
-        key="permanent_city"
+        key="address.permanent.city"
         label={<>City</>}
-        name="permanent_city"
-        id="permanent_city"
+        name="address.permanent.city"
+        id="address.permanent.city"
         formik={formik}
         placeholder="Select"
-        value={formik.values.city}
-        optionsDataName="permanent_city"
+        value={formik.values.address.permanent.city}
+        optionsDataName="address.permanent.city"
         optionsData={
           CITY_MAPPING
             ? CITY_MAPPING.map((stateItem) => ({
@@ -66,14 +66,14 @@ const AddressProofForm = ({ formik }) => {
       />
 
       <SelectField
-        key="permanent_state"
+        key="address.permanent.state"
         label={<>State</>}
-        name="permanent_state"
-        id="permanent_state"
+        name="address.permanent.state"
+        id="address.permanent.state"
         formik={formik}
         placeholder="Select"
-        value={formik.values.state}
-        optionsDataName="permanent_state"
+        value={formik.values.address.permanent.state}
+        optionsDataName="address.permanent.state"
         optionsData={
           STATE_MAPPING
             ? STATE_MAPPING.map((stateItem) => ({
@@ -89,16 +89,17 @@ const AddressProofForm = ({ formik }) => {
       />
 
       <InputField
-        key="permanent_pincode"
+        key="address.permanent.pincode"
         label="Pincode"
-        name="permanent_pincode"
-        id="permanent_pincode"
+        name="address.permanent.pincode"
+        id="address.permanent.pincode"
         placeholder="Enter Pincode"
-        value={formik.values.permanent_pincode}
+        value={formik.values.address.permanent.pincode}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.permanent_pincode && formik.errors.permanent_pincode
+          formik.touched.address?.permanent?.pincode && 
+          formik.errors.address?.permanent?.pincode
         }
       />
     </div>

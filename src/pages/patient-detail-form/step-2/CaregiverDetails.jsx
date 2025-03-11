@@ -1,338 +1,260 @@
-// import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
-// import InputField from '../../../components/Form/InputField';
-// import SelectField from '../../../components/Form/SelectField';
-
-// const relationshipOptions = [
-//   { id: 'parent', label: 'Parent' },
-//   { id: 'spouse', label: 'Spouse' },
-//   { id: 'sibling', label: 'Sibling' },
-//   { id: 'guardian', label: 'Guardian' },
-//   { id: 'other', label: 'Other' },
-// ];
-
-// const CaregiverDetails = ({ formik }) => {
-//   const [isVerified, setIsVerified] = useState(false);
-//   const [otpSent, setOtpSent] = useState(false);
-//   const [otp, setOtp] = useState(Array(6).fill(''));
-//   const [isOtpComplete, setIsOtpComplete] = useState(false);
-
-//   useEffect(() => {
-//     const isComplete = otp.every(digit => digit !== '');
-//     setIsOtpComplete(isComplete);
-//   }, [otp]);
-
-//   if (!formik) {
-//     return null;
-//   }
-
-//   const handleSendOtp = () => {
-//     if (formik.validateField) {
-//       formik.validateField('caregiver_mobile_verify').then(() => {
-//         if (!formik.errors.caregiver_mobile_verify) {
-//           setOtpSent(true);
-//         }
-//       });
-//     }
-//   };
-
-//   const handleVerify = () => {
-//     setIsVerified(true);
-//     if (formik.setFieldValue) {
-//       formik.setFieldValue('caregiver_mobile', formik.values.caregiver_mobile_verify);
-//     }
-//   };
-
-//   const handleOtpChange = (index, value) => {
-//     if (value.length <= 1 && /^\d*$/.test(value)) {
-//       const newOtp = [...otp];
-//       newOtp[index] = value;
-//       setOtp(newOtp);
-      
-//       if (value !== '' && index < 5) {
-//         const nextInput = document.querySelector(`input[name=otp-${index + 1}]`);
-//         if (nextInput) nextInput.focus();
-//       }
-//     }
-//   };
-
-//   const values = formik.values || {};
-//   const touched = formik.touched || {};
-//   const errors = formik.errors || {};
-
-//   return (
-//     <div className="flex flex-col gap-4">
-//       {!isVerified && (
-//         <>
-//           <h3 className="font-semibold text-[#283A46] font-sans text-[16px] py-4">
-//             Verify Caregiver's Mobile Number
-//           </h3>
-//           <InputField
-//             key="caregiver_mobile_verify"
-//             label="Caregiver's Mobile Number"
-//             name="caregiver_mobile_verify"
-//             id="caregiver_mobile_verify"
-//             placeholder="Enter caregiver's mobile number"
-//             value={values.caregiver_mobile_verify || ''}
-//             onChange={formik.handleChange}
-//             onBlur={formik.handleBlur}
-//             error={touched.caregiver_mobile_verify && errors.caregiver_mobile_verify}
-//             disabled={otpSent}
-//           />
-          
-//           {!otpSent ? (
-//             <button
-//               onClick={handleSendOtp}
-//               disabled={!values.caregiver_mobile_verify || errors.caregiver_mobile_verify}
-//               className={`text-primary text-[12px] font-semibold w-fit ${
-//                 !values.caregiver_mobile_verify || errors.caregiver_mobile_verify
-//                   ? 'opacity-50 cursor-not-allowed'
-//                   : 'hover:underline cursor-pointer'
-//               }`}
-//             >
-//               GET OTP
-//             </button>
-//           ) : (
-//             <>
-//               <p className="text-gray-700">
-//                 Enter the OTP sent to <b>{values.caregiver_mobile_verify}</b>
-//               </p>
-//               <div className="flex gap-2">
-//                 {otp.map((digit, index) => (
-//                   <input
-//                     key={index}
-//                     name={`otp-${index}`}
-//                     type="text"
-//                     maxLength="1"
-//                     className="w-[52px] h-[52px] border rounded text-center"
-//                     value={digit}
-//                     onChange={(e) => handleOtpChange(index, e.target.value)}
-//                   />
-//                 ))}
-//               </div>
-//               <p className="text-gray-500">Resend OTP in 30</p>
-//               <button
-//                 onClick={handleVerify}
-//                 disabled={!isOtpComplete}
-//                 className={`flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide ${
-//                   !isOtpComplete ? 'opacity-50 cursor-not-allowed' : ''
-//                 }`}
-//               >
-//                 Verify
-//               </button>
-//             </>
-//           )}
-//         </>
-//       )}
-
-//       {isVerified && (
-//         <>
-//           <InputField
-//             key="caregiver_mobile"
-//             label="Caregiver's Mobile Number"
-//             name="caregiver_mobile"
-//             id="caregiver_mobile"
-//             value={values.caregiver_mobile || ''}
-//             error={touched.caregiver_mobile && errors.caregiver_mobile}
-//             disabled
-//           />
-//           <InputField
-//             key="caregiver_name"
-//             label="Caregiver's Name"
-//             name="caregiver_name"
-//             id="caregiver_name"
-//             placeholder="Enter name"
-//             value={values.caregiver_name || ''}
-//             onChange={formik.handleChange}
-//             onBlur={formik.handleBlur}
-//             error={touched.caregiver_name && errors.caregiver_name}
-//           />
-//           <InputField
-//             key="caregiver_email"
-//             label="Caregiver's Email ID"
-//             name="caregiver_email"
-//             id="caregiver_email"
-//             placeholder="Enter email"
-//             value={values.caregiver_email || ''}
-//             onChange={formik.handleChange}
-//             onBlur={formik.handleBlur}
-//             error={touched.caregiver_email && errors.caregiver_email}
-//           />
-//           <SelectField
-//             key="relationship"
-//             label="Relationship"
-//             name="relationship"
-//             id="relationship"
-//             formik={formik}
-//             placeholder="Select"
-//             value={values.relationship || ''}
-//             optionsData={relationshipOptions}
-//             onChange={formik.handleChange}
-//             onBlur={formik.handleBlur}
-//             error={touched.relationship && errors.relationship}
-//           />
-//           <button className="mt-2 text-blue-600 font-semibold hover:underline text-left">
-//             + Add New Caregiver
-//           </button>
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// CaregiverDetails.propTypes = {
-//   formik: PropTypes.object.isRequired
-// };
-
-// export default CaregiverDetails;
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import InputField from '../../../components/Form/InputField';
 import SelectField from '../../../components/Form/SelectField';
+import { getCaregiverDetailsInitialValues } from './initialValues';
 
+// Relationship options for the dropdown
 const relationshipOptions = [
   { id: 'parent', label: 'Parent' },
   { id: 'spouse', label: 'Spouse' },
   { id: 'sibling', label: 'Sibling' },
   { id: 'guardian', label: 'Guardian' },
   { id: 'other', label: 'Other' },
+  { id: 'NA', label: 'Not Applicable' },
 ];
 
 const CaregiverDetails = ({ formik }) => {
-  const [caregivers, setCaregivers] = useState([{ id: 1, isVerified: false, otpSent: false, otp: Array(6).fill('') }]);
-  const [otpTimers, setOtpTimers] = useState({});
+  // State to track caregivers and their details
+  const [caregivers, setCaregivers] = useState([
+    { 
+      id: 0, 
+      caregiver_id: 10009,
+      isVerified: false, 
+      otpSent: false, 
+      otp: Array(6).fill(''),
+      timerSeconds: 0
+    },
+    { 
+      id: 1, 
+      caregiver_id: 10010,
+      isVerified: false, 
+      otpSent: false, 
+      otp: Array(6).fill(''),
+      timerSeconds: 0
+    },
+    { 
+      id: 2, 
+      caregiver_id: 10011,
+      isVerified: false, 
+      otpSent: false, 
+      otp: Array(6).fill(''),
+      timerSeconds: 0
+    }
+  ]);
 
+  // State to track visible caregivers (starting with the first one)
+  const [visibleCaregivers, setVisibleCaregivers] = useState([0]);
+  
+  // State to track if initialization has been done
+  const [initialized, setInitialized] = useState(false);
+
+  // State for timers
+  const [timers, setTimers] = useState({});
+
+  // Cleanup timers when component unmounts
+  useEffect(() => {
+    return () => {
+      // Clear all active timers when component unmounts
+      Object.values(timers).forEach(timerId => {
+        clearInterval(timerId);
+      });
+    };
+  }, [timers]);
+
+  // Add event listener for form submission
   useEffect(() => {
     if (!formik) return;
-  
-    [1, 2, 3].forEach(id => {
-      if (!formik.values[`caregiver_${id}_mobile_verify`]) {
-        formik.setFieldValue(`caregiver_${id}_mobile_verify`, '');
-      }
-      if (!formik.values[`caregiver_${id}_mobile`]) {
-        formik.setFieldValue(`caregiver_${id}_mobile`, '');
-      }
-      if (!formik.values[`caregiver_${id}_name`]) {
-        formik.setFieldValue(`caregiver_${id}_name`, '');
-      }
-      if (!formik.values[`caregiver_${id}_email`]) {
-        formik.setFieldValue(`caregiver_${id}_email`, '');
-      }
-      if (!formik.values[`relationship_${id}`]) {
-        formik.setFieldValue(`relationship_${id}`, '');
-      }
-    });
-  }, [formik.values]); // Only re-run if values change
-  
-
-  if (!formik) {
-    return null;
-  }
-
-  const startOtpTimer = (caregiverId) => {
-    let seconds = 30;
     
-    // Clear any existing timer
-    if (otpTimers[caregiverId]) {
-      clearInterval(otpTimers[caregiverId]);
+    // Store the original onSubmit function
+    const originalOnSubmit = formik.handleSubmit;
+    
+    // Create a wrapper function that updates caregiverData before submitting
+    const newOnSubmit = (e) => {
+      // Prepare the updated caregiverData with grouped structure
+      const caregiver0 = {
+        caregiver_id: caregivers[0].caregiver_id,
+        caregiver_name: formik.values[`caregiver_0_name`] || '',
+        caregiver_email: formik.values[`caregiver_0_email`] || null,
+        caregiver_mobile: formik.values[`caregiver_0_mobile`] || null,
+        caregiver_relation: formik.values[`relationship_0`] || 'NA'
+      };
+      
+      const caregiver1 = {
+        caregiver_id: caregivers[1].caregiver_id,
+        caregiver_name: formik.values[`caregiver_1_name`] || '',
+        caregiver_email: formik.values[`caregiver_1_email`] || null,
+        caregiver_mobile: formik.values[`caregiver_1_mobile`] || null,
+        caregiver_relation: formik.values[`relationship_1`] || 'NA'
+      };
+      
+      const caregiver2 = {
+        caregiver_id: caregivers[2].caregiver_id,
+        caregiver_name: formik.values[`caregiver_2_name`] || '',
+        caregiver_email: formik.values[`caregiver_2_email`] || null,
+        caregiver_mobile: formik.values[`caregiver_2_mobile`] || null,
+        caregiver_relation: formik.values[`relationship_2`] || 'NA'
+      };
+      
+      // Group the caregivers as separate objects in the caregiverData field
+      formik.setFieldValue('caregiverData', {
+        caregiver0,
+        caregiver1,
+        caregiver2
+      });
+      
+      // Continue with the original submit
+      originalOnSubmit(e);
+    };
+    
+    // Replace the handleSubmit method
+    formik.handleSubmit = newOnSubmit;
+    
+    // Clean up
+    return () => {
+      formik.handleSubmit = originalOnSubmit;
+    };
+  }, [ caregivers, visibleCaregivers]);
+
+  // Return null if formik is not loaded yet
+  if (!formik) return null;
+
+  // Send OTP to caregiver's mobile
+  const sendOtp = (caregiverId) => {
+    // In a real app, this would make an API call to send OTP
+    fetch(`/patient_dashboard/?current_step=verify_mobile&mobile_no=${formik.values[`caregiver_${caregiverId}_mobile_verify`]}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Update state to show OTP was sent
+      setCaregivers(prevCaregivers => 
+        prevCaregivers.map(caregiver => 
+          caregiver.id === caregiverId 
+            ? { ...caregiver, otpSent: true, otp: Array(6).fill(''), timerSeconds: 30 } 
+            : caregiver
+        )
+      );
+      
+      // Start countdown timer
+      startTimer(caregiverId);
+    })
+    .catch(error => {
+      console.error("Error sending OTP:", error);
+    });
+  };
+
+  // Start the countdown timer for OTP resend
+  const startTimer = (caregiverId) => {
+    // Clear any existing timer for this caregiver
+    if (timers[caregiverId]) {
+      clearInterval(timers[caregiverId]);
     }
     
-    // Start new timer
     const timerId = setInterval(() => {
-      seconds--;
-      
-      // Update the caregiver's timer display
-      const caregiverElement = document.getElementById(`otp-timer-${caregiverId}`);
-      if (caregiverElement) {
-        caregiverElement.innerText = `Resend OTP in ${seconds}`;
-      }
-      
-      // When timer reaches 0, clear interval and allow resend
-      if (seconds <= 0) {
-        clearInterval(timerId);
-        
-        if (caregiverElement) {
-          caregiverElement.innerHTML = `<button type="button" class="text-primary font-semibold hover:underline">Resend OTP</button>`;
-          caregiverElement.querySelector('button').addEventListener('click', () => handleSendOtp(caregiverId));
-        }
-        
-        // Remove timer from state
-        setOtpTimers(prev => {
-          const newTimers = {...prev};
-          delete newTimers[caregiverId];
-          return newTimers;
+      setCaregivers(prevCaregivers => {
+        // Find the caregiver to update
+        const updatedCaregivers = prevCaregivers.map(caregiver => {
+          if (caregiver.id === caregiverId) {
+            const newSeconds = caregiver.timerSeconds - 1;
+            
+            // If timer reached zero, clear the interval
+            if (newSeconds <= 0) {
+              clearInterval(timers[caregiverId]);
+              // Update timers state to remove this timer
+              setTimers(prev => {
+                const newTimers = {...prev};
+                delete newTimers[caregiverId];
+                return newTimers;
+              });
+              return { ...caregiver, timerSeconds: 0 };
+            }
+            
+            return { ...caregiver, timerSeconds: newSeconds };
+          }
+          return caregiver;
         });
-      }
+        
+        return updatedCaregivers;
+      });
     }, 1000);
     
-    // Store timer ID in state
-    setOtpTimers(prev => ({
+    // Store timer ID
+    setTimers(prev => ({
       ...prev,
       [caregiverId]: timerId
     }));
   };
 
-  const handleSendOtp = (caregiverId) => {
-    // Simulate OTP sending
-    const updatedCaregivers = caregivers.map(caregiver => 
-      caregiver.id === caregiverId ? { ...caregiver, otpSent: true, otp: Array(6).fill('') } : caregiver
-    );
-    setCaregivers(updatedCaregivers);
-    
-    // Start the OTP timer
-    startOtpTimer(caregiverId);
-  };
-
-  const handleVerify = (caregiverId) => {
-    // In a real app, you would verify the OTP with your backend
-    // For now, we'll simulate successful verification
-    
+  // Verify the OTP entered by the user
+  const verifyOtp = (caregiverId) => {
     const caregiver = caregivers.find(c => c.id === caregiverId);
     const enteredOtp = caregiver.otp.join('');
     
-    // Dummy check - in real app, verify with API
-    if (enteredOtp.length === 6) {
-      // Simulate successful verification
-      const updatedCaregivers = caregivers.map(caregiver => 
-        caregiver.id === caregiverId ? { ...caregiver, isVerified: true } : caregiver
+    // In a real app, this would verify OTP with the backend
+    fetch(`/patient_dashboard/?current_step=verify_otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
+        otp: enteredOtp
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Update caregiver state
+      setCaregivers(prevCaregivers => 
+        prevCaregivers.map(c => 
+          c.id === caregiverId ? { ...c, isVerified: true } : c
+        )
       );
-      setCaregivers(updatedCaregivers);
       
-      // Update formik field value
-      if (formik.setFieldValue) {
-        formik.setFieldValue(
-          `caregiver_${caregiverId}_mobile`, 
-          formik.values[`caregiver_${caregiverId}_mobile_verify`]
-        );
-      }
+      // Update formik values but not caregiverData yet
+      formik.setFieldValue(
+        `caregiver_${caregiverId}_mobile`, 
+        formik.values[`caregiver_${caregiverId}_mobile_verify`]
+      );
       
-      // Clear any existing timer
-      if (otpTimers[caregiverId]) {
-        clearInterval(otpTimers[caregiverId]);
-        setOtpTimers(prev => {
+      // Clear timer if it exists
+      if (timers[caregiverId]) {
+        clearInterval(timers[caregiverId]);
+        setTimers(prev => {
           const newTimers = {...prev};
           delete newTimers[caregiverId];
           return newTimers;
         });
       }
-    }
+    })
+    .catch(error => {
+      console.error("Error verifying OTP:", error);
+    });
   };
 
-  const handleOtpChange = (caregiverId, index, value) => {
+  // Handle input change for OTP fields
+  const handleOtpDigitChange = (caregiverId, index, value) => {
+    // Only allow single digits
     if (value.length <= 1 && /^\d*$/.test(value)) {
-      const caregiver = caregivers.find(c => c.id === caregiverId);
-      if (!caregiver) return;
+      setCaregivers(prevCaregivers => {
+        return prevCaregivers.map(caregiver => {
+          if (caregiver.id === caregiverId) {
+            const newOtp = [...caregiver.otp];
+            newOtp[index] = value;
+            
+            return { ...caregiver, otp: newOtp };
+          }
+          return caregiver;
+        });
+      });
       
-      const newOtp = [...caregiver.otp];
-      newOtp[index] = value;
-      
-      const updatedCaregivers = caregivers.map(c => 
-        c.id === caregiverId ? { ...c, otp: newOtp } : c
-      );
-      setCaregivers(updatedCaregivers);
-      
-      // Auto-focus next input field
+      // Auto-focus to next input if value is entered
       if (value !== '' && index < 5) {
         const nextInput = document.querySelector(`input[name=otp-${caregiverId}-${index + 1}]`);
         if (nextInput) nextInput.focus();
@@ -340,164 +262,180 @@ const CaregiverDetails = ({ formik }) => {
     }
   };
 
-  const addNewCaregiver = (e) => {
-    e.preventDefault(); // Prevent form submission
-    
-    if (caregivers.length < 3) {
-      const newId = Math.max(...caregivers.map(c => c.id)) + 1;
-      const newCaregivers = [...caregivers, { 
-        id: newId, 
-        isVerified: false, 
-        otpSent: false, 
-        otp: Array(6).fill('')
-      }];
-      
-      setCaregivers(newCaregivers);
+  // Add the next caregiver (show the next one from the predefined list)
+  const addNewCaregiver = () => {
+    const nextCaregiverId = visibleCaregivers.length;
+    if (nextCaregiverId < caregivers.length) {
+      setVisibleCaregivers(prev => [...prev, nextCaregiverId]);
     }
   };
 
-  const checkOtpComplete = (caregiverId) => {
+  // Check if all OTP digits are filled
+  const isOtpComplete = (caregiverId) => {
     const caregiver = caregivers.find(c => c.id === caregiverId);
     return caregiver && caregiver.otp.every(digit => digit !== '');
   };
 
-  const values = formik.values || {};
-  const touched = formik.touched || {};
-  const errors = formik.errors || {};
-
   return (
     <div className="flex flex-col gap-4">
-      {caregivers.map((caregiver) => (
-        <div key={caregiver.id} className="border-b pb-4 mb-4">
-          <h3 className="font-semibold text-[#283A46] font-sans text-[14px] pt-2">
-            {caregiver.id === 1 ? 'Primary Caregiver' : `Additional Caregiver ${caregiver.id - 1}`}
-          </h3>
-          
-          {!caregiver.isVerified && (
-            <>
-              <h3 className="font-semibold text-black font-sans text-[12px] py-4">
-                Verify Caregiver's Mobile Number
-              </h3>
-              <InputField
-                key={`caregiver_${caregiver.id}_mobile_verify`}
-                label="Caregiver's Mobile Number"
-                name={`caregiver_${caregiver.id}_mobile_verify`}
-                id={`caregiver_${caregiver.id}_mobile_verify`}
-                placeholder="Enter caregiver's mobile number"
-                value={values[`caregiver_${caregiver.id}_mobile_verify`] || ''}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={touched[`caregiver_${caregiver.id}_mobile_verify`] && errors[`caregiver_${caregiver.id}_mobile_verify`]}
-                disabled={caregiver.otpSent}
-              />
-              
-              {!caregiver.otpSent ? (
-                <button
-                  type="button"
-                  onClick={() => handleSendOtp(caregiver.id)}
-                  disabled={!values[`caregiver_${caregiver.id}_mobile_verify`]}
-                  className={`text-primary text-[12px] font-semibold w-fit pt-5 ${
-                    !values[`caregiver_${caregiver.id}_mobile_verify`]
-                      ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:underline cursor-pointer'
-                  }`}
-                >
-                  GET OTP
-                </button>
-              ) : (
-                <>
-                <div className='flex flex-col gap-4 pt-4'>
-                <div className='flex flex-col gap-3'>
-                 <p className="text-gray-700">
-                    Enter the OTP sent to <b>{values[`caregiver_${caregiver.id}_mobile_verify`]}</b>
-                  </p>
-                  <div className="flex gap-2">
-                    {caregiver.otp.map((digit, index) => (
-                      <input
-                        key={index}
-                        name={`otp-${caregiver.id}-${index}`}
-                        type="text"
-                        maxLength="1"
-                        className="w-[52px] h-[52px] border rounded text-center"
-                        value={digit}
-                        onChange={(e) => handleOtpChange(caregiver.id, index, e.target.value)}
-                      />
-                    ))}
-                  </div>
-                 </div>
-                 <div className='flex flex-col gap-3'>
-                 <p id={`otp-timer-${caregiver.id}`} className="text-gray-500">Resend OTP in 30</p>
+      {visibleCaregivers.map((caregiverId) => {
+        const caregiver = caregivers[caregiverId];
+        return (
+          <div key={caregiver.id} className="border-b pb-4 mb-4">
+            {/* Caregiver title */}
+            <h3 className="font-semibold text-[#283A46] font-sans text-[14px] pt-2">
+              {caregiverId === 0 ? 'Primary Caregiver' : `Additional Caregiver ${caregiverId}`}
+            </h3>
+            
+            {/* Mobile verification section (if not verified) */}
+            {!caregiver.isVerified && (
+              <>
+                <h3 className="font-semibold text-black font-sans text-[12px] py-4">
+                  Verify Caregiver's Mobile Number
+                </h3>
+                
+                {/* Mobile input field */}
+                <InputField
+                  label="Caregiver's Mobile Number"
+                  name={`caregiver_${caregiverId}_mobile_verify`}
+                  id={`caregiver_${caregiverId}_mobile_verify`}
+                  placeholder="Enter caregiver's mobile number"
+                  value={formik.values[`caregiver_${caregiverId}_mobile_verify`] || ''}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched[`caregiver_${caregiverId}_mobile_verify`] && formik.errors[`caregiver_${caregiverId}_mobile_verify`]}
+                  disabled={caregiver.otpSent}
+                />
+                
+                {/* OTP section - Show GET OTP button or OTP inputs */}
+                {!caregiver.otpSent ? (
                   <button
                     type="button"
-                    onClick={() => handleVerify(caregiver.id)}
-                    disabled={!checkOtpComplete(caregiver.id)}
-                    className={`flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide ${
-                      !checkOtpComplete(caregiver.id) ? 'opacity-50 cursor-not-allowed' : ''
+                    onClick={() => sendOtp(caregiverId)}
+                    disabled={!formik.values[`caregiver_${caregiverId}_mobile_verify`]}
+                    className={`text-primary text-[12px] font-semibold w-fit pt-5 ${
+                      !formik.values[`caregiver_${caregiverId}_mobile_verify`]
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:underline cursor-pointer'
                     }`}
                   >
-                    Verify
+                    GET OTP
                   </button>
-                 </div>
-                </div>
-                </>
-              )}
-            </>
-          )}
+                ) : (
+                  <div className='flex flex-col gap-4 pt-4'>
+                    {/* OTP input section */}
+                    <div className='flex flex-col gap-3'>
+                      <p className="text-gray-700">
+                        Enter the OTP sent to <b>{formik.values[`caregiver_${caregiverId}_mobile_verify`]}</b>
+                      </p>
+                      
+                      {/* OTP input fields */}
+                      <div className="flex gap-2">
+                        {caregiver.otp.map((digit, index) => (
+                          <input
+                            key={index}
+                            name={`otp-${caregiverId}-${index}`}
+                            type="text"
+                            maxLength="1"
+                            className="w-[52px] h-[52px] border rounded text-center"
+                            value={digit}
+                            onChange={(e) => handleOtpDigitChange(caregiverId, index, e.target.value)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Timer and verify button */}
+                    <div className='flex flex-col gap-3'>
+                      {caregiver.timerSeconds > 0 ? (
+                        <p className="text-gray-500">
+                          Resend OTP in {caregiver.timerSeconds}
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => sendOtp(caregiverId)}
+                          className="text-primary font-semibold hover:underline"
+                        >
+                          Resend OTP
+                        </button>
+                      )}
+                      
+                      <button
+                        type="button"
+                        onClick={() => verifyOtp(caregiverId)}
+                        disabled={!isOtpComplete(caregiverId)}
+                        className={`flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide ${
+                          !isOtpComplete(caregiverId) ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                      >
+                        Verify
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
 
-          {caregiver.isVerified && (
-            <>
-            <div className='flex flex-col gap-2 pt-4'>
-            <InputField
-                key={`caregiver_${caregiver.id}_mobile`}
-                label="Caregiver's Mobile Number"
-                name={`caregiver_${caregiver.id}_mobile`}
-                id={`caregiver_${caregiver.id}_mobile`}
-                value={values[`caregiver_${caregiver.id}_mobile`] || ''}
-                error={touched[`caregiver_${caregiver.id}_mobile`] && errors[`caregiver_${caregiver.id}_mobile`]}
-                disabled
-              />
-              <InputField
-                key={`caregiver_${caregiver.id}_name`}
-                label="Caregiver's Name"
-                name={`caregiver_${caregiver.id}_name`}
-                id={`caregiver_${caregiver.id}_name`}
-                placeholder="Enter name"
-                value={values[`caregiver_${caregiver.id}_name`] || ''}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={touched[`caregiver_${caregiver.id}_name`] && errors[`caregiver_${caregiver.id}_name`]}
-              />
-              <InputField
-                key={`caregiver_${caregiver.id}_email`}
-                label="Caregiver's Email ID"
-                name={`caregiver_${caregiver.id}_email`}
-                id={`caregiver_${caregiver.id}_email`}
-                placeholder="Enter email"
-                value={values[`caregiver_${caregiver.id}_email`] || ''}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={touched[`caregiver_${caregiver.id}_email`] && errors[`caregiver_${caregiver.id}_email`]}
-              />
-              <SelectField
-                key={`relationship_${caregiver.id}`}
-                label="Relationship"
-                name={`relationship_${caregiver.id}`}
-                id={`relationship_${caregiver.id}`}
-                formik={formik}
-                placeholder="Select"
-                value={values[`relationship_${caregiver.id}`] || ''}
-                optionsData={relationshipOptions}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={touched[`relationship_${caregiver.id}`] && errors[`relationship_${caregiver.id}`]}
-              />
-            </div>
-            </>
-          )}
-        </div>
-      ))}
+            {/* Caregiver details section (after verification) */}
+            {caregiver.isVerified && (
+              <div className='flex flex-col gap-2 pt-4'>
+                {/* Verified mobile number (readonly) */}
+                <InputField
+                  label="Caregiver's Mobile Number"
+                  name={`caregiver_${caregiverId}_mobile`}
+                  id={`caregiver_${caregiverId}_mobile`}
+                  value={formik.values[`caregiver_${caregiverId}_mobile`] || ''}
+                  error={formik.touched[`caregiver_${caregiverId}_mobile`] && formik.errors[`caregiver_${caregiverId}_mobile`]}
+                  disabled
+                />
+                
+                {/* Name field */}
+                <InputField
+                  label="Caregiver's Name"
+                  name={`caregiver_${caregiverId}_name`}
+                  id={`caregiver_${caregiverId}_name`}
+                  placeholder="Enter name"
+                  value={formik.values[`caregiver_${caregiverId}_name`] || ''}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched[`caregiver_${caregiverId}_name`] && formik.errors[`caregiver_${caregiverId}_name`]}
+                />
+                
+                {/* Email field */}
+                <InputField
+                  label="Caregiver's Email ID"
+                  name={`caregiver_${caregiverId}_email`}
+                  id={`caregiver_${caregiverId}_email`}
+                  placeholder="Enter email"
+                  value={formik.values[`caregiver_${caregiverId}_email`] || ''}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched[`caregiver_${caregiverId}_email`] && formik.errors[`caregiver_${caregiverId}_email`]}
+                />
+                
+                {/* Relationship dropdown */}
+                <SelectField
+                  label="Relationship"
+                  name={`relationship_${caregiverId}`}
+                  id={`relationship_${caregiverId}`}
+                  formik={formik}
+                  placeholder="Select"
+                  value={formik.values[`relationship_${caregiverId}`] || ''}
+                  optionsData={relationshipOptions}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched[`relationship_${caregiverId}`] && formik.errors[`relationship_${caregiverId}`]}
+                />
+              </div>
+            )}
+          </div>
+        );
+      })}
 
-      {caregivers.length < 3 && caregivers[caregivers.length - 1].isVerified && (
+      {/* Add new caregiver button - only show if we have fewer than 3 caregivers and the last one is verified */}
+      {visibleCaregivers.length < caregivers.length && 
+       caregivers[visibleCaregivers[visibleCaregivers.length - 1]].isVerified && (
         <button 
           type="button"
           onClick={addNewCaregiver}

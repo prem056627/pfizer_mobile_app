@@ -28,6 +28,7 @@ let initialData = {
   response: {
     // before enrollment submit
     current_step: "patient_enrolment",
+    // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2376,6 +2377,68 @@ let initialData = {
           type: "Immunology",
         },
       ],
+      applied_programs: [
+        {
+          program_name: "Crizalk Program",
+          program_status: "Applied",
+          program_id: 10018,
+          program_scheme: '9+LFT',
+          doctor_name:"prem",
+          program_enrollmentDate: "15th Feb, 2022",
+          program_image: "NA",
+          orders: {
+              paid_orders: [
+                  {
+                      order_id: "10001",
+                      order_status: "Open",
+                      scn_executor: "MDB Chennai",
+                      order_date: "24 Dec 2024",
+                      status_date: "27 Dec 2024",
+                      order_scheme:"9LD",
+                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                  },
+                  {
+                      order_id: "10002",
+                      order_status: "Open",
+                      scn_executor: "MDB Chennai",
+                      order_date: "24 Dec 2024",
+                      status_date: "27 Dec 2024",
+                      order_scheme:"9LD",
+                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                  }
+              ],
+              foc_orders: [
+                  {
+                      order_id: "10003",
+                      order_status: "closed",
+                      scn_executor: "MDB Chennai",
+                      order_date: "24 Dec 2024",
+                      status_date: "27 Dec 2024",
+                      order_scheme:"9LD",
+                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                  },
+                  {
+                      order_id: "10002",
+                      order_status: "Open",
+                      scn_executor: "MDB Chennai",
+                      order_date: "24 Dec 2024",
+                      status_date: "27 Dec 2024",
+                      order_scheme:"9LD",
+                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                  }
+              ]
+          }
+      }
+      
+    ],
+    physical_verification : {
+      show_verification_button : true,
+      details : []
+  },
+  ekyc_verification : {
+      show_verification_button : true,
+      details : []
+  }
     },
   },
   success: true,
@@ -2461,358 +2524,205 @@ export const handlers = [
 	// }),
 	
    // Mock server implementation
-   http.post('/patient_dashboard/', async ({ request }) => {
-	try {
-	  // Get the current_step from URL query parameters
-	  const url = new URL(request.url);
-	  const currentStep = url.searchParams.get('current_step');
+  //  http.post('/patient_dashboard/', async ({ request }) => {
+	// try {
+	//   // Get the current_step from URL query parameters
+	//   const url = new URL(request.url);
+	//   const currentStep = url.searchParams.get('current_step');
+	//   const mobile_no = url.searchParams.get('mobile_no');
+	//   // Make sure request has a body before trying to parse it
+	//   let requestBody = {};
+	//   try {
+	// 	const contentType = request.headers.get('Content-Type');
+	// 	if (contentType && contentType.includes('application/json')) {
+	// 	  const text = await request.text();
+	// 	  if (text) {
+	// 		requestBody = JSON.parse(text);
+	// 	  }
+	// 	}
+	//   } catch (e) {
+	// 	console.error('Error parsing request body:', e);
+	//   }
 	  
-	  // Make sure request has a body before trying to parse it
-	  let requestBody = {};
-	  try {
-		const contentType = request.headers.get('Content-Type');
-		if (contentType && contentType.includes('application/json')) {
-		  const text = await request.text();
-		  if (text) {
-			requestBody = JSON.parse(text);
-		  }
-		}
-	  } catch (e) {
-		console.error('Error parsing request body:', e);
-	  }
+	//   let responseData;
+	//   if (currentStep === "patient_enrolment") {
+	// 	responseData = {
+	// 	  current_step: "caregiver_addition",
+	// 	  patient_data: requestBody
+	// 	};
+	//   } else if (currentStep === "caregiver_addition") {
+	// 	responseData = {
+	// 	  current_step: "program_enrolment",
+		 
+	// 	//   un_active
+	// 	  patient_data: requestBody
+	// 	};
+	//   }else if (currentStep === "caregiver_addition") {
+  //     responseData = {
+  //       current_step: "verify_mobile",
+        
+  //     //   un_active
+  //       patient_data: requestBody
+  //     };
+  //     } else {
+	// 	responseData = {
+	// 	  current_step: currentStep || "unknown",
+	// 	  ...requestBody
+	// 	};
+	//   }
 	  
-	  let responseData;
-	  if (currentStep === "patient_enrolment") {
-		responseData = {
-		  current_step: "caregiver_addition",
-		  patient_data: requestBody
-		};
-	  } else if (currentStep === "caregiver_addition") {
-		responseData = {
-		  current_step: "program_enrolment",
-		  program_status:"doc_shortfall",
-		//   un_active
-		  patient_data: requestBody
-		};
-	  } else {
-		responseData = {
-		  current_step: currentStep || "unknown",
-		  ...requestBody
-		};
-	  }
-	  
-	  // Return proper JSON response
-	  return new HttpResponse(
-		JSON.stringify({
-		  response: responseData,
-		  success: true,
-		  message: "Data updated successfully"
-		}),
-		{
-		  status: 200,
-		  headers: {
-			'Content-Type': 'application/json'
-		  }
-		}
-	  );
-	} catch (error) {
-	  console.error('Mock server error:', error);
-	  return new HttpResponse(
-		JSON.stringify({
-		  success: false,
-		  message: "Server error",
-		  error: error.message
-		}),
-		{
-		  status: 500,
-		  headers: {
-			'Content-Type': 'application/json'
-		  }
-		}
-	  );
-	}
+	//   // Return proper JSON response
+	//   return new HttpResponse(
+	// 	JSON.stringify({
+	// 	  response: responseData,
+	// 	  success: true,
+	// 	  message: "Data updated successfully"
+	// 	}),
+	// 	{
+	// 	  status: 200,
+	// 	  headers: {
+	// 		'Content-Type': 'application/json'
+	// 	  }
+	// 	}
+	//   );
+	// } catch (error) {
+	//   console.error('Mock server error:', error);
+	//   return new HttpResponse(
+	// 	JSON.stringify({
+	// 	  success: false,
+	// 	  message: "Server error",
+	// 	  error: error.message
+	// 	}),
+	// 	{
+	// 	  status: 500,
+	// 	  headers: {
+	// 		'Content-Type': 'application/json'
+	// 	  }
+	// 	}
+	//   );
+	// }
+  // })
+
+  http.post('/patient_dashboard/', async ({ request }) => {
+    try {
+      // Get the current_step from URL query parameters
+      const url = new URL(request.url);
+      const currentStep = url.searchParams.get('current_step');
+      const mobile_no = url.searchParams.get('mobile_no');
+      
+      // Make sure request has a body before trying to parse it
+      let requestBody = {};
+      try {
+        const contentType = request.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+          const text = await request.text();
+          if (text) {
+            requestBody = JSON.parse(text);
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing request body:', e);
+      }
+      
+      let responseData;
+      
+      // Handle OTP generation for mobile verification
+      if (currentStep === "verify_mobile") {
+        // Generate a random 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        
+        // In a real app, you would send the OTP to the mobile number
+        // Here we just return it in the mock response
+        responseData = {
+          current_step: "verify_otp",
+          otp: otp.toString(),
+          mobile_no: mobile_no || requestBody.mobile_no,
+          message: `OTP sent to mobile number: ${mobile_no || requestBody.mobile_no}`,
+          patient_data: requestBody
+        };
+        
+        console.log(`Mock OTP sent: ${otp} to ${mobile_no || requestBody.mobile_no}`);
+      } 
+      else if (currentStep === "patient_enrolment") {
+        responseData = {
+          current_step: "caregiver_addition",
+          patient_data: requestBody
+        };
+      } 
+      else if (currentStep === "caregiver_addition") {
+        responseData = {
+          current_step: "program_enrolment",
+          patient_data: requestBody
+        };
+      }
+      // Handle OTP verification step
+      else if (currentStep === "verify_otp") {
+        // In a real app, you would verify the OTP
+        // Here we just mock a successful verification
+        const providedOtp = requestBody.otp;
+        
+        // For testing, let's accept any 6-digit OTP or specific test OTPs
+        const validOtp = /^\d{6}$/.test(providedOtp) || providedOtp === "123456";
+        
+        if (validOtp) {
+          responseData = {
+            current_step: "otp_verified",
+            mobile_verified: true,
+            patient_data: requestBody
+          };
+        } else {
+          return new HttpResponse(
+            JSON.stringify({
+              success: false,
+              message: "Invalid OTP",
+              current_step: "verify_otp"
+            }),
+            {
+              status: 400,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+        }
+      }
+      else {
+        responseData = {
+          current_step: currentStep || "unknown",
+          ...requestBody
+        };
+      }
+      
+      // Return proper JSON response
+      return new HttpResponse(
+        JSON.stringify({
+          response: responseData,
+          success: true,
+          message: "Data updated successfully"
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Mock server error:', error);
+      return new HttpResponse(
+        JSON.stringify({
+          success: false,
+          message: "Server error",
+          error: error.message
+        }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+    }
   })
   
-	// http.get('/patient/get-programs/', () => {
-	// 	return HttpResponse.json({
-	// 		success: true,
-	// 		response: {
-	// 			foc_ekyc_completed: false,
-	// 			available_programs: [
-	// 				{
-	// 					// logo: WinForPatient,
-	// 					title: 'SAMBHAV',
-	// 					// description:
-	// 					// 	'Win for Patients - Transplant welcomes you to our digital patient support platform to support you through your treatment journey.',
-	// 					program_id: '12321',
-	// 					enrolled_date: '30 May’ 22',
-	// 					remaining_infusions: '3 nos',
-	// 					doctor_name: 'Dr. Johnathan Weiss',
-	// 					program_name: 'SAMBHAV',
-	// 				},
-	// 				{
-	// 					// logo: WinForPatient,
-	// 					title: 'AARAMBH',
-	// 					program_id: '22321',
-	// 					enrolled_date: '31 May’ 22',
-	// 					remaining_infusions: '2 nos',
-	// 					doctor_name: 'Dr. levis',
-	// 					program_name: 'AARAMBH',
-	// 				},
-	// 			],
-	// 			all_orders: [
-	// 				{
-	// 					order_code: 202,
-	// 					order_date: '22 Feb 2024',
-	// 					dispensed_date: '27 Feb 2024',
-	// 					dosage: '180 mg',
-	// 					infusion_date: '01 Mar 2024',
-	// 					distributor: 'Charity Distributors',
-	// 					pharmacy: 'GoodCare Pharmacy',
-	// 					order_type: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 146,
-	// 					order_date: '05 Mar 2024',
-	// 					dispensed_date: '17 June 2022',
-	// 					dosage: '240 mg',
-	// 					distributor: 'XYZ',
-	// 					pharmacy: 'PremiumPharm',
-	// 					order_type: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 204,
-	// 					order_date: '18 Mar 2024',
-	// 					dispensed_date: '23 Mar 2024',
-	// 					dosage: '300 mg',
-	// 					infusion_date: '26 Mar 2024',
-	// 					distributor: 'Helping Hands Pharma',
-	// 					pharmacy: 'Community Pharmacy',
-	// 					order_type: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 205,
-	// 					order_date: '25 Mar 2024',
-	// 					dispensed_date: '30 Mar 2024',
-	// 					dosage: '160 mg',
-	// 					infusion_date: '02 Apr 2024',
-	// 					distributor: 'Wellness Pharma',
-	// 					pharmacy: 'HealthLink Pharmacy',
-	// 					order_type: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 201,
-	// 					order_date: '08 Jan 2024',
-	// 					dispensed_date: '12 Jan 2024',
-	// 					dosage: '120 mg',
-	// 					infusion_date: '15 Jan 2024',
-	// 					distributor: 'FreeMeds Supply',
-	// 					pharmacy: 'HealthFirst Pharmacy',
-	// 					order_type: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 206,
-	// 					order_date: '10 Apr 2024',
-	// 					dispensed_date: '15 Apr 2024',
-	// 					dosage: '200 mg',
-	// 					infusion_date: '18 Apr 2024',
-	// 					distributor: 'Community Health Supplies',
-	// 					pharmacy: 'CarePlus Pharmacy',
-	// 					order_type: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 203,
-	// 					order_date: '01 Mar 2024',
-	// 					dispensed_date: '06 Mar 2024',
-	// 					dosage: '220 mg',
-	// 					infusion_date: '09 Mar 2024',
-	// 					distributor: 'GoodHealth Providers',
-	// 					pharmacy: 'MediSupply Pharmacy',
-	// 					order_type: 'paid',
-	// 				},
-	// 			],
-	// 			foc_order: [
-	// 				{
-	// 					order_code: 201,
-	// 					order_date: '08 Jan 2024',
-	// 					dispensed_date: '12 Jan 2024',
-	// 					dosage: '120 mg',
-	// 					infusion_date: '15 Jan 2024',
-	// 					distributor: 'FreeMeds Supply',
-	// 					pharmacy: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 202,
-	// 					order_date: '22 Feb 2024',
-	// 					dispensed_date: '27 Feb 2024',
-	// 					dosage: '180 mg',
-	// 					infusion_date: '01 Mar 2024',
-	// 					distributor: 'Charity Distributors',
-	// 					pharmacy: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 203,
-	// 					order_date: '01 Mar 2024',
-	// 					dispensed_date: '06 Mar 2024',
-	// 					dosage: '220 mg',
-	// 					infusion_date: '09 Mar 2024',
-	// 					distributor: 'GoodHealth Providers',
-	// 					pharmacy: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 204,
-	// 					order_date: '18 Mar 2024',
-	// 					dispensed_date: '23 Mar 2024',
-	// 					dosage: '300 mg',
-	// 					infusion_date: '26 Mar 2024',
-	// 					distributor: 'Helping Hands Pharma',
-	// 					pharmacy: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 205,
-	// 					order_date: '25 Mar 2024',
-	// 					dispensed_date: '30 Mar 2024',
-	// 					dosage: '160 mg',
-	// 					infusion_date: '02 Apr 2024',
-	// 					distributor: 'Wellness Pharma',
-	// 					pharmacy: 'free',
-	// 				},
-	// 				{
-	// 					order_code: 206,
-	// 					order_date: '10 Apr 2024',
-	// 					dispensed_date: '15 Apr 2024',
-	// 					dosage: '200 mg',
-	// 					infusion_date: '18 Apr 2024',
-	// 					distributor: 'Community Health Supplies',
-	// 					pharmacy: 'free',
-	// 				},
-	// 			],
-	// 			paid_order: [
-	// 				{
-	// 					order_code: 101,
-	// 					order_date: '12 Jan 2024',
-	// 					dispensed_date: '18 Jan 2024',
-	// 					dosage: '150 mg',
-	// 					infusion_date: '20 Jan 2024',
-	// 					distributor: 'ABC Pharma',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 102,
-	// 					order_date: '25 Feb 2024',
-	// 					dispensed_date: '02 Mar 2024',
-	// 					dosage: '300 mg',
-	// 					infusion_date: '05 Mar 2024',
-	// 					distributor: 'HealthCare Distributors',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 103,
-	// 					order_date: '10 Mar 2024',
-	// 					dispensed_date: '15 Mar 2024',
-	// 					dosage: '200 mg',
-	// 					infusion_date: '18 Mar 2024',
-	// 					distributor: 'XYZ Pharma',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 104,
-	// 					order_date: '28 Mar 2024',
-	// 					dispensed_date: '02 Apr 2024',
-	// 					dosage: '250 mg',
-	// 					infusion_date: '05 Apr 2024',
-	// 					distributor: 'MediPlus Distributors',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 105,
-	// 					order_date: '05 Apr 2024',
-	// 					dispensed_date: '10 Apr 2024',
-	// 					dosage: '180 mg',
-	// 					infusion_date: '12 Apr 2024',
-	// 					distributor: 'Global Health Distributors',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 				{
-	// 					order_code: 106,
-	// 					order_date: '15 Apr 2024',
-	// 					dispensed_date: '20 Apr 2024',
-	// 					dosage: '320 mg',
-	// 					infusion_date: '22 Apr 2024',
-	// 					distributor: 'Care Pharma',
-	// 					pharmacy: 'paid',
-	// 				},
-	// 			],
-	// 		},
-	// 	});
-	// }),
-
-	// http.get('/profile_details/', () => {
-	// 	return HttpResponse.json({
-	// 		success: true,
-	// 			response: {
-	// 				patient_gender: "Male",
-	// 				patient_email: "patient89876@mail.com",
-	// 				patient_name: "Patient test api",
-	// 				program_name: "Opdyta",
-	// 				registration_date: "15-10-2024",
-	// 				patient_primary_phone: "+918876787877",
-	// 				patient_dob: "10-10-1989",
-	// 				patient_id: 10053,
-	// 				enrollment_details: {
-	// 					address_details: {
-	// 						city: "New York",
-	// 						state: "NY",
-	// 						address_line_1: "123 Main St",
-	// 						address_line_2: "Apt 4B",
-	// 						pin_code: "10001"
-	// 					},
-	// 					reimbursement_info: {
-	// 						reimbursement_type: null,
-	// 						reimbursement_limits: null,
-	// 						has_reimbursement: "no",
-	// 						reimbursement_mount: null
-	// 					},
-	// 					caregiver_address_proof: {
-	// 						city: "New York",
-	// 						state: "NY",
-	// 						address_line_1: "123 Main St",
-	// 						address_line_2: "Apt 4B",
-	// 						pin_code: "10001"
-	// 					},
-	// 					current_residence: {
-	// 						city: "New York",
-	// 						state: "NY",
-	// 						address_line_1: "123 Main St",
-	// 						address_line_2: "Apt 4B",
-	// 						pin_code: "10001"
-	// 					},
-	// 					caregiver_details: {
-	// 						gender: "Female",
-	// 						email: "janesmith@example.com",
-	// 						full_name: "Jane Smith",
-	// 						mobile_number: "9876543210"
-	// 					},
-	// 					terms_and_conditions: "yes",
-	// 					patient_details: {
-	// 						gender: "Male",
-	// 						nationality: "IND"
-	// 					},
-	// 					document_upload: {
-	// 						proof_type: "Aadhar Card"
-	// 					},
-	// 					caregiver_id_proof: {
-	// 						proof_type: null
-	// 					},
-	// 					current_step: "authorization",
-	// 					authorization: {
-	// 						program_explained: "Yes",
-	// 						oasiss_consent: "Yes"
-	// 					}
-	// 				}
-	// 			},
-				
-		
-	// 	});
-	// }),
 ];
