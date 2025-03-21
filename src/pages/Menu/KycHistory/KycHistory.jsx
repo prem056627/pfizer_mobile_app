@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { ReactComponent as AvatarFemale } from "../../../../src/assets/images/Ekyc/female_avatar.svg";
+import { ReactComponent as AvatarMale } from "../../../../src/assets/images/Ekyc/male_avatar.svg";
 
 import { ReactComponent as NotApprove } from "../../../../src/assets/images/Ekyc/notApprove.svg";
+import { ReactComponent as Approved } from "../../../../src/assets/images/Ekyc/Approve.svg";
+import { useSelector } from "react-redux";
+import { selectInitializeData } from "../../../slice/patient-detail-form";
 function KycHistory() {
+
+
+    const patient_profile_data = useSelector(selectInitializeData);
+    console.log('patient_profile_data', patient_profile_data.patient_data);
+    console.log('ekyc_verification', patient_profile_data.ekyc_verification.status
+    );
+
+    const eky_status = patient_profile_data?.ekyc_verification?.status;
   return (
     <div>
       <div>
@@ -18,33 +30,42 @@ function KycHistory() {
 
             {/* Profile circle */}
             <div className=" w-full flex justify-center items-center py-2 mt-8">
-              <AvatarFemale />
+            {patient_profile_data?.patient_data?.patient_gender === 'Female' ?   <AvatarFemale /> : <AvatarMale /> }
+            
             </div>
           </div>
 
           {/* Status section */}
           <div className="flex items-center mb-4">
             <span className=" font-sans font-semibold ">Status : </span>
-            <span className="text-[#AB3436] font-semibold mr-1 ml-1 ">
+            
+            {
+              eky_status == 'Active' ?  <><span className="text-[#34ab36] font-semibold mr-1 ml-1 ">
+              Approved
+              </span>  <Approved/> </>:<> <span className="text-[#AB3436] font-semibold mr-1 ml-1 ">
               Not Approved
-            </span>
+            </span> <NotApprove /></>
+            }
+            
+            
+         
 
-            <NotApprove />
+           
           </div>
 
           {/* User details card */}
-          <div className="w-full bg-[#FFF5F5] rounded-[24px] p-4">
+          <div className={`w-full ${eky_status == "Active" ? ' bg-[#F1FFFC]':'bg-[#FFF5F5]' }  rounded-[24px] p-4`}>
             <div className="grid grid-cols-1 gap-2">
               <div>
                 <span className="w-32 font-sans text-sm mr-2 ">Name :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  Reeta
+                 {patient_profile_data?.patient_data?.patient_name}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">Gender :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  Female
+                  {patient_profile_data?.patient_data?.patient_gender}
                 </span>
               </div>
               <div>
@@ -52,7 +73,7 @@ function KycHistory() {
                   Date of Birth :
                 </span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  30 May 1979
+                {patient_profile_data?.patient_data?.patient_dob}
                 </span>
               </div>
               <div>
@@ -60,37 +81,37 @@ function KycHistory() {
                   Mobile Number :
                 </span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  +91 9876543210
+                {patient_profile_data?.patient_data?.patient_primary_phone}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">Email ID :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  jay.smith@gmail.com
+                {patient_profile_data?.patient_data?.patient_email}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">Address :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  205 Neelkanth, 98 Marine Drive
+                {patient_profile_data?.patient_data?.addresses[0].line1}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">City :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  Mumbai
+                {patient_profile_data?.patient_data?.addresses[0].city}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">State :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  Maharashtra
+                {patient_profile_data?.patient_data?.addresses[0].state}
                 </span>
               </div>
               <div>
                 <span className="w-32 font-sans text-sm mr-2">PIN Code :</span>
                 <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  400002
+                {patient_profile_data?.patient_data?.addresses[0].pincode}
                 </span>
               </div>
             </div>

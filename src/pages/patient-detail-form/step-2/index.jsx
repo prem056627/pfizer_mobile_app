@@ -37,6 +37,17 @@ const [isLoading, setIsLoading] = useState(true);
   // console.log('initiaDatainitiaDatainitiaDatainitiaDatainitiaDatainitiaData',initiaData?.data?.enrollment_details.step_data
   // );
 
+  // Function to refresh the application
+  const refreshApplication = () => {
+    // Method 1: Reload the current page
+    window.location.reload();
+    
+    // Alternative Method 2: If you're using React Router, you can navigate to the same page
+    // navigate(window.location.pathname);
+    
+    // Alternative Method 3: If you need to reset the state in Redux
+    // dispatch(resetApplicationState());
+  };
 
 
 // And here's the fixed client-side function:
@@ -57,7 +68,13 @@ const makeApiCall = async (values) => {
     if (success && response) {
       console.log("Form data submitted successfully:", response);
       dispatch(setCurrentPageState(response?.current_step))
-      dispatch(setProgramStatus(response?.program_status))
+      // dispatch(setProgramStatus(response?.program_status))
+
+        // Refresh the application after successful API call
+        // Adding a slight delay to ensure Redux state is updated first
+        setTimeout(() => {
+          refreshApplication();
+        }, 500);
       
       return { success: true, data: response };
     } else {
@@ -98,40 +115,7 @@ const makeApiCall = async (values) => {
         } finally {
           // setSubmitting(false);
         }
-    // console.log("Form submitted with values:", values);
-
-    // const postData = {
-    //   ...formData,
-    //   cancer_risk_factors: values,
-    // };
-
-    // delete postData.currentPageState;
-
    
-
-    // setFormData({
-    //   ...formData,
-    //   cancer_risk_factors: values,
-    //   currentPageState,
-    // });
-
-    // try {
-    //   const { response, success } = await triggerApi({
-    //     url: `/api/patient/enrol/`,
-    //     type: "POST",
-    //     loader: true,
-    //     payload: postData,
-    //   });
-
-    //   if (success && response) {
-    //     // navigate("submission");
-    //     dispatch(setPatientEnrollmentSuccessModalOpen(true));
-    //   }
-    // } catch (error) {
-    //   console.error("Error during API call:", error);
-    // }
-
-    // dispatch(changeStep(currentPageState + 1));
   };
 
   const formSections = [

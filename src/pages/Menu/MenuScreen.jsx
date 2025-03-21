@@ -7,10 +7,13 @@ import { ReactComponent as File } from "../../assets/images/menus1/file.svg";
 import { ReactComponent as Logout } from "../../assets/images/menus1/logout.svg";
 import { useDispatch } from 'react-redux';
 import { setIsKycHistoryModalOpen, setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
-
+import { useTranslation } from 'react-i18next';
 const MenuScreen = () => {
 
   const dispatch = useDispatch();
+
+
+	const { t } = useTranslation();
   // Handle menu item clicks
   const handleMenuClick = (menuId, menuTitle) => {
     console.log(`Clicked on menu: ${menuTitle} (ID: ${menuId})`);
@@ -35,6 +38,25 @@ const MenuScreen = () => {
   
     }
     
+    function handleSessionLogout() {
+      console.log("session logout !!!");
+      localStorage.clear();
+  
+      let message = {
+          label: 'LOGOUT',
+      };
+  
+      let stringifiedMessage = JSON.stringify(message);
+  
+      // Check if running inside a WebView
+      if (window.ReactNativeWebView) {
+          window.ReactNativeWebView.postMessage(stringifiedMessage);
+      } else {
+          console.log("Logging out from web...");
+          window.location.href = '/logout'; // Ensure the URL is correct for your logout endpoint
+      }
+  }
+  
     // Add specific functionality for each menu item
     switch(menuId) {
       case 1: // Profile
@@ -63,6 +85,7 @@ const MenuScreen = () => {
         break;
       case 6: // Logout
         console.log("Logging out");
+        handleSessionLogout()
         // Add your logout logic here
         // Example: logoutUser() function call
         break;

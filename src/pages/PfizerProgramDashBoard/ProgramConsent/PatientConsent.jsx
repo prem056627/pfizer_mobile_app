@@ -7,6 +7,7 @@ function PatientConsent() {
   const dispatch =useDispatch()
 
   function handleRequest(){
+    console.log("hello from doc form!!");
 dispatch(setDocUploadStatus("scheme_enroll_doc"));
   }
 

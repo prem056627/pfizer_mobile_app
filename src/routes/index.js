@@ -46,19 +46,25 @@ const AppNavigation = () => {
   const current_role = localStorage.getItem('role');
 
   // Initialize data
+
+
+
+
+
   const makeApiCall = async () => {
     try {
       setIsLoading(true);
-  
+      const url = `/patient_dashboard/?current_step=initialize`;
       const { response, success } = await triggerApi({
-        url: `/patient_dashboard/`,
+        url: url,
         type: "GET",
         loader: true,
       });
   
       if (success && response) {
         dispatch(setInitializeData(response));
-        dispatch(setCurrentPageState(response.response.current_step)); 
+        console.log('responseresponseresponse!!',response);
+        dispatch(setCurrentPageState(response.current_step)); 
         // dispatch(setProgramStatus(response.program_status)); 
       } else {
         console.error("API call failed or returned no data.");
@@ -69,6 +75,8 @@ const AppNavigation = () => {
       setIsLoading(false); // Ensure loading state is reset
     }
   };
+
+  console.log('initialDatainitialData',initialData);
   
 
   useEffect(() => {
@@ -76,7 +84,7 @@ const AppNavigation = () => {
    
   }, []);
 
-  // console.log("current_page_statecurrent_page_state!!!",current_page_state);
+  console.log("current_page_statecurrent_page_state!!!",current_page_state);
 
   // Render content based on current view and app state
   const renderContent = () => {
@@ -96,7 +104,7 @@ const AppNavigation = () => {
       return <PatientDetailForm    />;
     }
     else if (current_page_state === 'program_enrolment') {
-      switch ( doc_upload_status) {
+      switch (doc_upload_status) {
         case 'scheme_enroll_doc':
           return <SchemeEnrollDocUpload />;
         case 'short_fall_doc':
@@ -105,13 +113,20 @@ const AppNavigation = () => {
           return <PfizerProgram />;
       }
     }
-    //  else if (current_page_state === 'remote_verification_pending' || 
-    //           current_page_state === 'physical_verification_pending') {
-    //   return ;
-    // } else {
-    //   // Default fallback - redirect to enrolment
-    //   // return <PatientDetailForm    />;
-    // }
+
+
+    else if (current_page_state === 'program_enrolment_done') {
+      switch (doc_upload_status) {
+        case 'scheme_enroll_doc':
+          return <SchemeEnrollDocUpload />;
+        case 'short_fall_doc':
+          return <ShortFallDoc />;
+        default:
+          return <PfizerProgram />;
+      }
+      }
+    
+
   };
 
   // Loading state

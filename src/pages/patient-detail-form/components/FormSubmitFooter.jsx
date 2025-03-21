@@ -56,10 +56,11 @@ function FormSubmitFooter({ formik }) {
         </button>
         <button
           type="submit"
-          disabled={!formik.isValid && !formik.dirty}
-          className={`${
-            !formik.isValid && !formik.dirty ? 'opacity-30' : 'opacity-100'
-          } flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white disabled:opacity-75 font-open-sans font-semibold tracking-wide`}
+          // disabled={!formik.isValid && !formik.dirty}
+          disabled={!(formik.isValid && formik.dirty)}
+          className={`flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide 
+            ${!(formik.isValid && formik.dirty) ? 'opacity-30' : 'opacity-100'} disabled:opacity-75`}
+          
           onClick={handleSubmit}
         >
           {currentPageState === 'caregiver_addition' ? <span>Submit</span> : <span>Save & Next</span>}

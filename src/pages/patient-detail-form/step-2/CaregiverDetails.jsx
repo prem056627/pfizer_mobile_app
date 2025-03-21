@@ -193,24 +193,27 @@ const CaregiverDetails = ({ formik }) => {
   };
 
   // Verify the OTP entered by the user
-  const verifyOtp = (caregiverId) => {
-    const caregiver = caregivers.find(c => c.id === caregiverId);
-    const enteredOtp = caregiver.otp.join('');
-    
-    // In a real app, this would verify OTP with the backend
-    fetch(`/patient_dashboard/?current_step=verify_otp`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
-        otp: enteredOtp
-      })
+ // Verify the OTP entered by the user
+const verifyOtp = (caregiverId) => {
+  const caregiver = caregivers.find(c => c.id === caregiverId);
+  const enteredOtp = caregiver.otp.join('');
+  
+  // In a real app, this would verify OTP with the backend
+  fetch(`/patient_dashboard/?current_step=verify_otp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
+      otp: enteredOtp
     })
-    .then(response => response.json())
-    .then(data => {
-      // Update caregiver state
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Check if verification was successful based on the 'success' field
+    if (data.success === true) {
+      // OTP verification successful
       setCaregivers(prevCaregivers => 
         prevCaregivers.map(c => 
           c.id === caregiverId ? { ...c, isVerified: true } : c
@@ -232,11 +235,25 @@ const CaregiverDetails = ({ formik }) => {
           return newTimers;
         });
       }
-    })
-    .catch(error => {
-      console.error("Error verifying OTP:", error);
-    });
-  };
+    } else {
+      // OTP verification failed
+      setCaregivers(prevCaregivers => 
+        prevCaregivers.map(c => 
+          c.id === caregiverId ? { ...c, otpError: 'Please enter valid OTP' } : c
+        )
+      );
+    }
+  })
+  .catch(error => {
+    console.error("Error verifying OTP:", error);
+    // Show generic error
+    setCaregivers(prevCaregivers => 
+      prevCaregivers.map(c => 
+        c.id === caregiverId ? { ...c, otpError: 'Verification failed. Please try again.' } : c
+      )
+    );
+  });
+};
 
   // Handle input change for OTP fields
   const handleOtpDigitChange = (caregiverId, index, value) => {
@@ -276,6 +293,13 @@ const CaregiverDetails = ({ formik }) => {
     return caregiver && caregiver.otp.every(digit => digit !== '');
   };
 
+  // Example input handler for phone fields
+const handlePhoneInput = (e) => {
+  // Only allow digits and limit to 10 characters
+  const value = e.target.value.replace(/\D/g, '').substring(0, 10);
+  e.target.value = value;
+};
+
   return (
     <div className="flex flex-col gap-4">
       {visibleCaregivers.map((caregiverId) => {
@@ -294,7 +318,7 @@ const CaregiverDetails = ({ formik }) => {
                   Verify Caregiver's Mobile Number
                 </h3>
                 
-                {/* Mobile input field */}
+                              {/* Mobile input field */}
                 <InputField
                   label="Caregiver's Mobile Number"
                   name={`caregiver_${caregiverId}_mobile_verify`}
@@ -305,23 +329,33 @@ const CaregiverDetails = ({ formik }) => {
                   onBlur={formik.handleBlur}
                   error={formik.touched[`caregiver_${caregiverId}_mobile_verify`] && formik.errors[`caregiver_${caregiverId}_mobile_verify`]}
                   disabled={caregiver.otpSent}
+                  onInput={handlePhoneInput}
+                  maxLength={10}
                 />
                 
-                {/* OTP section - Show GET OTP button or OTP inputs */}
-                {!caregiver.otpSent ? (
-                  <button
-                    type="button"
-                    onClick={() => sendOtp(caregiverId)}
-                    disabled={!formik.values[`caregiver_${caregiverId}_mobile_verify`]}
-                    className={`text-primary text-[12px] font-semibold w-fit pt-5 ${
-                      !formik.values[`caregiver_${caregiverId}_mobile_verify`]
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'hover:underline cursor-pointer'
-                    }`}
-                  >
-                    GET OTP
-                  </button>
-                ) : (
+               {/* OTP section - Show GET OTP button or OTP inputs */}
+                    {!caregiver.otpSent ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => sendOtp(caregiverId)}
+                          disabled={!formik.values[`caregiver_${caregiverId}_mobile_verify`] || formik.values[`caregiver_${caregiverId}_mobile_verify`].length < 10}
+                          className={`text-primary text-[12px] font-semibold w-fit pt-5 ${
+                            !formik.values[`caregiver_${caregiverId}_mobile_verify`] || formik.values[`caregiver_${caregiverId}_mobile_verify`].length < 10
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'hover:underline cursor-pointer'
+                          }`}
+                        >
+                          GET OTP
+                        </button>
+                        {formik.values[`caregiver_${caregiverId}_mobile_verify`] && 
+                        formik.values[`caregiver_${caregiverId}_mobile_verify`].length < 10 && (
+                          <div className="text-red-500 text-xs mt-1">
+                            Please enter 10 digit mobile number
+                          </div>
+                        )}
+                      </>
+                    ) : (
                   <div className='flex flex-col gap-4 pt-4'>
                     {/* OTP input section */}
                     <div className='flex flex-col gap-3'>
@@ -330,6 +364,7 @@ const CaregiverDetails = ({ formik }) => {
                       </p>
                       
                       {/* OTP input fields */}
+                     {/* OTP input fields */}
                       <div className="flex gap-2">
                         {caregiver.otp.map((digit, index) => (
                           <input
@@ -343,6 +378,13 @@ const CaregiverDetails = ({ formik }) => {
                           />
                         ))}
                       </div>
+
+                      {/* Add this error message display */}
+                      {caregiver.otpError && (
+                        <div className="text-red-500 text-xs mt-1">
+                          {caregiver.otpError}
+                        </div>
+                      )}
                     </div>
                     
                     {/* Timer and verify button */}

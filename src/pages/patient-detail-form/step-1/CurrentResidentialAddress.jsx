@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 
 const CurrentResidentialAddress = ({ formik }) => {
   let initialDataa = useSelector(selectInitializeData);
+
+  console.log('initialDataa?.state',initialDataa?.state);
+  console.log("hi hello");
   
-  const STATE_MAPPING = initialDataa?.response?.state;
-  const CITY_MAPPING = initialDataa?.response?.city;
+  const STATE_MAPPING = initialDataa?.state;
+  const CITY_MAPPING = initialDataa?.city;
 
   const handleSameAsPermanentChange = (e) => {
     const isChecked = e.target.checked;

@@ -8,11 +8,11 @@ export const ProgramEnrollmentSlice = createSlice({
   name: "patient-detail-form",
   initialState: {
     initializeData: {
-      data: {
-        enrollment_details: {
-          step_data: {},
-        },
-      },
+      // data: {
+      //   enrollment_details: {
+      //     step_data: {},
+      //   },
+      // },
     },
     // current_page_state: 'enrollment_not_complete',
     current_page_state: "patient_enrolment",
@@ -34,6 +34,7 @@ export const ProgramEnrollmentSlice = createSlice({
     // doc_upload_status : 'short_fall_doc'
 
     selectedProgram: null, // new property to store selected program
+    selectedEnrollProgram:null,
     viewingOrderHistory: false, // to toggle between program list and order history view
     upload_invoice_modal_open: false,
     request_foc_modal_open: false,
@@ -78,10 +79,13 @@ export const ProgramEnrollmentSlice = createSlice({
     setCurrentView: (state, action) => {
       state.current_view = action.payload;
     },
-
+    
     // Add these new reducers
     setSelectedProgram: (state, action) => {
       state.selectedProgram = action.payload;
+    },
+    setSelectedEnrollProgram: (state, action) => {
+      state.selectedEnrollProgram = action.payload;
     },
     setViewingOrderHistory: (state, action) => {
       state.viewingOrderHistory = action.payload;
@@ -136,7 +140,8 @@ export const {
   setIsProfilePageOpen,
   setIsMoreProgramPageOpen,
   setIsEkySuccessModalOpen,
-  setIsKycHistoryModalOpen
+  setIsKycHistoryModalOpen,
+  setSelectedEnrollProgram
 } = ProgramEnrollmentSlice.actions;
 
 export const selectCurrentStep = (state) => state.patientDetailForm.currentStep;
@@ -165,6 +170,9 @@ export const selectCurrentView = (state) =>
 
 export const selectSelectedProgram = (state) =>
   state.patientDetailForm.selectedProgram;
+
+export const selectSelectedEnrollProgram = (state) =>
+  state.patientDetailForm.selectedEnrollProgram;
 export const selectViewingOrderHistory = (state) =>
   state.patientDetailForm.viewingOrderHistory;
 export const selectUploadInvoiceModalOpen = (state) =>

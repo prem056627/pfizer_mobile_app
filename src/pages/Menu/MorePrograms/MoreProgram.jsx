@@ -126,7 +126,7 @@ function MoreProgram() {
   const initiaData = useSelector(selectInitializeData);
   const dispatch = useDispatch();
 
-  const AVAILABLE_PROGRAMS = initiaData?.response?.program_data?.available_programs||[];
+  const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
 
     const handleRequest = () => {
        

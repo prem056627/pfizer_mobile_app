@@ -25,7 +25,7 @@ import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.s
 
 
 let initialData = {
-  response: {
+ 
     // before enrollment submit
     current_step: "patient_enrolment",
     // current_step: "program_enrolment_done",
@@ -2300,11 +2300,11 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:1,
+		enrolled_programs:0,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
-			program_status: "Active",
+			program_status: "active",
 			program_id: 10011,
 			program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
@@ -2313,7 +2313,7 @@ let initialData = {
 		},
 		{
 			program_name: "Palbace Program",
-			program_status: "Active",
+			program_status: "active",
 			program_id: 10014,
 		    program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
@@ -2321,66 +2321,66 @@ let initialData = {
 		},
 		{
 			program_name: "Crizalk Program",
-			program_status: "Active",
+			program_status: "active",
 			program_id: 10018,
 			program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
 		}
       ],
-      active_programs: [
-        {
-          id: 1,
-          name: "Palbace",
-          status: "Active",
-          uid: "10015",
-          enrollmentDate: "9th Jun, 2021",
-          schemes: "9+LFT",
-          doctorName: "Dr. John Doe",
-          orders: "3",
-          nextVisit: "15th Mar, 2025",
-          type: "Oncology",
-        },
-        {
-          id: 2,
-          name: "Xeljanz",
-          status: "Applied",
-          uid: "10016",
-          enrollmentDate: "12th Dec, 2021",
-          schemes: "6+LFT",
-          doctorName: "Dr. Sarah Smith",
-          orders: "5",
-          nextVisit: "20th Mar, 2025",
-          type: "Rheumatology",
-        },
-        {
-          id: 3,
-          name: "Ibrance",
-          status: "shortfall",
-          uid: "10017",
-          enrollmentDate: "3rd Jan, 2022",
-          schemes: "12+LFT",
-          doctorName: "Dr. Michael Chen",
-          orders: "8",
-          nextVisit: "1st Apr, 2025",
-          type: "Oncology",
-        },
-        {
-          id: 4,
-          name: "Enbrel",
-          status: "Active",
-          uid: "10018",
-          enrollmentDate: "15th Feb, 2022",
-          schemes: "3+LFT",
-          doctorName: "Dr. Emily Brown",
-          orders: "2",
-          nextVisit: "10th Mar, 2025",
-          type: "Immunology",
-        },
-      ],
+      // active_programs: [
+      //   {
+      //     id: 1,
+      //     name: "Palbace",
+      //     status: "Active",
+      //     uid: "10015",
+      //     enrollmentDate: "9th Jun, 2021",
+      //     schemes: "9+LFT",
+      //     doctorName: "Dr. John Doe",
+      //     orders: "3",
+      //     nextVisit: "15th Mar, 2025",
+      //     type: "Oncology",
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "Xeljanz",
+      //     status: "Applied",
+      //     uid: "10016",
+      //     enrollmentDate: "12th Dec, 2021",
+      //     schemes: "6+LFT",
+      //     doctorName: "Dr. Sarah Smith",
+      //     orders: "5",
+      //     nextVisit: "20th Mar, 2025",
+      //     type: "Rheumatology",
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "Ibrance",
+      //     status: "shortfall",
+      //     uid: "10017",
+      //     enrollmentDate: "3rd Jan, 2022",
+      //     schemes: "12+LFT",
+      //     doctorName: "Dr. Michael Chen",
+      //     orders: "8",
+      //     nextVisit: "1st Apr, 2025",
+      //     type: "Oncology",
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "Enbrel",
+      //     status: "Active",
+      //     uid: "10018",
+      //     enrollmentDate: "15th Feb, 2022",
+      //     schemes: "3+LFT",
+      //     doctorName: "Dr. Emily Brown",
+      //     orders: "2",
+      //     nextVisit: "10th Mar, 2025",
+      //     type: "Immunology",
+      //   },
+      // ],
       applied_programs: [
         {
           program_name: "Crizalk Program",
-          program_status: "Applied",
+          program_status: "active",
           program_id: 10018,
           program_scheme: '9+LFT',
           doctor_name:"prem",
@@ -2430,19 +2430,107 @@ let initialData = {
           }
       }
       
-    ],
-    physical_verification : {
-      show_verification_button : true,
-      details : []
-  },
-  ekyc_verification : {
-      show_verification_button : true,
-      details : []
-  }
+    ]
     },
+
+    patient_data: {
+      registration_date: "07-03-2025",
+      patient_email: "patient_tester_00017@gmail.com",
+      addresses: [
+          {
+              city: "NA",
+              state: "NA",
+              line2: "Address Line 2",
+              line1: "Address Line 1",
+              pincode: "897873"
+          },
+          {
+              city: "NA",
+              state: "NA",
+              line2: "Address Line 2",
+              line1: "Address Line 1",
+              pincode: "874673"
+          }
+      ],
+      patient_uid: "",
+      patient_name: "Patient Tester 0017",
+      patient_gender: "Male",
+      program_name: "Self Registered",
+      patient_id: 10345,
+      patient_primary_phone: "+919873281517",
+      patient_dob: "NA"
   },
-  success: true,
-};
+  caregiver_data: [
+      {
+          caregiver_relation: "Father",
+          caregiver_email: "father_caregiver@gmail.com",
+          caregiver_name: "Robert Tester",
+          caregiver_id: 10009,
+          caregiver_mobile: "+1-222-333-4444",
+          caregiver_address: {
+              city: "Chicago",
+              state: "IL",
+              line1: "78 Maple Drive",
+              line2: "Suite 2B",
+              pincode: "60601"
+          }
+      },
+      {
+          caregiver_relation: "Mother",
+          caregiver_email: "mother_caregiver@gmail.com",
+          caregiver_name: "Sarah Tester",
+          caregiver_id: 10010,
+          caregiver_mobile: "+1-555-666-7777",
+          caregiver_address: {
+              city: "Miami",
+              state: "FL",
+              line1: "45 Beach Road",
+              line2: "Apartment 12C",
+              pincode: "33101"
+          }
+      },
+      {
+          caregiver_relation: "Brother",
+          caregiver_email: "brother_caregiver@gmail.com",
+          caregiver_name: "Mike Tester",
+          caregiver_id: 10011,
+          caregiver_mobile: "+1-888-999-0000",
+          caregiver_address: {
+              city: "Seattle",
+              state: "WA",
+              line1: "120 Pine Street",
+              line2: "Floor 3",
+              pincode: "98101"
+          }
+      },
+      {
+          caregiver_relation: "Friend",
+          caregiver_email: "friend_caregiver@gmail.com",
+          caregiver_name: "Jake Friend",
+          caregiver_id: 10012,
+          caregiver_mobile: "+1-111-222-3333",
+          caregiver_address: {
+              city: "Austin",
+              state: "TX",
+              line1: "85 Ranch Road",
+              line2: "Building 4",
+              pincode: "73301"
+          }
+      }
+  ],
+  physical_verification: {
+    show_verification_button: true,
+    details: []
+},
+ekyc_verification: {
+    show_verification_button: true,
+    status : "Inactive",
+    details: []
+},
+    success: true,
+  }
+  
+
 
 export const handlers = [
 	// http.get('/patient/initialize-dashboard/', async () => {
@@ -2652,6 +2740,12 @@ export const handlers = [
       else if (currentStep === "caregiver_addition") {
         responseData = {
           current_step: "program_enrolment",
+          patient_data: requestBody
+        };
+      }
+      else if (currentStep === "program_enrolment") {
+        responseData = {
+          current_step: "program_enrolment_done",
           patient_data: requestBody
         };
       }

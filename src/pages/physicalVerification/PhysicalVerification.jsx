@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CustomToast from './CustomToast';
 import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-form';
 import { useDispatch } from 'react-redux';
+import useApi from '../../hooks/useApi';
 
 
 const PhysicalVerification = () => {
@@ -23,7 +24,9 @@ const PhysicalVerification = () => {
   const calendarRef = useRef(); // Ref for calendar container
   const inputRef = useRef(); // Ref for input field
   const timeInputRef = useRef(); // Ref for time input
-const dispatch = useDispatch()
+const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const triggerApi = useApi();
   // Handle selecting a day in the calendar
   const handleDateChange = (date) => {
     if (!selectedDate.from) {
@@ -35,11 +38,17 @@ const dispatch = useDispatch()
     }
   };
 
+//   const initial_data =  {
+//     current_step: "physical_verification",
+//     date:"",
+//     time:""
+// }
+
 
     // toastify
-    const notify = () => {
+    const notify = (date_data) => {
       toast(({ closeToast }) => (
-        <CustomToast date="24-02-2024" time="2.40 PM" closeToast={closeToast} />
+        <CustomToast date= {`${date_data?.startDate}`} time={`${date_data?.time}`} closeToast={closeToast} />
       ), {
         position: "top-right",
         autoClose: 5000, // Closes after 5 seconds
@@ -48,25 +57,85 @@ const dispatch = useDispatch()
       });
     };
     
+
+
+// Function to make API call with FormData
+const makeApiCall = async (values) => {
+  try {
+    setIsLoading(true);
+    
+    // Create payload with date, time and current_step
+    const payload = {
+      current_step: "physical_verification",
+      date: moment(selectedDate.from).format('DD/MM/YYYY'),
+      time: selectedTime
+    };
+    
+   
+    
+    // Set current_step parameter in the URL
+    const url = `/patient_dashboard/?current_step=physical_verification`;
+    
+    // Make the API call with the FormData payload
+    const { response, success } = await triggerApi({
+      url: url,
+      type: "POST",
+      payload: payload,
+      loader: true,
+      // Important: Don't manually set Content-Type for FormData
+      headers: {
+        // Let the browser set the Content-Type with boundary
+      }
+    });
+
+    if (success && response) {
+      return { success: true, data: response };
+    } else {
+      console.error("API call failed or returned no data.");
+      return { success: false, error: "API call failed" };
+    }
+  } catch (error) {
+    console.error("Error in makeApiCall:", error);
+    return { success: false, error };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
     
   const handleTimeChange = (e) => {
     setSelectedTime(e.target.value);
     console.log('Selected Time:', e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted:', {
+    console.log('Submitted:', );
+
+
+    
+    // Make the API call with the form data
+    const result = await makeApiCall();
+    
+    if (result.success) {
+      // API call was successful
+      console.log("API call successful:", result.data);
+      // Trigger the toast notification
+
+    notify({
       startDate: moment(selectedDate.from).format('DD/MM/YYYY'),
       endDate: moment(selectedDate.to).format('DD/MM/YYYY'),
       time: selectedTime,
     });
-    // closing modal
-    dispatch(setPhysicalVerificationModalOpen(false)); 
-
-    // Trigger the toast notification
-  // ();
+      
+    } else {
+      // API call failed
+      console.error("API call failed:", result.error);
+      // You might want to show an error toast here
+    }
     
+    // closing modal
+    dispatch(setPhysicalVerificationModalOpen(false));
   };
 
   //     onClick={}
@@ -169,7 +238,7 @@ const dispatch = useDispatch()
 
         {/* Submit Button */}
         <button
-   onClick={notify}
+  //  onClick={notify}
           type="submit"
           className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary transition-colors mt-10"
         >

@@ -7,8 +7,8 @@ import { selectInitializeData } from "../../../slice/patient-detail-form";
 const AddressProofForm = ({ formik }) => {
   let initialDataa = useSelector(selectInitializeData);
 
-  const STATE_MAPPING = initialDataa?.response?.state;
-  const CITY_MAPPING = initialDataa?.response?.city;
+  const STATE_MAPPING = initialDataa?.state;
+  const CITY_MAPPING = initialDataa?.city;
 
   return (
     <div className="flex grow flex-col gap-4">

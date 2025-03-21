@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash';
-import { handleFileUpload as handleFileUploadHelper } from '../../utils/helper';
+import { handleFileUpload as handleFileUploadHelper } from '../../../src/utils/helper';
 import { ReactComponent as UploadIcon } from '../../assets/images/svg/upload-icon.svg';
 import { ReactComponent as UploadCloseIcon } from '../../assets/images/svg/upload-close-icon.svg';
 
@@ -38,7 +38,7 @@ export default function MultiFileUpload({
       }
     } else {
 		formik.setErrors({ [id]: 'Maximum size of the document should be 5mb.' });
-    //   handleFileUploadHelper(e, formik, id, isMultiple);
+      handleFileUploadHelper(e, formik, id, isMultiple);
     }
     e.target.value = '';
   };
@@ -70,7 +70,7 @@ export default function MultiFileUpload({
 				</div>
 			) : null}
 			{get(formik.values, id, [])?.length ? (
-				<div className="flex flex-col gap-[8px]">
+				<div className="flex  gap-[8px]">
 					{console.log("file name", get(formik.values, id, []))}
 					{get(formik.values, id, [])?.map((eachFile) => (
 						<div key={eachFile?.name} className="flex gap-[16px]">
@@ -80,8 +80,8 @@ export default function MultiFileUpload({
 								rel="noreferrer"
 								className=" overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary"
 							>
-								{/* {eachFile?.name} */}
-								Uploaded File
+								{eachFile?.name}
+								{/* Uploaded File */}
 							</a>
 							<button
 								type="button"
