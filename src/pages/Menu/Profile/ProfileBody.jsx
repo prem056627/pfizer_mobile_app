@@ -7,8 +7,8 @@ import { selectInitializeData } from '../../../slice/patient-detail-form';
 function MyProfileDetails() {
 
 	const patient_profile_data = useSelector(selectInitializeData);
-	console.log('patient_profile_data', patient_profile_data.patient_data);
-	console.log('caregiver_detail data', patient_profile_data.caregiver_data);
+	// console.log('patient_profile_data', patient_profile_data.patient_data);
+	// console.log('caregiver_detail data', patient_profile_data.caregiver_data);
 	
 const patient_detail = patient_profile_data.patient_data;
 const caregiver_detail = patient_profile_data.caregiver_data;

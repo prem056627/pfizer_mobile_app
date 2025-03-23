@@ -3,10 +3,10 @@ import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import { get } from 'lodash';
 import moment from 'moment';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useField } from 'formik';
 import { ReactComponent as CalenderIcon } from '../../assets/images/svg/calender-icon.svg';
-// import '../../index.css'
+
 export default function FormDatePicker({
 	label,
 	formik,
@@ -16,22 +16,35 @@ export default function FormDatePicker({
 	disabled = false,
 	...props
 }) {
-	const [date, setDate] = useState(
-		moment(value, 'DD/MM/YYYY')?.isValid() ? moment(value, 'DD/MM/YYYY') : ''
-	);
+	// Parse the initial value properly
+	const initialDate = moment(value, 'DD/MM/YYYY').isValid() 
+		? moment(value, 'DD/MM/YYYY') 
+		: null;
+	
+	const [date, setDate] = useState(initialDate);
 	const [dateFocused, setDateFocused] = useState(false);
 	const [field, meta] = useField(props);
 
+	// Set the initial date value as a JavaScript Date object
+	useEffect(() => {
+		if (initialDate) {
+			formik.setFieldValue(props.id, initialDate.toDate());
+		}
+	}, []);
+
 	function handleChange(date) {
-		console.log("date change!!")
 		if (date?.isValid()) {
-			setDate(date ? date : '');
-			formik.setFieldValue(
-				props.id,
-				moment(date).format('DD/MM/YYYY')
-					? moment(date).format('DD/MM/YYYY')
-					: ''
-			);
+			setDate(date);
+			
+			// Set the field value as a JavaScript Date object
+			formik.setFieldValue(props.id, date.toDate());
+			
+			// If you still need the formatted string for display elsewhere,
+			// you can set it in a separate field
+			// formik.setFieldValue(`${props.id}_formatted`, date.format('DD/MM/YYYY'));
+		} else {
+			setDate(null);
+			formik.setFieldValue(props.id, null);
 		}
 		formik.setFieldTouched(props.id, true);
 	}
@@ -43,7 +56,7 @@ export default function FormDatePicker({
 			i <= parseInt(moment(max).format('YYYY'));
 			i++
 		) {
-			years.push(<option value={i}>{i}</option>);
+			years.push(<option key={i} value={i}>{i}</option>);
 		}
 		return years;
 	};
@@ -67,7 +80,7 @@ export default function FormDatePicker({
 						}}
 					>
 						{moment.months().map((label, value) => (
-							<option value={value}>{label}</option>
+							<option key={value} value={value}>{label}</option>
 						))}
 					</select>
 				</div>
@@ -101,20 +114,17 @@ export default function FormDatePicker({
 			</label>
 			<div
 				className="datepicker-container relative"
-				onClick={() => console.log('Div clicked')}
 			>
-				<div className="z-40 bg-slate-600">
+				<div className="z-40">
 					<SingleDatePicker
 						date={date}
 						onDateChange={handleChange}
 						focused={dateFocused}
-						// onFocusChange={({ focused }) => setDateFocused(focused)}x
 						onFocusChange={({ focused }) => {
-							console.log('Focused:', focused);
 							setDateFocused(focused);
 						}}
 						id={props.id}
-						placeholder={'DD/MM/YY'}
+						placeholder={'DD/MM/YYYY'}
 						renderMonthElement={renderMonthElement}
 						block={true}
 						noBorder={true}
@@ -125,15 +135,22 @@ export default function FormDatePicker({
 						disabled={disabled}
 						displayFormat={'DD/MM/YYYY'}
 					/>
-					
 				</div>
 				<CalenderIcon className="pointer-events-none absolute top-[16px] right-[16px] text-blue-500" />
 			</div>
-			{meta.touched && meta.error ? (
+			{/* {meta.touched && meta.error ? (
 				<div className="font-lato text-form-xs text-[#cc3300]">
 					{meta.error}
 				</div>
-			) : null}
+			) : null} */}
+			{meta.touched && meta.error ? (
+    <div className="font-lato text-form-xs text-[#cc3300]">
+        {String(meta.error).includes("Invalid Date") || 
+         String(meta.error).includes("must be a `date` type") 
+            ? "This field is required" 
+            : meta.error}
+    </div>
+) : null}
 		</div>
 	);
 }

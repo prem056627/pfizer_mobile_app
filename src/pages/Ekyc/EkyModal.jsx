@@ -15,7 +15,7 @@ function EkyModal() {
 
     function closeModal() {
         dispatch(setIsEkySuccessModalOpen(false)); // Dispatch the close action
-        console.log("Modal closed");
+        // console.log("Modal closed");
     }
 
     return (

@@ -107,12 +107,12 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
       };
 
     const onSubmit = async (values, { setSubmitting, setFieldError }) => {
-        console.log("formData", values);
+     
         try {
             const result = await makeApiCall(values);
             
             if (result.success) {
-                console.log('Form Submitted', values);
+   
                 dispatch(setUploadInvoiceModalOpen(false));
                 
                 // Show success toast
@@ -160,11 +160,11 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 label="Invoice"
                                 description="The file must be in jpg/pdf/png format. Maximum size of the document should be 2MB. You can upload up to 5 files."
                             />
-                            {hasErrors && (
+                            {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">
                                     {formik.errors.order_file}
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         <div className="flex flex-col gap-5">

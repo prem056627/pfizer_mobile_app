@@ -1,27 +1,6 @@
 import { http, delay, HttpResponse } from 'msw';
 import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.svg";
-// import { useEffect, useState } from 'react';
-// import { ReactComponent as BrandIcon } from '../../assets/images/svg/brand-logo.svg';
-// import MenuFooter from '../../components/MenuFooter';
-// import PlayIcon from '../assets/images/svg/Play.svg';
-// import bg1 from '../assets/images/svg/bg_image/bg-1.png'; // Import the background image
-// import bg2 from '../assets/images/svg/bg_image/bg-2.png';
 
-// let initialData = {
-// 	// message: 'Consent Flag',
-// 	// ekyc_details: {
-// 	// 	status: 'Complete KYC',
-// 	// },
-// 	is_Program_enrollment_submited: false,
-// 	// is_Concent_Submitted: false,
-// 	// is_ekyc_completed: true,
-// 	is_profile_completed: true,
-// 	// is_document_submitted : false,
-// 	is_document_status: true,
-
-// 	// "patient_id": "10005",    
-//     //   "current_state": "terms_and_conditions",
-// };
 
 
 let initialData = {
@@ -2550,146 +2529,6 @@ export const handlers = [
 
 	
 
-	// http.get('/patient-initialize/', () => {
-	// 	return HttpResponse.json({
-	// 		success: true,
-	// 		response: {
-	// 			uid: '12345', // Unique ID for the user "enrollment_not_complete"
-	// 			current_page_state: "enrollment_not_complete", 
-	// 			// program_status: 'un_active',
-    //             // program_status: "active",
-	// 			// program_status: 'profile_under_review', 
-	// 			// program_status: 'doc_shortfall', 
-    //             program_name :'Opdyta',
-            
-	// 			// current_state: "program_dashboard",
-	// 			// current_state: "enrollment_not_complete",
-	// 			program_status: 'active',
-
-	// 			enrollment_details: {
-	// 				steps: [
-	// 					// 'terms_and_conditions',
-	// 					'personal_details',
-	// 					'caregiver_details'
-	// 				],
-	// 				completed_steps: ['terms_and_conditions', 'patient_details'],
-	// 				current_step: 'patient_details',
-	// 				step_data: {
-	// 					terms_and_conditions: 'Yes', // Can be "yes", "no"
-	// 					personal_details: {
-	// 						full_name: "Unique state values",
-	// 						gender: "Male",
-	// 						date_of_birth: "1990-05-15",
-	// 						mobile_number: "9876543210",
-	// 						email: "johndoe@example.com",
-	// 						nationality: "American",
-	// 						permanent_addressline1: "123 Main Street",
-	// 						permanent_addressline2: "Apt 4B",
-	// 						permanent_city: "New York",
-	// 						permanent_state: "NY",
-	// 						permanent_pincode: "100401",
-	// 						same_as_permanent: false,
-	// 						current_addressline1: "456 Elm Street",
-	// 						current_addressline2: "Suite 2A",
-	// 						current_city: "Los Angeles",
-	// 						current_state: "CA",
-	// 						current_pincode: "900123",
-	// 						id_card_type: "Passport",
-	// 						id_number: "A12345678"
-	// 					},
-	// 					caregiver_details: {
-	// 						caregiver_email: "pk@gmail.com",
-	// 						caregiver_mobile: "9894906630",
-	// 						caregiver_mobile_verify: "9894906630",
-	// 						caregiver_name: "Prem",
-	// 						relationship: "Brother"
-	// 					}
-	// 				},
-	// 				completed: false // Whether the process is fully completed
-	// 			}
-	// 		}
-	// 	});
-	// }),
-	
-   // Mock server implementation
-  //  http.post('/patient_dashboard/', async ({ request }) => {
-	// try {
-	//   // Get the current_step from URL query parameters
-	//   const url = new URL(request.url);
-	//   const currentStep = url.searchParams.get('current_step');
-	//   const mobile_no = url.searchParams.get('mobile_no');
-	//   // Make sure request has a body before trying to parse it
-	//   let requestBody = {};
-	//   try {
-	// 	const contentType = request.headers.get('Content-Type');
-	// 	if (contentType && contentType.includes('application/json')) {
-	// 	  const text = await request.text();
-	// 	  if (text) {
-	// 		requestBody = JSON.parse(text);
-	// 	  }
-	// 	}
-	//   } catch (e) {
-	// 	console.error('Error parsing request body:', e);
-	//   }
-	  
-	//   let responseData;
-	//   if (currentStep === "patient_enrolment") {
-	// 	responseData = {
-	// 	  current_step: "caregiver_addition",
-	// 	  patient_data: requestBody
-	// 	};
-	//   } else if (currentStep === "caregiver_addition") {
-	// 	responseData = {
-	// 	  current_step: "program_enrolment",
-		 
-	// 	//   un_active
-	// 	  patient_data: requestBody
-	// 	};
-	//   }else if (currentStep === "caregiver_addition") {
-  //     responseData = {
-  //       current_step: "verify_mobile",
-        
-  //     //   un_active
-  //       patient_data: requestBody
-  //     };
-  //     } else {
-	// 	responseData = {
-	// 	  current_step: currentStep || "unknown",
-	// 	  ...requestBody
-	// 	};
-	//   }
-	  
-	//   // Return proper JSON response
-	//   return new HttpResponse(
-	// 	JSON.stringify({
-	// 	  response: responseData,
-	// 	  success: true,
-	// 	  message: "Data updated successfully"
-	// 	}),
-	// 	{
-	// 	  status: 200,
-	// 	  headers: {
-	// 		'Content-Type': 'application/json'
-	// 	  }
-	// 	}
-	//   );
-	// } catch (error) {
-	//   console.error('Mock server error:', error);
-	//   return new HttpResponse(
-	// 	JSON.stringify({
-	// 	  success: false,
-	// 	  message: "Server error",
-	// 	  error: error.message
-	// 	}),
-	// 	{
-	// 	  status: 500,
-	// 	  headers: {
-	// 		'Content-Type': 'application/json'
-	// 	  }
-	// 	}
-	//   );
-	// }
-  // })
 
   http.post('/patient_dashboard/', async ({ request }) => {
     try {
@@ -2729,7 +2568,7 @@ export const handlers = [
           patient_data: requestBody
         };
         
-        console.log(`Mock OTP sent: ${otp} to ${mobile_no || requestBody.mobile_no}`);
+        // console.log(`Mock OTP sent: ${otp} to ${mobile_no || requestBody.mobile_no}`);
       } 
       else if (currentStep === "patient_enrolment") {
         responseData = {

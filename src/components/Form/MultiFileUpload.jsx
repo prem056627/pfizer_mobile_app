@@ -29,7 +29,7 @@ export default function MultiFileUpload({
 
         formik.setFieldValue(id, newFiles);
 
-        console.log('files', newFiles, onFileUpload);
+        // console.log('files', newFiles, onFileUpload);
         
         // Call the onFileUpload callback if provided
         if (onFileUpload) {
@@ -70,8 +70,8 @@ export default function MultiFileUpload({
 				</div>
 			) : null}
 			{get(formik.values, id, [])?.length ? (
-				<div className="flex  gap-[8px]">
-					{console.log("file name", get(formik.values, id, []))}
+				<div className="flex  gap-[8px] flex-col">
+					{/* {console.log("file name", get(formik.values, id, []))} */}
 					{get(formik.values, id, [])?.map((eachFile) => (
 						<div key={eachFile?.name} className="flex gap-[16px]">
 							<a

@@ -163,9 +163,9 @@ const Notifications = () => {
       </div>
 
       {/* Help Button */}
-      <div className="fixed bottom-24 z-30 w-full">
+      {/* <div className="fixed bottom-24 z-30 w-full bg-red-200">
         <FabButton />
-      </div>
+      </div> */}
       
       {/* Uncomment these if needed */}
       {/* <PatientConsentModal/> */}

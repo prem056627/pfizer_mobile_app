@@ -77,13 +77,13 @@ export default function SelectField({
 			);
 			
 			if (matchingInitialOption) {
-				console.log('Found matching option for initial value:', initialValue.current);
+				// console.log('Found matching option for initial value:', initialValue.current);
 				setSelected(matchingInitialOption);
 				initialValueSet.current = true;
 			}
 		} else if (!value) {
 			// Reset to default when no value
-			console.log('No value, setting default selection');
+			// console.log('No value, setting default selection');
 			setSelected({
 				label: 'Select',
 				id: '',

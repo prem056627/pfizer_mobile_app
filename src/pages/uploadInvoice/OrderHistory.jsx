@@ -19,7 +19,7 @@ const OrderHistory = () => {
   const paidOrders = program?.orders?.paid_orders || [];
   const focOrders = program?.orders?.foc_orders || [];
   
-  console.log('paidOrders,focOrders', paidOrders, focOrders);
+  console.log('paidOrders,focOrders', program);
   
   // Handle back navigation
   const handleBack = () => {
@@ -27,18 +27,18 @@ const OrderHistory = () => {
   };
 
   const UploadInvoiceHandle = () => {
-    console.log("Upload invoice");
+
     dispatch(setUploadInvoiceModalOpen(true));
   };
 
   const RequestFocHandle = () => {
-    console.log("Request FOC");
+
     dispatch(setRequestFocModalOpen(true));
   };
 
   // Handle file view
   const handleFileView = (fileName) => {
-    console.log("Viewing file:", fileName);
+    // console.log("Viewing file:", fileName);
     // Implement file viewing functionality here
   };
 
@@ -105,7 +105,7 @@ const OrderHistory = () => {
       </div>
 
       {/* Order History Section */}
-      <div className="px-6">
+      <div className="px-6 relative">
         <h2 className="text-[18px] font-bold mb-4">Order History</h2>
         {/* Tabs */}
         <div className="flex border-b mb-4">
@@ -204,7 +204,7 @@ const OrderHistory = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-24 z-30 w-full">
+      <div className="fixed bottom-24 z-30 right-0">
         <FabButton />
       </div>
       <MenuFooter />

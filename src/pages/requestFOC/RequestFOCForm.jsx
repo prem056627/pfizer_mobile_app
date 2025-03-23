@@ -87,13 +87,13 @@ const makeApiCall = async (values) => {
         }
         
         // Log FormData contents for verification
-        console.log("FormData contents:");
+
         for (let pair of formData.entries()) {
             console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
                 `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
         }
         
-        console.log("Sending FormData for FOC request");
+        // console.log("Sending FormData for FOC request");
         const { response, success } = await triggerApi({
             url: `/patient_dashboard/?current_step=place_foc_order`,
             type: "POST",
@@ -106,7 +106,7 @@ const makeApiCall = async (values) => {
         });
         
         if (success && response) {
-            console.log("FOC request submitted successfully:", response);
+            // console.log("FOC request submitted successfully:", response);
             return { success: true, data: response };
         } else {
             console.error("API call failed or returned no data.");
@@ -121,7 +121,7 @@ const makeApiCall = async (values) => {
 };
 
     const onSubmit = async (values, { setSubmitting, setFieldError }) => {
-        console.log('Form Submitted', values);
+       
         try {
             const result = await makeApiCall(values);
             
@@ -173,11 +173,11 @@ const makeApiCall = async (values) => {
                                 label="Prescription"
                                 description="The file must be in jpg/pdf/png format. Maximum size of the document should be 2MB. You can upload up to 5 files."
                             />
-                            {hasErrors && (
+                            {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">
                                     {formik.errors.BrowseFiles}
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         <div className="flex flex-col gap-5">

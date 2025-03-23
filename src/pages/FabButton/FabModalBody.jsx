@@ -48,7 +48,9 @@ function FabModalBody() {
 					</a>
 						):(
 							<a href="mailto:aarambh@oasiscenter.co.in" className="font-open-sans text-sm font-bold text-[#283A46] ">
-						aarambh@oasiscenter.co.in
+						
+
+						access@mediangels.com
 					</a>
 						)
 					}

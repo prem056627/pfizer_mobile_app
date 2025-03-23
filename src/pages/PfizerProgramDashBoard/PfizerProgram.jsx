@@ -36,14 +36,15 @@ const PfizerProgram = () => {
   const initiaData = useSelector(selectInitializeData)
 
   const number_of_programs_enrollled = initiaData?.program_data?.enrolled_programs;
-  console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
+  // console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
 const APPLIED_PROGRAMS = initiaData?.program_data?.applied_programs||[];
 
-console.log("Applied Programs",APPLIED_PROGRAMS);
+// console.log("Applied Programs",APPLIED_PROGRAMS);
 
 const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
-console.log('initiaDatainitiaDatainitiaData',initiaData?.physical_verification?.show_verification_button);
+// console.log('initiaDatainitiaDatainitiaData',initiaData?.physical_verification?.show_verification_button);
 
+// console.log('initiaDatainitiaDatainitiaData',initiaData?.patient_data?.patient_uid);
   const handleRequest = (program) => {
    
     dispatch(setSelectedEnrollProgram(program));
@@ -65,7 +66,7 @@ console.log('initiaDatainitiaDatainitiaData',initiaData?.physical_verification?.
   };
 
   const handleEkyRequest = ()=>{
-    console.log('hello from ekyc!!');
+
     dispatch(setIsEkySuccessModalOpen(true));
   }
 
@@ -112,7 +113,7 @@ const renderAvailablePrograms = () => (
         <img src={program.program_image} alt={program.program_name} className="w-20 h-20" />
       </div>
           <div className="flex-1">
-            <h3 className="text-md font-semibold">{program.program_name}</h3>
+            <h3 className="text-md font-semibold ">{program.program_name}</h3>
             <div className="flex gap-2 mt-2">
               {program.program_type.map((type, index) => (
                 <span 
@@ -190,8 +191,8 @@ const renderAvailablePrograms = () => (
         program.program_status === 'active' || program.program_status === 'applied' ? (
           <div key={program.program_id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
             <div className="flex justify-between items-center mb-2">
-              <div className="flex gap-4">
-                <h3 className="text-lg font-semibold">{program.program_name}</h3>
+              <div className="flex gap-2">
+                <h3 className="text-[18px] font-semibold programhead">{program.program_name}</h3>
                 <span 
                   className={`px-4 py-1 ${
                     program.program_status === 'applied' 
@@ -220,7 +221,8 @@ const renderAvailablePrograms = () => (
             </div>
             <div className="space-y-[6px] text-gray-600">
               <p className="text-[#767676] text-[14px] font-open-sans font-bold">
-                UID - {program.program_id}
+                UID - {initiaData?.patient_data?.patient_uid}
+                {/* patient_uid */}
               </p>
               <p className="text-[#767676] text-[14px]">
                 Enrollment Date - {program.program_enrollmentDate}
@@ -260,7 +262,7 @@ const renderAvailablePrograms = () => (
             <div className="px-4 flex gap-4">
               <div className="space-y-2 text-gray-600 mb-6">
                 <p className="text-[#767676] text-[14px] font-sans font-bold">
-                UID - {program.program_id}
+                UID - {initiaData?.patient_data?.patient_uid}
                 </p>
                 {/* need to update */}
                 <p className="text-[#767676] text-[14px] font-open-sans">
@@ -410,7 +412,7 @@ const renderAvailablePrograms = () => (
 
   
   return (
-    <div className="flex flex-col items-center   p-4  max-h-screen bg-white">
+    <div className="flex flex-col items-center   p-4  max-h-screen bg-white relative">
       <h2 className="text-lg font-semibold w-full py-4">Programs</h2>
 
       {(number_of_programs_enrollled ?? 0) > 0 
@@ -423,7 +425,7 @@ const renderAvailablePrograms = () => (
 
       {/* {APPLIED_PROGRAMS  && renderActiveProgram()} */}
 
-      <div className="fixed bottom-24 z-30 w-full">
+      <div className="fixed bottom-24 z-30 right-0">
         <FabButton />
       </div>
 

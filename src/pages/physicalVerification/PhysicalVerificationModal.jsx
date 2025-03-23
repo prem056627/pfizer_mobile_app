@@ -22,7 +22,7 @@ function PhysicalVerificationModal() {
 
     function closeModal() {
         dispatch(setPhysicalVerificationModalOpen(false)); // Dispatch the close action
-        console.log("Modal closed");
+
     }
 
     return (

@@ -406,3 +406,22 @@ html, body {
 .Toastify__toast {
 /* padding: 16px !important; */
 }
+
+
+
+
+/* Base styles for preventing zoom on input fields */
+@media screen and (max-width: 400px) {
+  .programhead{
+    font-size: 16px !important;
+  
+  }
+}
+
+
+@media screen and (max-width: 380px) {
+  .programhead{
+    font-size: 14px !important;
+  
+  }
+}

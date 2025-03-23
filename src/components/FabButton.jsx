@@ -9,7 +9,7 @@ function FabButton() {
   const dispatch = useDispatch()
 // const IsFabbuttonOpen = useSelector(SelectIsFabButtonOpen)
 function handleFabutton(){
-  console.log("fab button clicked")
+ 
   dispatch(setIsFabButtonOpen(true))
 
   

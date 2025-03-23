@@ -16,7 +16,7 @@ function KycHistoryModal() {
 
   function closeModal() {
     dispatch(setIsKycHistoryModalOpen(false));
-    console.log("Modal closed");
+    // console.log("Modal closed");
   }
   const isKycHistoryOpen = useSelector(selectIsKycHistoryModalOpen);
 

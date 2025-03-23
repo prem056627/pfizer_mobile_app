@@ -21,7 +21,7 @@ function UploadInvoiceModal() {
 
     function closeModal() {
         dispatch(setUploadInvoiceModalOpen(false)); // Dispatch the close action
-        console.log("Modal closed");
+       
     }
 
     return (

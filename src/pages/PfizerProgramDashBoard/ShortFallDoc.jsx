@@ -81,19 +81,19 @@ const ShortFallDoc = () => {
       // Add files directly to FormData
       if (values.idProof && values.idProof.length > 0) {
         formData.append('idProof', values.idProof[0]);
-        console.log('Adding idProof:', debugFile(values.idProof[0]));
+        // console.log('Adding idProof:', debugFile(values.idProof[0]));
       }
       
       if (values.addressProof && values.addressProof.length > 0) {
         formData.append('addressProof', values.addressProof[0]);
-        console.log('Adding addressProof:', debugFile(values.addressProof[0]));
+        // console.log('Adding addressProof:', debugFile(values.addressProof[0]));
       }
       
       // Add any additional data if needed
       formData.append('current_step', 'reupload_documents');
       
       // Log all FormData entries to verify content
-      console.log('FormData contents:');
+      // console.log('FormData contents:');
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
           `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
@@ -115,14 +115,14 @@ const ShortFallDoc = () => {
       });
   
       if (success && response) {
-        console.log("Form data submitted successfully:", response);
+        // console.log("Form data submitted successfully:", response);
         return { success: true, data: response };
       } else {
-        console.error("API call failed or returned no data.");
+        // console.error("API call failed or returned no data.");
         return { success: false, error: "API call failed" };
       }
     } catch (error) {
-      console.error("Error in makeApiCall:", error);
+      // console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
       setIsLoading(false);
@@ -131,7 +131,7 @@ const ShortFallDoc = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      console.log('Form values before submission:', values);
+      // console.log('Form values before submission:', values);
       
       // Check if files exist and are valid
       if ((!values.idProof || values.idProof.length === 0) && 
@@ -171,7 +171,7 @@ const ShortFallDoc = () => {
     };
 
   function handleLater(){
-    console.log("Hello buddy!");
+
      setTimeout(() => {
             refreshApplication();
           }, 200);
@@ -202,12 +202,12 @@ const ShortFallDoc = () => {
                   id={field.id}
                   isMultiple={false}
                   onFileUpload={(files) => {
-                    console.log(`${field.id} files uploaded:`, files);
+                    // console.log(`${field.id} files uploaded:`, files);
                     // Ensure files are properly set in formik
                     formik.setFieldValue(field.id, files);
                   }}
                   onFileRemove={(files) => {
-                    console.log(`${field.id} files after remove:`, files);
+                    // console.log(`${field.id} files after remove:`, files);
                     formik.setFieldValue(field.id, files);
                   }}
                 />

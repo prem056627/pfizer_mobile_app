@@ -65,7 +65,7 @@ import { setCurrentPageState, setPatientEnrollmentSuccessModalOpen } from "../..
 function PatientEnrollmentSuccess() {
 const dispatch = useDispatch();
     const handleRequest = () => {
-        console.log("Request Sent");
+        // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));
     }

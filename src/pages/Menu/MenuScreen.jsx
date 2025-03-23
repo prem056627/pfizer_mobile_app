@@ -16,16 +16,16 @@ const MenuScreen = () => {
 	const { t } = useTranslation();
   // Handle menu item clicks
   const handleMenuClick = (menuId, menuTitle) => {
-    console.log(`Clicked on menu: ${menuTitle} (ID: ${menuId})`);
+    // console.log(`Clicked on menu: ${menuTitle} (ID: ${menuId})`);
 
     function handleProfilePage(){
-      console.log("Navigating to profile page");
+      // console.log("Navigating to profile page");
       dispatch(setIsProfilePageOpen(true))
   
     }
 
     function handleMoreProgram(){
-      console.log("Navigating to handleMoreProgram");
+      // console.log("Navigating to handleMoreProgram");
       dispatch(setIsMoreProgramPageOpen(true))
   
     }
@@ -33,13 +33,13 @@ const MenuScreen = () => {
 
 
     function handleKycHistory(){
-      console.log("Navigating to handleKycHistory");
+      // console.log("Navigating to handleKycHistory");
       dispatch(setIsKycHistoryModalOpen(true))
   
     }
     
     function handleSessionLogout() {
-      console.log("session logout !!!");
+      // console.log("session logout !!!");
       localStorage.clear();
   
       let message = {
@@ -52,7 +52,7 @@ const MenuScreen = () => {
       if (window.ReactNativeWebView) {
           window.ReactNativeWebView.postMessage(stringifiedMessage);
       } else {
-          console.log("Logging out from web...");
+          // console.log("Logging out from web...");
           window.location.href = '/logout'; // Ensure the URL is correct for your logout endpoint
       }
   }
@@ -65,26 +65,26 @@ const MenuScreen = () => {
         // Add your profile navigation logic here
         break;
       case 2: // Customer Care
-        console.log("Opening customer care support");
+        // console.log("Opening customer care support");
         // Add your customer care logic here, perhaps open email client
         window.location.href = "mailto:support@1mg.com";
         break;
       case 3: // Completed Verification
-        console.log("Showing completed verifications");
+        // console.log("Showing completed verifications");
         // Add your verification history logic here
         break;
       case 4: // KYC History
-        console.log("Opening KYC history");
+        // console.log("Opening KYC history");
         handleKycHistory()
         // Add your KYC history logic here
         break;
       case 5: // View More Programs
-        console.log("Viewing additional programs");
+        // console.log("Viewing additional programs");
         handleMoreProgram()
         // Add your programs view logic here
         break;
       case 6: // Logout
-        console.log("Logging out");
+        // console.log("Logging out");
         handleSessionLogout()
         // Add your logout logic here
         // Example: logoutUser() function call

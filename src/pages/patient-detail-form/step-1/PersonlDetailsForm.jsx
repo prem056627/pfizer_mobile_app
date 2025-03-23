@@ -4,12 +4,14 @@ import React from "react";
 import FormDatePicker from "../../../components/Form/FormDatePicker";
 import InputField from "../../../components/Form/InputField";
 import SelectField from "../../../components/Form/SelectField";
+import { nationalityOptions } from "../../../utils/constants";
 
 const genderOptions = [
   { id: "male", label: "Male" },
   { id: "female", label: "Female" },
   { id: "other", label: "Other" },
 ];
+
 
 export default function PersonalDetailsForm({ formik }) {
 
@@ -86,7 +88,7 @@ export default function PersonalDetailsForm({ formik }) {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
-      <InputField
+      {/* <InputField
         key="nationality"
         label="Nationality"
         name="nationality"
@@ -95,7 +97,21 @@ export default function PersonalDetailsForm({ formik }) {
         value={formik.values.nationality}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-      />
+      /> */}
+      <SelectField
+          key="nationality"
+          label="Nationality"
+          name="nationality"
+          id="nationality"
+          formik={formik}
+          placeholder="Select"
+          value={formik.values.nationality}
+          optionsDataName="nationality"
+          optionsData={nationalityOptions}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className="w-1/2"
+        />
     </div>
   );
 }

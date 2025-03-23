@@ -17,7 +17,7 @@ function MoreProgramModal() {
 
   function closeModal() {
     dispatch(setIsMoreProgramPageOpen(false));
-    console.log("Modal closed");
+    // console.log("Modal closed");
   }
   const isMoreProgram = useSelector(selectIsMoreProgramPageOpen);
 

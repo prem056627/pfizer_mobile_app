@@ -66,7 +66,7 @@ const makeApiCall = async (values) => {
     });
 
     if (success && response) {
-      console.log("Form data submitted successfully:", response);
+      // console.log("Form data submitted successfully:", response);
       dispatch(setCurrentPageState(response?.current_step))
       // dispatch(setProgramStatus(response?.program_status))
 
@@ -92,7 +92,7 @@ const makeApiCall = async (values) => {
 
   const onSubmit = async (values) => {
 
-    console.log("current 2nd step vlues" , values)
+    // console.log("current 2nd step vlues" , values)
 
 
      try {

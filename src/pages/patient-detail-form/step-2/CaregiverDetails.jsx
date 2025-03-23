@@ -6,12 +6,21 @@ import { getCaregiverDetailsInitialValues } from './initialValues';
 
 // Relationship options for the dropdown
 const relationshipOptions = [
-  { id: 'parent', label: 'Parent' },
-  { id: 'spouse', label: 'Spouse' },
-  { id: 'sibling', label: 'Sibling' },
-  { id: 'guardian', label: 'Guardian' },
-  { id: 'other', label: 'Other' },
-  { id: 'NA', label: 'Not Applicable' },
+  { id: "Father", label: "Father" },
+  { id: "Mother", label: "Mother" },
+  { id: "Daughter", label: "Daughter" },
+  { id: "Son", label: "Son" },
+  { id: "Spouse", label: "Spouse" },
+  { id: "Sister", label: "Sister" },
+  { id: "Brother", label: "Brother" },
+  { id: "Father-In-Law", label: "Father-In-Law" },
+  { id: "Mother-In-Law", label: "Mother-In-Law" },
+  { id: "Daughter-In-Law", label: "Daughter-In-Law" },
+  { id: "Son-In-Law", label: "Son-In-Law" },
+  { id: "Sister-In-Law", label: "Sister-In-Law" },
+  { id: "Brother-In-Law", label: "Brother-In-Law" },
+  { id: "Cousin", label: "Cousin" },
+  { id: "Other", label: "Other" }
 ];
 
 const CaregiverDetails = ({ formik }) => {

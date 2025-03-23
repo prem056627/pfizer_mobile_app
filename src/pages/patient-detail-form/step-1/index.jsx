@@ -62,7 +62,7 @@ const [isLoading, setIsLoading] = useState(true);
 
 // And here's the fixed client-side function:
 const makeApiCall = async (values) => {
-  console.log("form Val!!! " , values ) ;
+  // console.log("form Val!!! " , values ) ;
   try {
     setIsLoading(true);
 
@@ -96,7 +96,7 @@ const url = `/patient_dashboard/?current_step=${currentStep}`;
 
   const onSubmit = async (values, { setSubmitting }) => {
 
-    console.log('valuessss!!',values);
+    // console.log('valuessss!!',values);
     try {
       // Save to local storage
       setFormData({

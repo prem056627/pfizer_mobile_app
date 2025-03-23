@@ -22,7 +22,7 @@ function RequestFOCModal() {
 
     function closeModal() {
         dispatch(setRequestFocModalOpen(false)); // Dispatch the close action
-        console.log("Modal closed");
+
     }
 
     return (

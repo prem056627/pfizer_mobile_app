@@ -105,12 +105,12 @@ const makeApiCall = async (values) => {
     
   const handleTimeChange = (e) => {
     setSelectedTime(e.target.value);
-    console.log('Selected Time:', e.target.value);
+    // console.log('Selected Time:', e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted:', );
+
 
 
     
@@ -119,7 +119,7 @@ const makeApiCall = async (values) => {
     
     if (result.success) {
       // API call was successful
-      console.log("API call successful:", result.data);
+      // console.log("API call successful:", result.data);
       // Trigger the toast notification
 
     notify({

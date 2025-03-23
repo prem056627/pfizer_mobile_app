@@ -15,7 +15,7 @@ import { ReactComponent as Img13 } from '../../../../src/assets/images/more_prog
 import { ReactComponent as Img14 } from '../../../../src/assets/images/more_programs/img-6.svg';
 import { ReactComponent as Img15 } from '../../../../src/assets/images/more_programs/img-6.svg';
 import { useDispatch, useSelector } from "react-redux";
-import { selectInitializeData, setCurrentView, setIsMoreProgramPageOpen, setProgramEnrollmentConsent } from "../../../slice/patient-detail-form";
+import { selectInitializeData, setCurrentView, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
 // const programsData = [
 
   
@@ -128,12 +128,13 @@ function MoreProgram() {
 
   const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
 
-    const handleRequest = () => {
+    const handleRequest = (program) => {
        
-        // dispatch(setCurrentView("home"));
-      // dispatch(setProgramEnrollmentConsent(true));
+        dispatch(setCurrentView("home"));
+       dispatch(setSelectedEnrollProgram(program));
+      dispatch(setProgramEnrollmentConsent(true));
 
-        // dispatch(setIsMoreProgramPageOpen(false));
+        dispatch(setIsMoreProgramPageOpen(false));
     };
 
   return (

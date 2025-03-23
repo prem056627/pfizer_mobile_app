@@ -10,9 +10,9 @@ function KycHistory() {
 
 
     const patient_profile_data = useSelector(selectInitializeData);
-    console.log('patient_profile_data', patient_profile_data.patient_data);
-    console.log('ekyc_verification', patient_profile_data.ekyc_verification.status
-    );
+    // console.log('patient_profile_data', patient_profile_data.patient_data);
+    // console.log('ekyc_verification', patient_profile_data.ekyc_verification.status
+    // );
 
     const eky_status = patient_profile_data?.ekyc_verification?.status;
   return (
