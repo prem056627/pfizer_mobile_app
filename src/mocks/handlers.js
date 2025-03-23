@@ -2374,6 +2374,8 @@ let initialData = {
           reupload_document: [
             { id: 'idProof', label: 'ID Proof' },
             { id: 'addressProof', label: 'Address Proof' },
+            { id: 'rroof', label: 'Addrer' },
+            
           ],
           program_status: "shortfall",
           program_enrollmentDate: "23 Mar 2025",

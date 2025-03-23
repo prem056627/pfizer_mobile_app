@@ -186,7 +186,7 @@ const renderAvailablePrograms = () => (
   console.log('initiaData?.physical_verification?.show_verification_button',initiaData?.ekyc_verification?.show_verification_button);
   const renderActiveProgram = () => (
     <>
-     <div className="pt-4 w-full">
+     <div className="pt-[2px] w-full">
       {APPLIED_PROGRAMS.map((program) => (
         program.program_status === 'active' || program.program_status === 'applied' ? (
           <div key={program.program_id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
