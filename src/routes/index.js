@@ -63,7 +63,7 @@ const AppNavigation = () => {
   
       if (success && response) {
         dispatch(setInitializeData(response));
-        console.log('responseresponseresponse!!',response);
+        // console.log('responseresponseresponse!!',response);
         dispatch(setCurrentPageState(response.current_step)); 
         // dispatch(setProgramStatus(response.program_status)); 
       } else {
@@ -76,7 +76,7 @@ const AppNavigation = () => {
     }
   };
 
-  console.log('initialDatainitialData',initialData);
+  // console.log('initialDatainitialData',initialData);
   
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const AppNavigation = () => {
    
   }, []);
 
-  console.log("current_page_statecurrent_page_state!!!",current_page_state);
+  // console.log("current_page_statecurrent_page_state!!!",current_page_state);
 
   // Render content based on current view and app state
   const renderContent = () => {
