@@ -12,7 +12,7 @@ const PatientDetailForm = () => {
 
   const steps = [
     {
-      title: "Profile Details",
+      title: "Patient Details",
     },
     {
       title: "Caregiver Details",
@@ -49,7 +49,7 @@ const PatientDetailForm = () => {
   return (
     <div className="w-full pb-24 max-h-screen">
       <h3 className="text-start text-[16px] font-sans font-semibold text-black mt-2 py-6 border-b-[1px] border-[#DBDBDB] mx-4">
-        Program Enrollment
+        Profile Enrollment 
       </h3>
 
       <div className="md:container mx-auto md:px-6 py-8 relative">

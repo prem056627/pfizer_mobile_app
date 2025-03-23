@@ -6,65 +6,41 @@ import { Transition } from 'react-transition-group';
 
 
 import { ReactComponent as Empty } from "../../assets/images/menus1/empty_notify.svg";
-// Dummy notification API service
-const notificationApiService = {
-  getNotifications: () => {
-    return new Promise((resolve) => {
-      // Simulate API delay
-      setTimeout(() => {
-        resolve([
-          { id: 1, recipient: 'ojaman', date: 'September 4', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 2, recipient: 'ojaman', date: 'September 3', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 3, recipient: 'ojaman', date: 'September 1', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 4, recipient: 'ojaman', date: 'September 1', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 5, recipient: 'ojaman', date: 'September 1', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 6, recipient: 'ojaman', date: 'September 1', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-          { id: 7, recipient: 'ojaman', date: 'September 1', message: 'successful transaction to ojaman', subMessage: 'view and download the receipt' },
-        ]);
-      }, 500);
-    });
-  },
-  
-  dismissNotification: (id) => {
-    return new Promise((resolve) => {
-      // Simulate API delay
-      setTimeout(() => {
-        resolve({ success: true, id });
-      }, 300);
-    });
-  }
-};
+import { selectInitializeData } from '../../slice/patient-detail-form';
+import { useSelector } from 'react-redux';
 
 const Notifications = () => {
+  const initiaData = useSelector(selectInitializeData);
+  const apiNotifications = initiaData.notifications || [];
+  
+  console.log(apiNotifications);
+
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [removingIds, setRemovingIds] = useState([]);
 
   useEffect(() => {
-    // Fetch notifications when component mounts
-    fetchNotifications();
-  }, []);
-
-  const fetchNotifications = async () => {
-    setLoading(true);
-    try {
-      const data = await notificationApiService.getNotifications();
-      setNotifications(data);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    } finally {
-      setLoading(false);
+    // Use the API notifications directly from the Redux store
+    if (apiNotifications && apiNotifications.length > 0) {
+      // Format notifications to match component's expected structure
+      const formattedNotifications = apiNotifications.map((notification, index) => ({
+        id: index + 1,
+        recipient: '',
+        date: notification.date || '',
+        message: notification.title || '',
+        subMessage: notification.description || '',
+      }));
+      
+      setNotifications(formattedNotifications);
     }
-  };
+    setLoading(false);
+  }, [apiNotifications]);
 
   const handleDismiss = async (id) => {
     // Add the ID to the removing list to trigger animation
     setRemovingIds(prev => [...prev, id]);
     
     try {
-      // Call API to dismiss notification
-      await notificationApiService.dismissNotification(id);
-      
       // Wait for animation to complete before removing from state
       setTimeout(() => {
         setNotifications(prev => prev.filter(notification => notification.id !== id));

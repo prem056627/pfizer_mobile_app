@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
-import { useDispatch } from 'react-redux';
-import { setDocUploadStatus, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setProgramStatus, setSchemaShown } from '../../slice/patient-detail-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectInitializeData, setDocUploadStatus, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setProgramStatus, setSchemaShown } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import { transformToFormData } from '../../utils/forms';
@@ -14,10 +14,58 @@ const ShortFallDoc = () => {
   const dispatch = useDispatch();
   const triggerApi = useApi();
 
-  const uploadFields = [
-    { id: 'idProof', label: 'ID Proof' },
-    { id: 'addressProof', label: 'Address Proof' },
+   const initiaData = useSelector(selectInitializeData)
+  
+    const uploadFieldsforShoetfall = initiaData?.program_data?.applied_programs;
+
+    console.log(uploadFieldsforShoetfall);
+
+  // const uploadFields = [
+  //   { id: 'idProof', label: 'ID Proof' },
+  //   { id: 'addressProof', label: 'Address Proof' },
+  // ];
+
+  // uploadFieldsforShoetfall.map((uploadProgram)=>{
+
+  //   console.log(uploadProgram.reupload_document);
+
+  // })
+
+
+  // Initialize with empty array
+let uploadFields = [];
+
+// Check if uploadFieldsforShoetfall exists and has data
+
+console.log(console.log("uploadFieldsforShoetfall",uploadFieldsforShoetfall));
+if (uploadFieldsforShoetfall && uploadFieldsforShoetfall.length > 0) {
+  // Map the data to the format you need
+  uploadFields = uploadFieldsforShoetfall.flatMap(program => {
+    console.log("hi");
+    
+    // Check if reupload_document exists and is an array
+    if (program.reupload_document && Array.isArray(program.reupload_document)) {
+      return program.reupload_document.map(prog => {
+        return {
+          id: prog.id || program.id,
+          label: prog.label || program.label
+        };
+      });
+    } else {
+      // If no reupload_document array, return the program itself
+      return [{
+        id: program.id,
+        label: program.label
+      }];
+    }
+  });
+} else {
+  // Use your default if uploadFieldsforShoetfall is not available
+  uploadFields = [
+    // { id: 'idProof', label: 'ID Proof' },
+    // { id: 'addressProof', label: 'Address Proof' },
   ];
+}
 
   const initialValues = {
     // program_id: selectedEnrollProgram.program_id,
