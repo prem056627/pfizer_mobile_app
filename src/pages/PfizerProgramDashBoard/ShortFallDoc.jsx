@@ -200,7 +200,7 @@ const ShortFallDoc = () => {
                   formik={formik}
                   label={field.label}
                   id={field.id}
-                  isMultiple={false}
+                  isMultiple={true}
                   onFileUpload={(files) => {
                     // console.log(`${field.id} files uploaded:`, files);
                     // Ensure files are properly set in formik

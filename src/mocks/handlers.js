@@ -2360,6 +2360,7 @@ let initialData = {
         {
           program_name: "Crizalk Program",
           program_status: "active",
+          // program_status: "shortfall",
           program_id: 10018,
           program_scheme: '9+LFT',
           doctor_name:"prem",
@@ -2431,7 +2432,7 @@ let initialData = {
               pincode: "874673"
           }
       ],
-      patient_uid: "",
+      patient_uid: "Ad1212",
       patient_name: "Patient Tester 0017",
       patient_gender: "Male",
       program_name: "Self Registered",
