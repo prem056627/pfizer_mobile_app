@@ -110,7 +110,7 @@ const renderAvailablePrograms = () => (
       <div key={program.program_id} className="w-full bg-white rounded-lg shadow-md border">
         <div className="p-4 flex gap-4">
         <div>
-        <img src={program.program_image} alt={program.program_name} className="w-20 h-20" />
+        <img src={program.program_image} alt={program.program_name} className="w-20 h-20 rounded-[12px]" />
       </div>
           <div className="flex-1">
             <h3 className="text-md font-semibold ">{program.program_name}</h3>
