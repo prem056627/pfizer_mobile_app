@@ -77,8 +77,20 @@ const OrderHistory = () => {
       <div className="px-6 pt-2">
         <div className="flex items-center gap-2 mb-3">
           <h2 className="text-[18px] font-bold">{program.program_name}</h2>
-          <span className="px-2 py-1 bg-green-100 text-green-800 text-sm rounded-full">
-            {program.program_status}
+          <span className={`px-2 py-1 ${
+                    program.program_status === 'applied' 
+                    ? 'bg-[#fffed5]' 
+                    : program.program_status === 'active' 
+                      ? 'bg-[#D9FFD5]' 
+                      : ''
+                  
+                  } text-[#3B3B3B] text-sm rounded-full`}>
+            {/* {program.program_status} */}
+
+            {program.program_status === "applied" ? "Applied" 
+        :program.program_status === "active" ? "Active" 
+
+: ""}
           </span>
         </div>
 
