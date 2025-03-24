@@ -144,18 +144,32 @@ const OrderHistory = () => {
         </div>
         {/* Upload Invoice or Request FOC Section based on active tab */}
         <div className="flex justify-start gap-4 items-center mb-4">
-          <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
-            {activeTab === "paid" ? "Have new orders?" : "Need more free samples?"}
-          </p>
-          {activeTab === "paid" ? (
-            <button onClick={UploadInvoiceHandle} className="border-bg-text-primary font-bold text-[14px] font-sans text-primary">
-              Upload Invoice
-            </button>
-          ) : (
-            <button onClick={RequestFocHandle} className="border-bg-text-primary font-bold text-[14px] font-sans text-primary">
-              Request FOC
-            </button>
-          )}
+         
+
+            {program.program_status === "active" && (
+      <>
+        <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
+          {activeTab === "paid" ? "Have new orders?" : "Need more free samples?"}
+        </p>
+        {activeTab === "paid" ? (
+          <button
+            onClick={UploadInvoiceHandle}
+            className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+          >
+            Upload Invoice
+          </button>
+        ) : (
+          <button
+            onClick={RequestFocHandle}
+            className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+          >
+            Request FOC
+          </button>
+        )}
+      </>
+    )}
+
+
         </div>
         <div className="pb-30">
           {/* Render orders based on active tab */}

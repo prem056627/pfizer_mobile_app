@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { get } from 'lodash';
 import { handleFileUpload as handleFileUploadHelper } from '../../../src/utils/helper';
 import { ReactComponent as UploadIcon } from '../../assets/images/svg/upload-icon.svg';
@@ -10,107 +10,145 @@ export default function MultiFileUpload({
   id,
   isMultiple = true,
   description = '',
-  onFileUpload, // New callback prop
+  onFileUpload,
   onFileRemove
 }) {
   const [fileName, setFileName] = useState();
+  const fileInputRef = useRef(null);
+  
+  // Handle file selection from either input or camera
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFileName(files[0]?.name);
-    if (files[0]?.size <= 5242880) {
-      let isPresent = get(formik.values, id, [])?.some(
-        (eachFilteredFile) => eachFilteredFile?.name === files[0]?.name
-      );
-
-      if (!isPresent) {
-        const newFiles = isMultiple
-          ? [...get(formik.values, id, []), ...files]
-          : files;
-
-        formik.setFieldValue(id, newFiles);
-
-        // console.log('files', newFiles, onFileUpload);
-        
-        // Call the onFileUpload callback if provided
-        if (onFileUpload) {
-          onFileUpload(newFiles);
-        }
+    try {
+      const files = Array.from(e.target.files || []);
+      
+      if (!files.length) return;
+      
+      setFileName(files[0]?.name);
+      
+      // Check file size (5MB limit)
+      const oversizedFiles = files.filter(file => file.size > 5242880);
+      if (oversizedFiles.length > 0) {
+        formik.setErrors({ [id]: 'Maximum size of the document should be 5MB.' });
+        e.target.value = '';
+        return;
       }
-    } else {
-		formik.setErrors({ [id]: 'Maximum size of the document should be 5mb.' });
-      handleFileUploadHelper(e, formik, id, isMultiple);
+      
+      // Check for duplicate files
+      const currentFiles = get(formik.values, id, []);
+      const newUniqueFiles = files.filter(file => 
+        !currentFiles.some(existingFile => existingFile.name === file.name)
+      );
+      
+      if (newUniqueFiles.length === 0) {
+        e.target.value = '';
+        return; // All files are duplicates
+      }
+      
+      // Update formik state with new files
+      const updatedFiles = isMultiple 
+        ? [...currentFiles, ...newUniqueFiles] 
+        : newUniqueFiles;
+      
+      formik.setFieldValue(id, updatedFiles);
+      
+      // Call callback if provided
+      if (onFileUpload) {
+        onFileUpload(updatedFiles);
+      }
+      
+      // Reset input
+      e.target.value = '';
+    } catch (error) {
+      console.error("Error handling file upload:", error);
+      formik.setErrors({ [id]: 'Failed to process file. Please try again.' });
+      e.target.value = '';
     }
-    e.target.value = '';
+  };
+  
+  // Handle file removal
+  const handleFileRemove = (fileToRemove) => {
+    try {
+      const filteredFiles = get(formik.values, id, []).filter(
+        file => file.name !== fileToRemove.name
+      );
+      
+      formik.setFieldValue(id, filteredFiles);
+      
+      if (onFileRemove) {
+        onFileRemove(filteredFiles);
+      }
+    } catch (error) {
+      console.error("Error removing file:", error);
+    }
+  };
+  
+  // Safely trigger file input
+  const triggerFileInput = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   return (
-		<div className="flex flex-col gap-[12px]">
-			<div className="flex flex-col gap-[4px]">
-				<label className="text-xs leading-4 text-dark-gray">{label}</label>
-				<label
-					htmlFor={id}
-					className={`flex w-full text-[14px] items-center justify-between gap-[16px] truncate rounded-md border border-dashed border-[#D5D5D5] px-[12px] py-[16px] pr-[14px] font-lato leading-5 text-medium-gray`}
-				>
-					{get(formik.values, id, [])?.length <= 1 ? (
-						<span>Click to Upload</span>
-					) : (
-						<span>Click here to upload more</span>
-					)}
-					<UploadIcon className="relative" />
-				</label>
-				{description ? (
-					<p className="text-xs italic leading-4 text-dark-gray">
-						{description}
-					</p>
-				) : null}
-			</div>
-			{formik.errors[id] ? (
-				<div className="font-lato text-form-xs text-[#cc3300]">
-					{formik.errors[id]}
-				</div>
-			) : null}
-			{get(formik.values, id, [])?.length ? (
-				<div className="flex  gap-[8px] flex-col">
-					{/* {console.log("file name", get(formik.values, id, []))} */}
-					{get(formik.values, id, [])?.map((eachFile) => (
-						<div key={eachFile?.name} className="flex gap-[16px]">
-							<a
-								href={eachFile?.name}
-								target="_blank"
-								rel="noreferrer"
-								className=" overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary"
-							>
-								{eachFile?.name}
-								{/* Uploaded File */}
-							</a>
-							<button
-								type="button"
-								onClick={() => {
-									let filteredFiles = get(formik.values, id, [])?.filter(
-										(eachFilteredFile) =>
-											eachFilteredFile?.name !== eachFile?.name
-									);
-									if (onFileRemove) {
-										onFileRemove(filteredFiles);
-									}
-									formik.setFieldValue(id, [...filteredFiles]);
-								}}
-							>
-								<UploadCloseIcon className="w-[10px]" />
-							</button>
-						</div>
-					))}
-				</div>
-			) : null}
-			<input
-				type="file"
-				// accept="image/png, image/jpeg"
-				multiple={isMultiple}
-				id={id}
-				name={id}
-				className="hidden h-0 w-0"
-				onChange={handleFileChange}
-			/>
-		</div>
-	);
+    <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-[4px]">
+        <label className="text-xs leading-4 text-dark-gray">{label}</label>
+        <div
+          onClick={triggerFileInput}
+          className="flex w-full text-[14px] items-center justify-between gap-[16px] truncate rounded-md border border-dashed border-[#D5D5D5] px-[12px] py-[16px] pr-[14px] font-lato leading-5 text-medium-gray cursor-pointer"
+        >
+          {get(formik.values, id, [])?.length <= 1 ? (
+            <span>Click to Upload</span>
+          ) : (
+            <span>Click here to upload more</span>
+          )}
+          <UploadIcon className="relative" />
+        </div>
+        {description ? (
+          <p className="text-xs italic leading-4 text-dark-gray">
+            {description}
+          </p>
+        ) : null}
+      </div>
+      
+      {formik.errors[id] ? (
+        <div className="font-lato text-form-xs text-[#cc3300]">
+          {formik.errors[id]}
+        </div>
+      ) : null}
+      
+      {get(formik.values, id, [])?.length > 0 && (
+        <div className="flex gap-[8px] flex-col">
+          {get(formik.values, id, []).map((file) => (
+            <div key={file.name + '_' + file.size} className="flex justify-between items-center">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary">
+                {file.name}
+              </div>
+              <button
+                type="button"
+                onClick={() => handleFileRemove(file)}
+                className="flex-shrink-0 ml-2"
+              >
+                <UploadCloseIcon className="w-[10px]" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/png,image/jpeg,application/pdf"
+        multiple={isMultiple}
+        id={id}
+        name={id}
+        className="hidden h-0 w-0"
+        onChange={handleFileChange}
+  
+      />
+    </div>
+  );
 }

@@ -2359,7 +2359,7 @@ let initialData = {
       applied_programs: [
         {
           // program_name: "c",
-          // program_status: "active",
+          program_status: "active",
           // // program_status: "shortfall",
           // program_id: 10018,
           // program_scheme: '9+LFT',
@@ -2377,7 +2377,7 @@ let initialData = {
             { id: 'rroof', label: 'Addrer' },
             
           ],
-          program_status: "shortfall",
+          // program_status: "shortfall",
           program_enrollmentDate: "23 Mar 2025",
           program_scheme: "9+LFT",
           program_image: "NA",

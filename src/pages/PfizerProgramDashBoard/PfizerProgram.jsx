@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Home, Bell, Menu } from "lucide-react";
 import MenuFooter from "../../components/MenuFooter";
 import { ReactComponent as ProgramCard1 } from "../../assets/images/ProgramCards/Program_card_1.svg";
@@ -23,6 +23,7 @@ import {
   setViewingOrderHistory,
 } from "../../slice/patient-detail-form";
 import OrderHistory from "../uploadInvoice/OrderHistory";
+import useApi from "../../hooks/useApi";
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
 
@@ -30,15 +31,20 @@ import OrderHistory from "../uploadInvoice/OrderHistory";
 
 const PfizerProgram = () => {
   const dispatch = useDispatch();
+   const [isLoading, setIsLoading] = useState(false);
   const programStatus = useSelector(selectProgramStatus);
   const viewingOrderHistory = useSelector(selectViewingOrderHistory);
-
+ const triggerApi = useApi();
   const initiaData = useSelector(selectInitializeData)
 
   const number_of_programs_enrollled = initiaData?.program_data?.enrolled_programs;
   // console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
 const APPLIED_PROGRAMS = initiaData?.program_data?.applied_programs||[];
 
+// console.log("patientmobile!!",initiaData?.patient_data?.patient_primary_phone
+// );
+
+const patient_mobile_number = initiaData?.patient_data?.patient_primary_phone 
 // console.log("Applied Programs",APPLIED_PROGRAMS);
 
 const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
@@ -65,10 +71,43 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
     dispatch(setPhysicalVerificationModalOpen(true));
   };
 
-  const handleEkyRequest = ()=>{
-
+  
+  const makeApiCall = async (values) => {
+    try {
+      setIsLoading(true);
+  
+      const { response, success } = await triggerApi({
+        url: "/patient_dashboard/?current_step=ekyc_verification",
+        type: "POST",
+        payload: values, // Ensure values contains required data
+        loader: true,
+        // Don't set Content-Type for FormData
+      });
+  
+      if (success && response) {
+        return { success: true, data: response };
+      } else {
+        return { success: false, error: "API call failed" };
+      }
+    } catch (error) {
+      console.error("Error in makeApiCall:", error);
+      return { success: false, error: error.message || "An unexpected error occurred" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleEkyRequest = () => {
     dispatch(setIsEkySuccessModalOpen(true));
-  }
+  
+    // Ensure you pass the required values
+    const values = {
+      patient_mobile_number: patient_mobile_number, // Replace with actual data
+    };
+  
+    makeApiCall(values);
+  };
+  
 
   // If viewing order history, render OrderHistory component instead
   if (viewingOrderHistory) {
@@ -394,7 +433,7 @@ const renderAvailablePrograms = () => (
     </div>
     }
     
-    
+   
     
     </div>
     </div>

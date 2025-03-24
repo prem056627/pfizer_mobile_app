@@ -212,34 +212,37 @@ const radioData = getRadioData();
 
   const validate = (values) => {
     const errors = {};
-    
+  
     if (!values.scheme) {
       errors.scheme = 'Please select a scheme';
     }
-
+  
     if (showUploadFields) {
       combinedUploadFields.forEach(field => {
-        if (!values[field.id] || values[field.id].length === 0) {
-          errors[field.id] = 'Please upload required document';
+        const uploadedFiles = values[field.id];
+  
+        if (!uploadedFiles || uploadedFiles.length === 0) {
+          errors[field.id] = 'Please upload the required document';
         } else {
-          // Validate file types and sizes
-          const invalidFiles = values[field.id].filter(file => {
-            const fileType = file.type;
-            const fileSize = file.size / (1024 * 1024); // Convert to MB
-            
-            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-            return !validTypes.includes(fileType) || fileSize > 2;
+          // Validate file types and sizes (up to 5MB)
+          const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+          const maxSizeMB = 5;
+  
+          const invalidFiles = uploadedFiles.filter(file => {
+            const fileSizeMB = file.size / (1024 * 1024); // Convert size to MB
+            return !validTypes.includes(file.type) || fileSizeMB > maxSizeMB;
           });
-          
+  
           if (invalidFiles.length > 0) {
-            errors[field.id] = 'Invalid file format or size. Use jpg/pdf/png format under 2MB.';
+            errors[field.id] = `Invalid file format or size. Use JPG, PNG, or PDF under ${maxSizeMB}MB.`;
           }
         }
       });
     }
-
+  
     return errors;
   };
+  
 
   // Updated API call function to properly handle file uploads with FormData
   const makeApiCall = async (values) => {
