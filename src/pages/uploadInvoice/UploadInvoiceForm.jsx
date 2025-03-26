@@ -21,14 +21,30 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
         order_file: [],
     };
 
-    // Updated validation schema with max files check
+    // // Updated validation schema with max files check
+    // const validationSchema = Yup.object({
+    //     order_file: Yup.array()
+    //         .min(1, 'Please upload at least one file')
+    //         .max(5, 'You can upload a maximum of 5 files')
+    //         .test('fileSize', 'File size must be less than 2MB', (files) => {
+    //             if (!files) return true;
+    //             return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
+    //         })
+    //         .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
+    //             if (!files) return true;
+    //             const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    //             return files.every(file => validTypes.includes(file.type));
+    //         })
+    //         .required('File upload is required'),
+    // });
+
     const validationSchema = Yup.object({
         order_file: Yup.array()
             .min(1, 'Please upload at least one file')
-            .max(5, 'You can upload a maximum of 5 files')
+            .max(2, 'You can upload a maximum of 2 files')
             .test('fileSize', 'File size must be less than 2MB', (files) => {
                 if (!files) return true;
-                return files.every(file => file.size <= 2 * 1024 * 1024); // 2MB limit
+                return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
             })
             .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
                 if (!files) return true;
@@ -63,48 +79,35 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
     // Simple Base64 approach without extra structure
     const makeApiCall = async (values) => {
         try {
-          setIsLoading(true);
-          
-          // Create FormData directly
-          const formData = new FormData();
-          
-          // Add non-file fields
-          formData.append('current_step', values.current_step);
-          formData.append('program_id', values.program_id);
-          
-          // Add files individually with proper field name
-          if (values.order_file && values.order_file.length > 0) {
-            values.order_file.forEach((file, index) => {
-              formData.append(`order_file[${index}]`, file);
+            setIsLoading(true);
+            const formData = new FormData();
+            formData.append('current_step', values.current_step);
+            formData.append('program_id', values.program_id);
+            
+            // Ensure unique filenames by appending a timestamp
+            if (values.order_file && values.order_file.length > 0) {
+                values.order_file.forEach((file, index) => {
+                    const uniqueName = `${Date.now()}_${file.name}`;
+                    const renamedFile = new File([file], uniqueName, { type: file.type });
+                    formData.append(`order_file[${index}]`, renamedFile);
+                });
+            }
+
+            const { response, success } = await triggerApi({
+                url: `/patient_dashboard/?current_step=place_paid_order`,
+                type: "POST",
+                payload: formData,
+                loader: true,
             });
-          }
-          
-          // Log FormData contents to verify
-          for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
-              `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
-          }
-          
-          const { response, success } = await triggerApi({
-            url: `/patient_dashboard/?current_step=place_paid_order`,
-            type: "POST",
-            payload: formData,
-            loader: true,
-            // Don't set Content-Type for FormData
-          });
-          
-          if (success && response) {
-            return { success: true, data: response };
-          } else {
-            return { success: false, error: "API call failed" };
-          }
+
+            return success ? { success: true, data: response } : { success: false, error: "API call failed" };
         } catch (error) {
-          console.error("Error in makeApiCall:", error);
-          return { success: false, error };
+            console.error("Error in makeApiCall:", error);
+            return { success: false, error };
         } finally {
-          setIsLoading(false);
+            setIsLoading(false);
         }
-      };
+    };
 
     const onSubmit = async (values, { setSubmitting, setFieldError }) => {
      
@@ -158,7 +161,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 id="order_file"
                                 name="order_file"
                                 label="Invoice"
-                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 2MB. You can upload up to 5 files."
+                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                             />
                             {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">

@@ -82,6 +82,11 @@ const AppNavigation = () => {
   useEffect(() => {
     makeApiCall();
    
+  }, [currentView]);
+
+  useEffect(() => {
+    makeApiCall();
+   
   }, []);
 
   // console.log("current_page_statecurrent_page_state!!!",current_page_state);

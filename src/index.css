@@ -425,3 +425,10 @@ html, body {
   
   }
 }
+
+
+
+.rdrDay.rdrDaySelected, .rdrDay.rdrDayHovered {
+  background-color: #3f51b5 !important;
+  color: white !important;
+}

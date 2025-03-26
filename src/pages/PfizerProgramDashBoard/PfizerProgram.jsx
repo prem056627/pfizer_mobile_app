@@ -157,7 +157,7 @@ const renderAvailablePrograms = () => (
               {program.program_type.map((type, index) => (
                 <span 
                   key={index} 
-                  className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded"
+                  className="bg-orange-200 text-orange-800 px-[8px] rounded-[6px] text-[12px]  py-1 "
                 >
                   {type}
                 </span>
@@ -222,7 +222,9 @@ const renderAvailablePrograms = () => (
   //   </div>
   // );
   console.log('program,program',APPLIED_PROGRAMS)
-  console.log('initiaData?.physical_verification?.show_verification_button',initiaData?.ekyc_verification?.show_verification_button);
+  
+
+  // console.log('initiaData?.physical_verification?.show_verification_button',initiaData?.ekyc_verification?.show_verification_button);
   const renderActiveProgram = () => (
     <>
      <div className="pt-[2px] w-full">
@@ -230,7 +232,7 @@ const renderAvailablePrograms = () => (
         program.program_status === 'active' || program.program_status === 'applied' ? (
           <div key={program.program_id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
             <div className="flex justify-between items-center mb-2">
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <h3 className="text-[18px] font-semibold programhead">{program.program_name}</h3>
                 <span 
                   className={`px-4 py-1 ${
@@ -240,7 +242,7 @@ const renderAvailablePrograms = () => (
                       ? 'bg-[#D9FFD5]' 
                       : ''
                   
-                  } text-[#3B3B3B] text-[14px] rounded-full`}
+                  } text-[#3B3B3B] px-[8px] rounded-[6px] text-[12px]`}
                 >
                  
                   {program.program_status === "applied" ? "Applied" 
@@ -249,10 +251,10 @@ const renderAvailablePrograms = () => (
 : ""}
                 </span>
               </div>
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center justify-center">
                 <button 
                   onClick={() => handleViewHistory(program)} 
-                  className="text-white bg-primary py-[4px] px-[14px] rounded-[6px] text-sm font-medium"
+                  className="text-white bg-primary py-[4px] px-[6px] rounded-[6px] text-[12px] font-medium"
                 >
                   View History
                 </button>
@@ -287,7 +289,7 @@ const renderAvailablePrograms = () => (
                     : ''
 
                 
-                } text-[#3B3B3B] text-[14px] rounded-full`}
+                } text-[#3B3B3B]  px-[8px] rounded-[6px] text-[12px]`}
               >
                       {program.program_status === "shortfall" ? "Document Shortfall" 
         : program.program_status === "suspended" ? "Suspended" 
@@ -408,7 +410,55 @@ const renderAvailablePrograms = () => (
     </button>
     </div>
     }
-    
+
+{initiaData?.physical_verification?.show_verification_button === false && (
+  initiaData?.physical_verification?.details?.status === "Open" ? (
+    <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
+      <div className="flex gap-4 items-center">
+        <div className="p-3 rounded-lg">
+          <PhysicalverificationSheduled width={70} />
+        </div>
+        <div>
+          <p className="text-[15px] font-sans font-semibold text-[#606060]">
+            Your <span className="text-primary">physical verification</span> has been <span className="text-primary">scheduled</span>.
+          </p>
+        </div>
+      </div>
+      <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
+        <span className="pl-4">
+          <Pap className="w-8 h-8" />
+        </span>
+        PAP Team will soon reach out for verification
+      </button>
+    </div>
+  ) : initiaData?.physical_verification?.details?.status === "Verified" ? (
+    <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
+      <div className="flex gap-4 items-center">
+        <div className="p-3 rounded-lg">
+          <PhysicalverificationSheduled width={70} />
+        </div>
+        <div>
+          <p className="text-[15px] font-sans font-semibold text-[#606060]">
+            Your <span className="text-primary">physical verification</span> is scheduled for  
+            <span className="text-primary"> {initiaData?.physical_verification?.details?.date}</span> at  
+            <span className="text-primary"> {initiaData?.physical_verification?.details?.time}</span>.
+          </p>
+        </div>
+      </div>
+      <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
+        <span className="pl-2">
+          <Pap className="w-8 h-8" />
+        </span>
+        &lt;Phlebo&gt; Team will soon reach out for verification
+      </button>
+    </div>
+  ) : (
+    <div></div> // Empty div if neither "open" nor "verified"
+  )
+)}
+
+
+
     {initiaData?.ekyc_verification?.show_verification_button && 
     <div className="bg-white rounded-lg shadow-sm p-4 border">
     <div className="flex gap-4 mb-3">

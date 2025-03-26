@@ -220,7 +220,7 @@ const ShortFallDoc = () => {
           <div className="text-sm text-black font-sans italic mb-4 px-4">
             The file must be in jpg/pdf/png format.
             <br />
-            Maximum size of the document should be 2MB.
+            Maximum size of the document should be 5MB.
           </div>
 
           <div className="space-y-4 px-4 mb-40">

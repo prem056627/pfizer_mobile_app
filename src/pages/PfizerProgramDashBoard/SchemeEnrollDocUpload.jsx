@@ -247,75 +247,73 @@ const radioData = getRadioData();
   // Updated API call function to properly handle file uploads with FormData
   const makeApiCall = async (values) => {
     try {
-      setIsLoading(true);
-      
-      // console.log("Values being submitted:", values);
-      
-      // Set current_step parameter in the URL
-      const url = `/patient_dashboard/?current_step=program_enrolment`;
-      
-      // Create a basic FormData object
-      const formData = new FormData();
-      
-      // Add non-file data
-      formData.append('program_id', values.program_id);
-      formData.append('program_name', values.program_name);
-      formData.append('scheme', values.scheme);
-      
-      // Add files directly to FormData
-      for (const field of combinedUploadFields) {
-        const fieldId = field.id;
-        if (values[fieldId] && values[fieldId].length > 0) {
-          console.log(`Adding ${values[fieldId].length} files for ${fieldId}`);
-          
-          // Append each file with the field name
-          values[fieldId].forEach((file, index) => {
-            formData.append(`${fieldId}`, file);
-          });
+        setIsLoading(true);
+
+        // Set current_step parameter in the URL
+        const url = `/patient_dashboard/?current_step=program_enrolment`;
+
+        // Create a FormData object
+        const formData = new FormData();
+
+        // Add non-file data
+        formData.append('program_id', values.program_id);
+        formData.append('program_name', values.program_name);
+        formData.append('scheme', values.scheme);
+
+        // Add files with unique names
+        for (const field of combinedUploadFields) {
+            const fieldId = field.id;
+            if (values[fieldId] && values[fieldId].length > 0) {
+                console.log(`Adding ${values[fieldId].length} files for ${fieldId}`);
+
+                values[fieldId].forEach((file, index) => {
+                    // Generate a unique filename using timestamp and index
+                    const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
+
+                    // Create a new File object with the updated name
+                    const renamedFile = new File([file], uniqueFileName, { type: file.type });
+
+                    formData.append(`${fieldId}`, renamedFile);
+                });
+            }
         }
-      }
-      
-      // Log FormData entries for debugging
-      // console.log("FormData entries:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + (pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]));
-      }
-      
-      // Make the API call with FormData
-      const { response, success } = await triggerApi({
-        url: url,
-        type: "POST",
-        payload: formData,
-        loader: true,
-        headers: {} // Let browser set Content-Type with boundary
-      });
-      
-      if (success && response) {
-        // console.log("Form data submitted successfully:", response);
 
-        dispatch(setCurrentPageState(response?.current_step))
-       
-        
-        // Close modal and change page state after 5 seconds
-        setTimeout(() => {
-          dispatch(setProgramEnrollmentSuccess(false));
-          // dispatch(setCurrentPageState('program_enrolment_done'));
-          // Refresh the page
-          window.location.reload();
-        }, 5000);
+        // Log FormData entries for debugging
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + (pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]));
+        }
 
-        return { success: true, data: response };
-      } else {
-        console.error("API call failed or returned no data.");
-        return { success: false, error: "API call failed" };
-      }
+        // Make the API call with FormData
+        const { response, success } = await triggerApi({
+            url: url,
+            type: "POST",
+            payload: formData,
+            loader: true,
+            headers: {} // Let the browser set Content-Type with boundary
+        });
+
+        if (success && response) {
+            dispatch(setCurrentPageState(response?.current_step));
+
+            // Close modal and change page state after 5 seconds
+            setTimeout(() => {
+                // dispatch(setProgramEnrollmentSuccess(false));
+                window.location.reload();
+            }, 5000);
+
+            return { success: true, data: response };
+        } else {
+            console.error("API call failed or returned no data.");
+            return { success: false, error: "API call failed" };
+        }
     } catch (error) {
-      console.error("Error in makeApiCall:", error);
-      return { success: false, error };
+        console.error("Error in makeApiCall:", error);
+        return { success: false, error };
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
+
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     // dispatch(setSchemaShown(false));
@@ -397,9 +395,9 @@ const radioData = getRadioData();
                 value={formik.values.scheme}
                 checkboxType="circle"
               />
-              {formik.touched.scheme && formik.errors.scheme && (
+              {/* {formik.touched.scheme && formik.errors.scheme && (
                 <div className="text-red-500 text-sm mt-1">{formik.errors.scheme}</div>
-              )}
+              )} */}
             </div>
           )}
 
@@ -416,7 +414,7 @@ const radioData = getRadioData();
               <div className="text-sm text-black  font-sans font-italic italic mb-4 px-4">
                 The file must be in jpg/pdf/png format.
                 <br />
-                Maximum size of the document should be 2mb.
+                Maximum size of the document should be 5mb.
               </div>
 
               <div className="space-y-4 px-4 mb-40">
@@ -434,9 +432,9 @@ const radioData = getRadioData();
                 ))}
               </div>
 
-              {formik.errors.submit && (
+              {/* {formik.errors.submit && (
                 <div className="text-red-500 text-sm mt-1 px-4">{formik.errors.submit}</div>
-              )}
+              )} */}
             </div>
           )}
           </div>

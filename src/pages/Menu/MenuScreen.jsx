@@ -110,20 +110,20 @@ const MenuScreen = () => {
         <Call className="w-6 h-6"/>
       )
     },
-    {
-      id: 3,
-      title: 'Completed Verification',
-      icon: (
-       <Print className="w-6 h-6"/>
-      )
-    },
-    {
-      id: 4,
-      title: 'KYC History',
-      icon: (
-        <History className="w-6 h-6"/>
-      )
-    },
+    // {
+    //   id: 3,
+    //   title: 'Completed Verification',
+    //   icon: (
+    //    <Print className="w-6 h-6"/>
+    //   )
+    // },
+    // {
+    //   id: 4,
+    //   title: 'KYC History',
+    //   icon: (
+    //     <History className="w-6 h-6"/>
+    //   )
+    // },
     {
       id: 5,
       title: 'View More Programs',

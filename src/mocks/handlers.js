@@ -6,8 +6,8 @@ import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.s
 let initialData = {
  
     // before enrollment submit
-    current_step: "patient_enrolment",
-    // current_step: "program_enrolment_done",
+    // current_step: "patient_enrolment",
+    current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2279,7 +2279,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:0,
+		enrolled_programs:1,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2360,7 +2360,7 @@ let initialData = {
         {
           // program_name: "c",
           program_status: "active",
-          // // program_status: "shortfall",
+          // program_status: "shortfall",
           // program_id: 10018,
           // program_scheme: '9+LFT',
           // doctor_name:"prem",
@@ -2386,7 +2386,7 @@ let initialData = {
               paid_orders: [
                   {
                       order_id: "10001",
-                      order_status: "Open",
+                      order_status: "Active",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2526,11 +2526,16 @@ let initialData = {
       }
   ],
   physical_verification: {
-    show_verification_button: true,
-    details: []
+    show_verification_button: false,
+    details : {
+      status : "Verified",
+       date : "22 Jan 2025",
+       time : "12:00 PM"
+              },
 },
 ekyc_verification: {
     show_verification_button: true,
+    
     status : "Inactive",
     details: []
 },

@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FabButton from "../../components/FabButton";
 import MenuFooter from "../../components/MenuFooter";
 import { 
   selectSelectedProgram, 
+  setCurrentPageState, 
+  setInitializeData, 
   setRequestFocModalOpen, 
   setUploadInvoiceModalOpen, 
   setViewingOrderHistory 
 } from "../../slice/patient-detail-form";
 import { ReactComponent as Back } from "../../assets/images/svg/back.svg";
+import useApi from "../../hooks/useApi";
 
 const OrderHistory = () => {
   const [activeTab, setActiveTab] = useState("paid");
   const dispatch = useDispatch();
   const program = useSelector(selectSelectedProgram);
-  
+    const [isLoading, setIsLoading] = useState(true);
+      const triggerApi = useApi();
   // Use actual data from Redux store, no fallback dummy data
   const paidOrders = program?.orders?.paid_orders || [];
   const focOrders = program?.orders?.foc_orders || [];
@@ -41,6 +45,49 @@ const OrderHistory = () => {
     // console.log("Viewing file:", fileName);
     // Implement file viewing functionality here
   };
+
+
+
+
+
+    const makeApiCall = async () => {
+      try {
+        setIsLoading(true);
+        const url = `/patient_dashboard/?current_step=initialize`;
+        const { response, success } = await triggerApi({
+          url: url,
+          type: "GET",
+          loader: true,
+        });
+    
+        if (success && response) {
+          dispatch(setInitializeData(response));
+          // console.log('responseresponseresponse!!',response);
+          dispatch(setCurrentPageState(response.current_step)); 
+          // dispatch(setProgramStatus(response.program_status)); 
+        } else {
+          console.error("API call failed or returned no data.");
+        }
+      } catch (error) {
+        console.error("Error in makeApiCall:", error);
+      } finally {
+        setIsLoading(false); // Ensure loading state is reset
+      }
+    };
+  
+    // console.log('initialDatainitialData',initialData);
+    
+  
+    useEffect(() => {
+      makeApiCall();
+     
+    }, []);
+
+    useEffect(() => {
+      makeApiCall();
+     
+    }, [activeTab]);
+
 
   // If no program is selected, show a fallback or redirect
   if (!program) {
@@ -84,7 +131,7 @@ const OrderHistory = () => {
                       ? 'bg-[#D9FFD5]' 
                       : ''
                   
-                  } text-[#3B3B3B] text-sm rounded-full`}>
+                  } text-[#3B3B3B] px-[8px] rounded-[6px] text-[12px]`}>
             {/* {program.program_status} */}
 
             {program.program_status === "applied" ? "Applied" 
@@ -180,11 +227,11 @@ const OrderHistory = () => {
                   <h3 className="text-[14px] font-bold text-[#212121]">
                     Order Code: {order.order_id}
                   </h3>
-                  <p className="text-[#767676] text-[14px] font-open-sans font-bold">
+                  <p className="text-[#767676] text-[14px] font-open-sans ">
                     <span 
                       className={`px-2 py-1 ${
-                        order.order_status === 'Open' ? 'bg-[#D9FFD5] text-green-800' : 'bg-[#f8cdcd] text-red-800'
-                      } text-[12px] rounded-full`}
+                        order.order_status === 'Open' || order.order_status === 'Active' ? 'bg-[#D9FFD5] text-green-800' : 'bg-[#f8cdcd] text-red-800'
+                      } px-[8px] rounded-[6px] text-[12px]`}
                     >
                       {order.order_status}
                     </span>

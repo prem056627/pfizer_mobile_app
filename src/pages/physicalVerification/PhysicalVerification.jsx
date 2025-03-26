@@ -10,151 +10,136 @@ import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-for
 import { useDispatch } from 'react-redux';
 import useApi from '../../hooks/useApi';
 
-
 const PhysicalVerification = () => {
-  // Default date range (from today to 5 days later)
-  const [selectedDate, setSelectedDate] = useState({
-    from: moment(),
-    to: moment().add(4, 'days'),
+  const [selectedDateRange, setSelectedDateRange] = useState({
+    from: null,
+    to: null
   });
 
-  const [selectedTime, setSelectedTime] = useState('12:30'); // Default time
-  const [calendarVisible, setCalendarVisible] = useState(false); // To toggle calendar visibility
+  const [selectedTime, setSelectedTime] = useState('');
+  const [calendarVisible, setCalendarVisible] = useState(false);
 
-  const calendarRef = useRef(); // Ref for calendar container
-  const inputRef = useRef(); // Ref for input field
-  const timeInputRef = useRef(); // Ref for time input
-const dispatch = useDispatch();
+  const calendarRef = useRef();
+  const inputRef = useRef();
+  const timeInputRef = useRef();
+
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const triggerApi = useApi();
-  // Handle selecting a day in the calendar
-  const handleDateChange = (date) => {
-    if (!selectedDate.from) {
-      // If "from" date is not selected, set it
-      setSelectedDate({ from: date, to: moment(date).add(5, 'days').toDate() });
-    } else if (selectedDate.from && !selectedDate.to) {
-      // If "from" date is selected, set "to" date (5 days later)
-      setSelectedDate({ from: selectedDate.from, to: date });
+
+  const handleDateChange = (selectedDay) => {
+    if (!selectedDateRange.from) {
+      setSelectedDateRange({ from: selectedDay, to: null });
+    } 
+    else if (selectedDateRange.from && !selectedDateRange.to) {
+      const newToDate = selectedDay >= selectedDateRange.from 
+        ? selectedDay 
+        : selectedDateRange.from;
+      
+      const newFromDate = selectedDay < selectedDateRange.from 
+        ? selectedDay 
+        : selectedDateRange.from;
+
+      setSelectedDateRange({
+        from: newFromDate,
+        to: newToDate
+      });
+    } 
+    else {
+      setSelectedDateRange({ from: selectedDay, to: null });
     }
   };
 
-//   const initial_data =  {
-//     current_step: "physical_verification",
-//     date:"",
-//     time:""
-// }
-
-
-    // toastify
-    const notify = (date_data) => {
-      toast(({ closeToast }) => (
-        <CustomToast date= {`${date_data?.startDate}`} time={`${date_data?.time}`} closeToast={closeToast} />
-      ), {
-        position: "top-right",
-        autoClose: 5000, // Closes after 5 seconds
-        closeOnClick: false,
-        progressStyle: { backgroundColor: "white" }, 
-      });
-    };
-    
-
-
-// Function to make API call with FormData
-const makeApiCall = async (values) => {
-  try {
-    setIsLoading(true);
-    
-    // Create payload with date, time and current_step
-    const payload = {
-      current_step: "physical_verification",
-      date: moment(selectedDate.from).format('DD/MM/YYYY'),
-      time: selectedTime
-    };
-    
-   
-    
-    // Set current_step parameter in the URL
-    const url = `/patient_dashboard/?current_step=physical_verification`;
-    
-    // Make the API call with the FormData payload
-    const { response, success } = await triggerApi({
-      url: url,
-      type: "POST",
-      payload: payload,
-      loader: true,
-      // Important: Don't manually set Content-Type for FormData
-      headers: {
-        // Let the browser set the Content-Type with boundary
-      }
+  const notify = (date_data) => {
+    toast(({ closeToast }) => (
+      <CustomToast 
+        date={`${date_data?.startDate}`} 
+        time={`${date_data?.time}`} 
+        closeToast={closeToast} 
+      />
+    ), {
+      position: "top-right",
+      autoClose: 5000,
+      closeOnClick: false,
+      progressStyle: { backgroundColor: "white" }, 
     });
+  };
 
-    if (success && response) {
-      return { success: true, data: response };
-    } else {
-      console.error("API call failed or returned no data.");
-      return { success: false, error: "API call failed" };
+  const makeApiCall = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Validate date and time before API call
+      if (!selectedDateRange.from || !selectedTime) {
+        toast.error("Please select both date and time");
+        return { success: false, error: "Incomplete selection" };
+      }
+
+      // Prepare payload with full date range
+      const payload = {
+        current_step: "physical_verification",
+        start_date: moment(selectedDateRange.from).format('DD/MM/YYYY'),
+        end_date: selectedDateRange.to 
+          ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
+          : moment(selectedDateRange.from).format('DD/MM/YYYY'),
+        time: selectedTime
+      };
+      
+      const url = `/patient_dashboard/?current_step=physical_verification`;
+      
+      const { response, success } = await triggerApi({
+        url: url,
+        type: "POST",
+        payload: payload,
+        loader: true
+      });
+
+      if (success && response) {
+        return { success: true, data: response };
+      } else {
+        console.error("API call failed or returned no data.");
+        return { success: false, error: "API call failed" };
+      }
+    } catch (error) {
+      console.error("Error in makeApiCall:", error);
+      return { success: false, error };
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("Error in makeApiCall:", error);
-    return { success: false, error };
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
-    
   const handleTimeChange = (e) => {
     setSelectedTime(e.target.value);
-    // console.log('Selected Time:', e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-
     
-    // Make the API call with the form data
     const result = await makeApiCall();
     
     if (result.success) {
-      // API call was successful
-      // console.log("API call successful:", result.data);
-      // Trigger the toast notification
-
-    notify({
-      startDate: moment(selectedDate.from).format('DD/MM/YYYY'),
-      endDate: moment(selectedDate.to).format('DD/MM/YYYY'),
-      time: selectedTime,
-    });
+      notify({
+        startDate: moment(selectedDateRange.from).format('DD/MM/YYYY'),
+        endDate: selectedDateRange.to 
+          ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
+          : moment(selectedDateRange.from).format('DD/MM/YYYY'),
+        time: selectedTime,
+      });
       
+      // Close modal
+      dispatch(setPhysicalVerificationModalOpen(false));
     } else {
-      // API call failed
-      console.error("API call failed:", result.error);
-      // You might want to show an error toast here
+      // Handle error
+      toast.error("Failed to schedule physical verification");
     }
-    
-    // closing modal
-    dispatch(setPhysicalVerificationModalOpen(false));
   };
 
-  //     onClick={}
-  // Toggle calendar visibility when input is clicked
   const handleInputClick = () => {
-    setCalendarVisible((prev) => !prev); // Toggle visibility
+    setCalendarVisible((prev) => !prev);
   };
 
-  // Close the calendar when both dates are selected
-  useEffect(() => {
-    if (selectedDate.from && selectedDate.to) {
-      setCalendarVisible(false); // Close calendar
-    }
-  }, [selectedDate]);
-
-  // Close calendar when clicking outside the input or calendar
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Only close if click is outside both calendar and date input
       if (
         calendarRef.current && 
         !calendarRef.current.contains(event.target) && 
@@ -163,25 +148,29 @@ const makeApiCall = async (values) => {
         timeInputRef.current && 
         !timeInputRef.current.contains(event.target)
       ) {
-        setCalendarVisible(false); // Close calendar if clicked outside
+        setCalendarVisible(false);
       }
     };
 
-    // Listen for click events
     document.addEventListener('mousedown', handleClickOutside);
-
-    // Cleanup the event listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-
-
+  const formatDateRange = () => {
+    if (!selectedDateRange.from) return '';
+    
+    const fromDate = moment(selectedDateRange.from).format('DD/MM/YYYY');
+    const toDate = selectedDateRange.to 
+      ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
+      : fromDate;
+    
+    return `${fromDate} - ${toDate}`;
+  };
 
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-sm">
-     
       <form onSubmit={handleSubmit} className="">
         <div className='py-4 pb-8'> 
           <h1 className="pb-2 font-open-sans text-[20px] font-semibold text-[#403939]">
@@ -194,25 +183,23 @@ const makeApiCall = async (values) => {
         <div className="w-full relative">
           <label className="text-sm text-gray-600 mb-1 block">Select Date Range</label>
           <div className="relative">
-            {/* Input field for displaying date range */}
             <input
               ref={inputRef}
               type="text"
-              value={`${selectedDate.from ? moment(selectedDate.from).format('DD/MM/YYYY') : ''} - ${selectedDate.to ? moment(selectedDate.to).format('DD/MM/YYYY') : ''}`}
-              onClick={handleInputClick} // Show calendar on click
+              value={formatDateRange()}
+              onClick={handleInputClick}
               readOnly
               className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 cursor-pointer"
               placeholder="Select date range"
             />
             
-            {/* Show calendar only when clicked */}
             {calendarVisible && (
               <div ref={calendarRef} className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg z-50 rounded-lg">
                 <DayPicker
-                  selected={selectedDate}
-                  onDayClick={handleDateChange}
                   mode="range"
-                  selectedDate={selectedDate.from}
+                  selected={selectedDateRange}
+                  onDayClick={handleDateChange}
+                  numberOfMonths={1}
                 />
               </div>
             )}
@@ -229,8 +216,8 @@ const makeApiCall = async (values) => {
             value={selectedTime}
             onChange={handleTimeChange}
             onClick={(e) => {
-              e.target.showPicker(); // Ensures the picker opens on click
-              e.stopPropagation(); // Prevent closing other dropdowns
+              e.target.showPicker();
+              e.stopPropagation();
             }}
             className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary cursor-pointer z-10"
           />
@@ -238,9 +225,13 @@ const makeApiCall = async (values) => {
 
         {/* Submit Button */}
         <button
-  //  onClick={notify}
           type="submit"
-          className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary transition-colors mt-10"
+          disabled={!selectedDateRange.from || !selectedTime}
+          className={`w-full py-3 px-4 rounded-lg transition-colors mt-10 ${
+            !selectedDateRange.from || !selectedTime 
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+              : 'bg-primary text-white hover:bg-primary-dark'
+          }`}
         >
           Submit Date & Time
         </button>
@@ -250,4 +241,3 @@ const makeApiCall = async (values) => {
 };
 
 export default PhysicalVerification;
-

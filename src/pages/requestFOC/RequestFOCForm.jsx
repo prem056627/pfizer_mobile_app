@@ -21,13 +21,29 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
     };
 
     // Updated validation schema with max files check and file type/size validation
+    // const validationSchema = Yup.object({
+    //     BrowseFiles: Yup.array()
+    //         .min(1, 'Please upload at least one file')
+    //         .max(5, 'You can upload a maximum of 5 files')
+    //         .test('fileSize', 'File size must be less than 5MB', (files) => {
+    //             if (!files) return true;
+    //             return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
+    //         })
+    //         .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
+    //             if (!files) return true;
+    //             const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    //             return files.every(file => validTypes.includes(file.type));
+    //         })
+    //         .required('File upload is required'),
+    // });
+
     const validationSchema = Yup.object({
         BrowseFiles: Yup.array()
             .min(1, 'Please upload at least one file')
-            .max(5, 'You can upload a maximum of 5 files')
-            .test('fileSize', 'File size must be less than 2MB', (files) => {
+            .max(2, 'You can upload a maximum of 2 files')
+            .test('fileSize', 'File size must be less than 5MB', (files) => {
                 if (!files) return true;
-                return files.every(file => file.size <= 2 * 1024 * 1024); // 2MB limit
+                return files.every(file => file.size <= 5 * 1024 * 1024); // 5MB limit
             })
             .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
                 if (!files) return true;
@@ -68,45 +84,45 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
 
     // API call using JSON with base64 encoded files
   // API call using FormData with files
-const makeApiCall = async (values) => {
+  const makeApiCall = async (values) => {
     try {
         setIsLoading(true);
-        
+
         // Create FormData object
         const formData = new FormData();
-        
+
         // Add normal fields
         formData.append('current_step', values.current_step);
         formData.append('program_id', values.program_id);
-        
-        // Add files individually
+
+        // Add files individually with unique names
         if (values.BrowseFiles && values.BrowseFiles.length > 0) {
             values.BrowseFiles.forEach((file, index) => {
-                formData.append(`prescription_files[${index}]`, file);
+                // Generate a unique filename by appending a timestamp
+                const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
+                
+                // Create a new File object with the updated name
+                const renamedFile = new File([file], uniqueFileName, { type: file.type });
+
+                formData.append(`prescription_files[${index}]`, renamedFile);
             });
         }
-        
-        // Log FormData contents for verification
 
+        // Log FormData contents for verification
         for (let pair of formData.entries()) {
             console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
                 `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
         }
-        
-        // console.log("Sending FormData for FOC request");
+
+        // API request
         const { response, success } = await triggerApi({
             url: `/patient_dashboard/?current_step=place_foc_order`,
             type: "POST",
             payload: formData,
             loader: true,
-            // Don't manually set Content-Type for FormData
-            headers: {
-                // The browser will automatically set the appropriate Content-Type with boundary
-            }
         });
-        
+
         if (success && response) {
-            // console.log("FOC request submitted successfully:", response);
             return { success: true, data: response };
         } else {
             console.error("API call failed or returned no data.");
@@ -119,6 +135,7 @@ const makeApiCall = async (values) => {
         setIsLoading(false);
     }
 };
+
 
     const onSubmit = async (values, { setSubmitting, setFieldError }) => {
        
@@ -171,7 +188,7 @@ const makeApiCall = async (values) => {
                                 id="BrowseFiles"
                                 name="BrowseFiles"
                                 label="Prescription"
-                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 2MB. You can upload up to 5 files."
+                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                             />
                             {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">
