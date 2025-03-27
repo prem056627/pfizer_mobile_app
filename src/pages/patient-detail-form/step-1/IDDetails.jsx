@@ -14,7 +14,7 @@ export default function IDDetails({ formik }) {
 	return (
 		<>
 			<div className="flex grow flex-col gap-[16px]">
-				<SelectField
+			<SelectField
 					key="id_card_type"
 					label={
 						<>

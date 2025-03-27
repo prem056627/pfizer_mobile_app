@@ -1,4 +1,3 @@
-
 export const getCaregiverDetailsInitialValues = (initialData) => {
   // Default initial values
   const defaultValues = {
@@ -20,6 +19,16 @@ export const getCaregiverDetailsInitialValues = (initialData) => {
     relationship_0: "",
     relationship_1: "",
     relationship_2: "",
+
+    // Group 1 Initial Values
+    id_card_type_1: "",
+    id_number_1: "",
+    id_doc_upload_1: [], // Assuming this holds file uploads as an array
+
+    // Group 2 Initial Values
+    id_card_type_2: "",
+    id_number_2: "",
+    id_doc_upload_2: [], // Assuming this holds file uploads as an array
   };
 
   return defaultValues;

@@ -1,3 +1,6 @@
+
+// export default AppNavigation;
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "../pages/Home";
@@ -26,32 +29,65 @@ import EkyModal from "../pages/Ekyc/EkyModal";
 import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
 
 const AppNavigation = () => {
+  // Token functionality
+  const TOKEN_KEY = "accessToken";
+
+  // Function to set a dummy token
+const setDummyToken = () => {
+  localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
+  console.log("Token stored successfully!");
+};
+
+// setDummyToken(); // Call this function once to set the token
+
+  const logToReactNative = (message, data) => {
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          message,
+          data,
+          timestamp: new Date().toISOString(),
+        })
+      );
+    }
+  };
+
+  function checkToken() {
+    try {
+      const accessToken = localStorage.getItem(TOKEN_KEY);
+      if (!accessToken) {
+        logToReactNative("No token found", { action: "redirect_to_login" });
+        return false;
+      }
+     
+      return true;
+    } catch (error) {
+      logToReactNative("Token check error", { error: error.message });
+      return false;
+    }
+  }
+
   // Component state
-
-  const currentView = useSelector(selectCurrentView) ;
-
-
-  // const [currentView, setCurrentView] = useState("menu");
+  const currentView = useSelector(selectCurrentView);
   const [isLoading, setIsLoading] = useState(true);
   
   // Get data from Redux
   const dispatch = useDispatch();
   const initialData = useSelector(selectInitializeData);
   const current_page_state = useSelector(selectCurrentPageState);
-  const   doc_upload_status = useSelector(selectDocUploadStatus);
+  const doc_upload_status = useSelector(selectDocUploadStatus);
   const triggerApi = useApi();
-
-  // console.log('initialDatainitialData',current_page_state)
 
   const current_role = localStorage.getItem('role');
 
-  // Initialize data
-
-
-
-
-
   const makeApiCall = async () => {
+    // Check token before making API call
+    if (!checkToken()) {
+      console.log("No token found, redirecting to login.");
+      // You might want to add a redirect logic here
+      return;
+    }
+
     try {
       setIsLoading(true);
       const url = `/patient_dashboard/?current_step=initialize`;
@@ -63,46 +99,34 @@ const AppNavigation = () => {
   
       if (success && response) {
         dispatch(setInitializeData(response));
-        // console.log('responseresponseresponse!!',response);
         dispatch(setCurrentPageState(response.current_step)); 
-        // dispatch(setProgramStatus(response.program_status)); 
       } else {
         console.error("API call failed or returned no data.");
       }
     } catch (error) {
       console.error("Error in makeApiCall:", error);
     } finally {
-      setIsLoading(false); // Ensure loading state is reset
+      setIsLoading(false);
     }
   };
 
-  // console.log('initialDatainitialData',initialData);
-  
-
   useEffect(() => {
     makeApiCall();
-   
   }, [currentView]);
 
   useEffect(() => {
     makeApiCall();
-   
   }, []);
-
-  // console.log("current_page_statecurrent_page_state!!!",current_page_state);
 
   // Render content based on current view and app state
   const renderContent = () => {
-    // console.log('Rendering content for view:', currentView, 'State:', current_page_state);
-    
-    // First check the view state for UI navigation
     if (currentView === "menu") {
       return <MenuScreen  />;
     } else if (currentView === "notifications") {
       return <Notifications  />;
     }
   
-  if (current_page_state === 'patient_enrolment') {
+    if (current_page_state === 'patient_enrolment') {
       return <PatientDetailForm    />;
     }
     else if (current_page_state === 'caregiver_addition') {
@@ -118,8 +142,6 @@ const AppNavigation = () => {
           return <PfizerProgram />;
       }
     }
-
-
     else if (current_page_state === 'program_enrolment_done') {
       switch (doc_upload_status) {
         case 'scheme_enroll_doc':
@@ -129,9 +151,7 @@ const AppNavigation = () => {
         default:
           return <PfizerProgram />;
       }
-      }
-    
-
+    }
   };
 
   // Loading state
@@ -148,15 +168,13 @@ const AppNavigation = () => {
   // Determine if footer should be hidden
   const hideFooter =  current_page_state === 'program_enrolment' && doc_upload_status === 'scheme_enroll_doc' || 
                      current_page_state === 'patient_enrolment';
-
-  // console.log('Rendering Home with hideFooter:', hideFooter);
                     
   // Return the Home layout with the content
   return (
     <Home 
       hideFooter={hideFooter} 
     >
-        <ToastContainer />  {/* Add this line */}
+        <ToastContainer />
       {renderContent()}
       <ProgramEnrollSuccessModal/>
       <PatientEnrollmentSuccessModal/>

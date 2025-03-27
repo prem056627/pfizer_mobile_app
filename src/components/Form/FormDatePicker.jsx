@@ -11,42 +11,103 @@ export default function FormDatePicker({
 	label,
 	formik,
 	value,
+	onChange,
 	min,
 	max,
-	disabled = false,
+	className,
 	...props
 }) {
-	// Parse the initial value properly
-	const initialDate = moment(value, 'DD/MM/YYYY').isValid() 
-		? moment(value, 'DD/MM/YYYY') 
-		: null;
+	// Convert value to moment object, handling various input types
+	const parseInitialDate = (val) => {
+		// If already a Date object
+		if (val instanceof Date) return moment(val);
+		
+		// If a string
+		if (typeof val === 'string') {
+			// Try parsing with moment
+			const momentDate = moment(val, ['DD/MM/YYYY', moment.ISO_8601]);
+			return momentDate.isValid() ? momentDate : null;
+		}
+		
+		// If already a moment object
+		if (moment.isMoment(val)) return val;
+		
+		return null;
+	};
+
+	const initialDate = parseInitialDate(value);
 	
 	const [date, setDate] = useState(initialDate);
 	const [dateFocused, setDateFocused] = useState(false);
-	const [field, meta] = useField(props);
+	const [field, meta] = useField({
+		...props,
+		validate: (value) => {
+			// Handle null, undefined, or Date object
+			if (!value) {
+				return 'Date of birth is required';
+			}
+	
+			// Convert to moment if it's a Date object
+			const selectedDate = moment(value);
+			
+			// Check if date is valid
+			if (!selectedDate.isValid()) {
+				return 'Please enter a valid date';
+			}
+	
+			// Age validation (18 years old)
+			const age = moment().diff(selectedDate, 'years');
+	
+			if (age < 18) {
+				return 'You must be at least 18 years old';
+			}
+	
+			return undefined;
+		}
+	});
 
-	// Set the initial date value as a JavaScript Date object
 	useEffect(() => {
 		if (initialDate) {
-			formik.setFieldValue(props.id, initialDate.toDate());
+			// Ensure we're setting a Date object
+			const dateToSet = initialDate.toDate();
+			
+			if (onChange) {
+				onChange(dateToSet);
+			} else if (props.name) {
+				formik.setFieldValue(props.name, dateToSet);
+			}
 		}
-	}, []);
+	}, []); // Watch initialDate instead of an empty dependency array
 
-	function handleChange(date) {
-		if (date?.isValid()) {
-			setDate(date);
+	function handleChange(selectedDate) {
+		// Convert to moment if it's not already
+		const momentDate = moment(selectedDate);
+	
+		if (momentDate.isValid()) {
+			setDate(momentDate);
 			
-			// Set the field value as a JavaScript Date object
-			formik.setFieldValue(props.id, date.toDate());
+			// Always set as a Date object
+			const dateToSet = momentDate.toDate();
 			
-			// If you still need the formatted string for display elsewhere,
-			// you can set it in a separate field
-			// formik.setFieldValue(`${props.id}_formatted`, date.format('DD/MM/YYYY'));
+			if (onChange) {
+				onChange(dateToSet);
+			} else {
+				formik.setFieldValue(props.name, dateToSet);
+			}
+			
+			// Ensure the field is marked as touched
+			formik.setFieldTouched(props.name, true);
 		} else {
 			setDate(null);
-			formik.setFieldValue(props.id, null);
+			
+			if (onChange) {
+				onChange(null);
+			} else {
+				formik.setFieldValue(props.name, null);
+			}
+			
+			formik.setFieldTouched(props.name, true);
 		}
-		formik.setFieldTouched(props.id, true);
 	}
 
 	const returnYears = () => {
@@ -99,22 +160,22 @@ export default function FormDatePicker({
 	};
 
 	const isInRange = (momentDate) => {
-		let valid = momentDate.isBetween(min, max);
-		return !valid;
+		// Invert the logic to match react-dates isOutsideRange expectation
+		return momentDate && (
+			momentDate.isBefore(moment(min)) || 
+			momentDate.isAfter(moment(max))
+		);
 	};
 
 	return (
-		<div className="flex flex-col gap-[4px] ">
+		<div className="flex flex-col gap-[4px]">
 			<label
 				htmlFor={props.id}
 				className="font-open-sans text-form-xs font-semibold text-[#595454]"
-				{...field}
 			>
 				{label}
 			</label>
-			<div
-				className="datepicker-container relative"
-			>
+			<div className="datepicker-container relative">
 				<div className="z-40">
 					<SingleDatePicker
 						date={date}
@@ -132,25 +193,18 @@ export default function FormDatePicker({
 						hideKeyboardShortcutsPanel={true}
 						isOutsideRange={isInRange}
 						disableScroll={false}
-						disabled={disabled}
 						displayFormat={'DD/MM/YYYY'}
+						className={className}
+						{...props}
 					/>
 				</div>
 				<CalenderIcon className="pointer-events-none absolute top-[16px] right-[16px] text-blue-500" />
 			</div>
-			{/* {meta.touched && meta.error ? (
+			{meta.touched && meta.error && (
 				<div className="font-lato text-form-xs text-[#cc3300]">
 					{meta.error}
 				</div>
-			) : null} */}
-			{meta.touched && meta.error ? (
-    <div className="font-lato text-form-xs text-[#cc3300]">
-        {String(meta.error).includes("Invalid Date") || 
-         String(meta.error).includes("must be a `date` type") 
-            ? "This field is required" 
-            : meta.error}
-    </div>
-) : null}
+			)}
 		</div>
 	);
 }

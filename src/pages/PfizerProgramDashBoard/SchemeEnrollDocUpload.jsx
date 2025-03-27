@@ -150,11 +150,12 @@ const getRadioData = () => {
 
 const radioData = getRadioData();
   const uploadFields = [
+    { id: 'prescription', label: 'Prescription' },
     { id: 'id_proof', label: 'ID Proof' },
     { id: 'address_proof', label: 'Address Proof' },
-    { id: 'enrolment_form', label: 'Enrollment Form' },
-    { id: 'prescription', label: 'Prescription' },
-    { id: 'phone_number_proof', label: 'Phone Number Proof' }
+    // { id: 'enrolment_form', label: 'Enrollment Form' },
+   
+    // { id: 'phone_number_proof', label: 'Phone Number Proof' }
   ];
 
  
@@ -187,7 +188,7 @@ const radioData = getRadioData();
   };
 
   // Combine standard and extra fields
-  const combinedUploadFields = [...uploadFields, ...getExtraFields()];
+  const combinedUploadFields = [...uploadFields];
  
   const initialValues = {
     program_id: selectedEnrollProgram.program_id,
@@ -403,7 +404,7 @@ const radioData = getRadioData();
 
           {/* Document Upload Section */}
           {showUploadFields && (
-            <div className="mb-8 overflow-y-auto  h-[800px] pb-60">
+            <div className="mb-8 overflow-y-auto  h-[600px] pb-0">
               <div className="flex flex-col justify-between items-start mt-12 mb-6 px-4" >
                 <h2 className="text-[18px] font-sans  font-semibold">Upload Documents</h2>
                 <a href="#" className="text-primary text-[14px]">

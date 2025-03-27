@@ -15,7 +15,7 @@ export const INITIATE_EYC_MENU_ITEMS = [];
 export const SHOW_PROFILE_MENU_ITEMS = [];
 
 export const nationalityOptions = [
-	{ id: "", label: "" },
+	{ id: "Indian", label: "Indian" },
 	{ id: "Afghan", label: "Afghan" },
 	{ id: "Albanian", label: "Albanian" },
 	{ id: "Algerian", label: "Algerian" },
@@ -93,7 +93,6 @@ export const nationalityOptions = [
 	{ id: "Honduran", label: "Honduran" },
 	{ id: "Hungarian", label: "Hungarian" },
 	{ id: "Icelandic", label: "Icelandic" },
-	{ id: "Indian", label: "Indian" },
 	{ id: "Indonesian", label: "Indonesian" },
 	{ id: "Iranian", label: "Iranian" },
 	{ id: "Iraqi", label: "Iraqi" },

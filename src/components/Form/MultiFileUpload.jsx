@@ -94,7 +94,7 @@ export default function MultiFileUpload({
   return (
     <div className="flex flex-col gap-[12px]">
       <div className="flex flex-col gap-[4px]">
-        <label className="text-xs leading-4 text-dark-gray">{label}</label>
+        <label className="text-[12px] font-open-sans font-semibold leading-4 text-[#595454]">{label}</label>
         <div
           onClick={triggerFileInput}
           className="flex w-full text-[14px] items-center justify-between gap-[16px] truncate rounded-md border border-dashed border-[#D5D5D5] px-[12px] py-[16px] pr-[14px] font-lato leading-5 text-medium-gray cursor-pointer"

@@ -79,7 +79,10 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
       const { response, success } = await triggerApi({
         url: "/patient_dashboard/?current_step=ekyc_verification",
         type: "POST",
-        payload: values, // Ensure values contains required data
+        payload: values,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        }, // Ensure values contains required data
         loader: true,
         // Don't set Content-Type for FormData
       });
@@ -256,7 +259,7 @@ const renderAvailablePrograms = () => (
                   onClick={() => handleViewHistory(program)} 
                   className="text-white bg-primary py-[4px] px-[6px] rounded-[6px] text-[12px] font-medium"
                 >
-                  View History
+                  View Details
                 </button>
               </div>
             </div>
@@ -265,13 +268,18 @@ const renderAvailablePrograms = () => (
                 UID - {initiaData?.patient_data?.patient_uid}
                 {/* patient_uid */}
               </p>
-              <p className="text-[#767676] text-[14px]">
+             {
+              program.program_status === "active"   &&
+              <>
+               <p className="text-[#767676] text-[14px]">
                 Enrollment Date - {program.program_enrollmentDate}
               </p>
               <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
               <p className="text-[#767676] text-[14px]">
                 Doctor's Name - {program.doctor_name}
               </p>
+              </>
+             }
             </div>
           </div>
         ) : (
@@ -279,6 +287,7 @@ const renderAvailablePrograms = () => (
             <div className="flex items-center gap-2 p-4">
               <h2 className="text-[18px] font-bold">{program.program_name}</h2>
               <span
+             
                 className={`px-4 py-1 ${
                   program.program_status === 'shortfall' 
                   ? 'bg-red-100 text-red-800' 
@@ -306,16 +315,16 @@ const renderAvailablePrograms = () => (
                 UID - {initiaData?.patient_data?.patient_uid}
                 </p>
                 {/* need to update */}
-                <p className="text-[#767676] text-[14px] font-open-sans">
+                {/* <p className="text-[#767676] text-[14px] font-open-sans">
                   FOC Orders - 01
                 </p>
                 <p className="text-[#767676] text-[14px] font-open-sans">
                 Enrollment Date - {program.program_enrollmentDate}
-                </p>
-                <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
+                </p> */}
+                {/* <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
                 <p className="text-[#767676] text-[14px] font-open-sans">
                 Doctor's Name - {program.doctor_name}
-                </p>
+                </p> */}
               </div>
             </div>
             {program.program_status === "shortfall" && (
@@ -449,7 +458,7 @@ const renderAvailablePrograms = () => (
         <span className="pl-2">
           <Pap className="w-8 h-8" />
         </span>
-        &lt;Phlebo&gt; Team will soon reach out for verification
+        Phlebo  Team will soon reach out for verification
       </button>
     </div>
   ) : (

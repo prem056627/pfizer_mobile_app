@@ -57,6 +57,9 @@ const OrderHistory = () => {
         const { response, success } = await triggerApi({
           url: url,
           type: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
           loader: true,
         });
     

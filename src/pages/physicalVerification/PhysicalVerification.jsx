@@ -4,6 +4,7 @@ import 'react-day-picker/dist/style.css';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
 
 import CustomToast from './CustomToast';
 import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-form';
@@ -16,38 +17,36 @@ const PhysicalVerification = () => {
     to: null
   });
 
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedHalf, setSelectedHalf] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
 
   const calendarRef = useRef();
   const inputRef = useRef();
-  const timeInputRef = useRef();
+  const halfDayRef = useRef();
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const triggerApi = useApi();
 
-  const handleDateChange = (selectedDay) => {
-    if (!selectedDateRange.from) {
-      setSelectedDateRange({ from: selectedDay, to: null });
-    } 
-    else if (selectedDateRange.from && !selectedDateRange.to) {
-      const newToDate = selectedDay >= selectedDateRange.from 
-        ? selectedDay 
-        : selectedDateRange.from;
-      
-      const newFromDate = selectedDay < selectedDateRange.from 
-        ? selectedDay 
-        : selectedDateRange.from;
+  // Slot options for the select field
+  const slotOptions = [
+    { value: 'First Half', label: 'First Half' },
+    { value: 'Second Half', label: 'Second Half' }
+  ];
 
-      setSelectedDateRange({
-        from: newFromDate,
-        to: newToDate
-      });
-    } 
-    else {
-      setSelectedDateRange({ from: selectedDay, to: null });
-    }
+  const handleDateChange = (selectedDay) => {
+    // Create a new Date object for the next day
+    const nextDay = new Date(selectedDay);
+    nextDay.setDate(nextDay.getDate() + 4);
+
+    // Set the date range from the selected day to the next day
+    setSelectedDateRange({
+      from: selectedDay,
+      to: nextDay
+    });
+
+    // Close the calendar after selection
+    setCalendarVisible(false);
   };
 
   const notify = (date_data) => {
@@ -65,13 +64,23 @@ const PhysicalVerification = () => {
     });
   };
 
+  // Function to disable past dates
+  const isPastDate = (date) => {
+    // Get current date at the start of the day
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Compare the input date with today
+    return date < today;
+  };
+    
   const makeApiCall = async () => {
     try {
       setIsLoading(true);
       
-      // Validate date and time before API call
-      if (!selectedDateRange.from || !selectedTime) {
-        toast.error("Please select both date and time");
+      // Validate date and half day before API call
+      if (!selectedDateRange.from || !selectedHalf) {
+        toast.error("Please select both date and half day");
         return { success: false, error: "Incomplete selection" };
       }
 
@@ -82,7 +91,7 @@ const PhysicalVerification = () => {
         end_date: selectedDateRange.to 
           ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
           : moment(selectedDateRange.from).format('DD/MM/YYYY'),
-        time: selectedTime
+        time: selectedHalf
       };
       
       const url = `/patient_dashboard/?current_step=physical_verification`;
@@ -91,6 +100,9 @@ const PhysicalVerification = () => {
         url: url,
         type: "POST",
         payload: payload,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         loader: true
       });
 
@@ -108,8 +120,8 @@ const PhysicalVerification = () => {
     }
   };
 
-  const handleTimeChange = (e) => {
-    setSelectedTime(e.target.value);
+  const handleHalfDayChange = (e) => {
+    setSelectedHalf(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -123,7 +135,7 @@ const PhysicalVerification = () => {
         endDate: selectedDateRange.to 
           ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
           : moment(selectedDateRange.from).format('DD/MM/YYYY'),
-        time: selectedTime,
+        time: selectedHalf,
       });
       
       // Close modal
@@ -145,8 +157,8 @@ const PhysicalVerification = () => {
         !calendarRef.current.contains(event.target) && 
         inputRef.current && 
         !inputRef.current.contains(event.target) &&
-        timeInputRef.current && 
-        !timeInputRef.current.contains(event.target)
+        halfDayRef.current && 
+        !halfDayRef.current.contains(event.target)
       ) {
         setCalendarVisible(false);
       }
@@ -200,40 +212,38 @@ const PhysicalVerification = () => {
                   selected={selectedDateRange}
                   onDayClick={handleDateChange}
                   numberOfMonths={1}
+                  // Disable past dates using the disabled prop
+                  disabled={isPastDate}
                 />
               </div>
             )}
           </div>
         </div>
 
-        {/* Time Picker */}
+        {/* Half Day Picker */}
         <div className="w-full pt-4">
-          <label htmlFor='physical-verification-time' className="text-sm text-gray-600 mb-1 block">Select Time</label>
-          <input
-            ref={timeInputRef}
-            type="time"
-            name='physical-verification-time'
-            value={selectedTime}
-            onChange={handleTimeChange}
-            onClick={(e) => {
-              e.target.showPicker();
-              e.stopPropagation();
-            }}
-            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary cursor-pointer z-10"
-          />
-        </div>
+  <label className="text-sm text-gray-600 mb-1 block">Select Slot</label>
+  <Select
+    options={slotOptions}
+    value={slotOptions.find(option => option.value === selectedHalf)}
+    onChange={(selectedOption) => setSelectedHalf(selectedOption.value)}
+    placeholder="Select"
+    className="w-full"
+  />
+</div>
+
 
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={!selectedDateRange.from || !selectedTime}
+          disabled={!selectedDateRange.from || !selectedHalf}
           className={`w-full py-3 px-4 rounded-lg transition-colors mt-10 ${
-            !selectedDateRange.from || !selectedTime 
+            !selectedDateRange.from || !selectedHalf 
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
               : 'bg-primary text-white hover:bg-primary-dark'
           }`}
         >
-          Submit Date & Time
+          Submit Date & Slot
         </button>
       </form>
     </div>

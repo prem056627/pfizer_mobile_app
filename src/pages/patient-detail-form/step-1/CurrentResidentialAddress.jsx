@@ -159,6 +159,7 @@ const CurrentResidentialAddress = ({ formik }) => {
         name="address.current.pincode"
         id="address.current.pincode"
         placeholder="Enter Pincode"
+        type="number"
         value={formik.values.address.current.pincode}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}

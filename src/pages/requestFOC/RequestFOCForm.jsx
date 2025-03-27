@@ -119,6 +119,9 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
             url: `/patient_dashboard/?current_step=place_foc_order`,
             type: "POST",
             payload: formData,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
             loader: true,
         });
 

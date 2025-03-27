@@ -93,6 +93,7 @@ const AddressProofForm = ({ formik }) => {
         label="Pincode"
         name="address.permanent.pincode"
         id="address.permanent.pincode"
+        type="number"
         placeholder="Enter Pincode"
         value={formik.values.address.permanent.pincode}
         onChange={formik.handleChange}

@@ -68,12 +68,15 @@ const makeApiCall = async (values) => {
 
     // Set current_step parameter in the URL
     const currentStep = currentPageState; // This should be dynamically assigned
-const url = `/patient_dashboard/?current_step=${currentStep}`;
+   const url = `/patient_dashboard/?current_step=${currentStep}`;
 
     const { response, success } = await triggerApi({
       url: url,
       type: "POST",
       payload: values || {},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
       loader: true,
     });
 
