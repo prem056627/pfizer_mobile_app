@@ -4,15 +4,15 @@ import FabButton from '../../components/FabButton';
 import { ReactComponent as Notification } from "../../assets/images/svg/Notification.svg";
 import { Transition } from 'react-transition-group';
 
-
 import { ReactComponent as Empty } from "../../assets/images/menus1/empty_notify.svg";
 import { selectInitializeData } from '../../slice/patient-detail-form';
 import { useSelector } from 'react-redux';
+import useApi from '../../hooks/useApi';
 
 const Notifications = () => {
   const initiaData = useSelector(selectInitializeData);
   const apiNotifications = initiaData.notifications || [];
-  
+  const triggerApi = useApi();
   console.log(apiNotifications);
 
   const [notifications, setNotifications] = useState([]);
@@ -22,10 +22,11 @@ const Notifications = () => {
   useEffect(() => {
     // Use the API notifications directly from the Redux store
     if (apiNotifications && apiNotifications.length > 0) {
-      // Format notifications to match component's expected structure
-      const formattedNotifications = apiNotifications.map((notification, index) => ({
-        id: index + 1,
-        recipient: '',
+      console.log("apiNotifications", apiNotifications);
+      
+      // Format notifications to match the new structure
+      const formattedNotifications = apiNotifications.map((notification) => ({
+        id: notification.id, // Use the existing ID
         date: notification.date || '',
         message: notification.title || '',
         subMessage: notification.description || '',
@@ -37,10 +38,29 @@ const Notifications = () => {
   }, [apiNotifications]);
 
   const handleDismiss = async (id) => {
+    // Find the notification to be dismissed
+    const notificationToDismiss = notifications.find(n => n.id === id);
+    console.log("notificationToDismiss", notificationToDismiss.id);
+    
     // Add the ID to the removing list to trigger animation
     setRemovingIds(prev => [...prev, id]);
     
     try {
+      // Make API call to mark notification as read
+      const apiResponse = await triggerApi({
+        url: `/patient_dashboard/?current_step=mark_read`,
+        type: "POST",
+        payload: JSON.stringify({
+          notification_id: notificationToDismiss.id,
+          notification_message: notificationToDismiss.message
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        loader: true,
+      });
+  
       // Wait for animation to complete before removing from state
       setTimeout(() => {
         setNotifications(prev => prev.filter(notification => notification.id !== id));
@@ -75,7 +95,6 @@ const Notifications = () => {
       {notifications.length !== 0 ? <h2 className="text-lg font-semibold w-full mb-4">Transaction</h2> : null}
         
         {loading ? (
-          // <div className="p-4 text-center">Loading notifications...</div>
           <div className="overlay-spinner" />
         ) : notifications.length === 0 ? (
           <div className="flex justify-center items-center h-[60vh]">
@@ -137,15 +156,6 @@ const Notifications = () => {
           </div>
         )}
       </div>
-
-      {/* Help Button */}
-      {/* <div className="fixed bottom-24 z-30 w-full bg-red-200">
-        <FabButton />
-      </div> */}
-      
-      {/* Uncomment these if needed */}
-      {/* <PatientConsentModal/> */}
-      {/* <MenuFooter /> */}
     </div>
   );
 };

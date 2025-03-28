@@ -56,13 +56,14 @@ const [isLoading, setIsLoading] = useState(true);
   const triggerApi = useApi();
   
   // Get initial values from stored data
-  const initialValues = getProfileInitialValues(formData);
+  const initialValues = getProfileInitialValues(formData.profile_details);
 
 
 
 // And here's the fixed client-side function:
 const makeApiCall = async (values) => {
   // console.log("form Val!!! " , values ) ;
+  const payload_val = JSON.stringify(values);
   try {
     setIsLoading(true);
 
@@ -73,9 +74,10 @@ const makeApiCall = async (values) => {
     const { response, success } = await triggerApi({
       url: url,
       type: "POST",
-      payload: values || {},
+      payload: payload_val || {},
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
       },
       loader: true,
     });
@@ -99,7 +101,7 @@ const makeApiCall = async (values) => {
 
   const onSubmit = async (values, { setSubmitting }) => {
 
-    // console.log('valuessss!!',values);
+    console.log('valuessss!!',values);
     try {
       // Save to local storage
       setFormData({

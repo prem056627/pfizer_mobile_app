@@ -8,7 +8,8 @@ export const callGetApi = async ({ fullUrl }) => {
 		method: 'GET',
 		redirect: 'follow',
 		headers: {
-			Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
 		},
 	});
 	return request;
@@ -19,7 +20,8 @@ export const callPostApi = async ({ fullUrl, payload }) => {
 		method: 'POST',
 		redirect: 'follow',
 		headers: {
-			Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+			// "Content-Type": "application/json",
+			"Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
 		},
 		body: payload instanceof FormData ? payload : JSON.stringify(payload),
 	});

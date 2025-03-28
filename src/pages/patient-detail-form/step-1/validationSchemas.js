@@ -14,9 +14,9 @@ export const combinedValidationSchema = Yup.object().shape({
   .typeError('Please enter a valid date')
 ,
   
-  mobile_number: Yup.string()
-    .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
-    .required("Mobile Number is required"),
+  // mobile_number: Yup.string()
+  //   .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+  //   .required("Mobile Number is required"),
   
   email: Yup.string()
     .email("Invalid email format")

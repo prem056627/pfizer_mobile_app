@@ -75,13 +75,15 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   const makeApiCall = async (values) => {
     try {
       setIsLoading(true);
-  
+      const payload_val = JSON.stringify(values);
+
       const { response, success } = await triggerApi({
         url: "/patient_dashboard/?current_step=ekyc_verification",
         type: "POST",
-        payload: values,
+        payload: payload_val,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         }, // Ensure values contains required data
         loader: true,
         // Don't set Content-Type for FormData

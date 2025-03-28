@@ -58,7 +58,8 @@ const OrderHistory = () => {
           url: url,
           type: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
           },
           loader: true,
         });

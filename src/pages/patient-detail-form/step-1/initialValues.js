@@ -1,6 +1,8 @@
 import moment from 'moment';
 
 export const getProfileInitialValues = (storedData = {}) => {
+
+  console.log("storedData",storedData);
   return {
     // Personal Details
     full_name: storedData.full_name || "",

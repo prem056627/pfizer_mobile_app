@@ -97,7 +97,8 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                 url: `/patient_dashboard/?current_step=place_paid_order`,
                 type: "POST",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 },
                 payload: formData,
                 loader: true,

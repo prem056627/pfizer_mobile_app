@@ -120,7 +120,8 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
             type: "POST",
             payload: formData,
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+               
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
             },
             loader: true,
         });

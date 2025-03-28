@@ -84,15 +84,15 @@ const PhysicalVerification = () => {
         return { success: false, error: "Incomplete selection" };
       }
 
-      // Prepare payload with full date range
-      const payload = {
+
+      const payload = JSON.stringify({
         current_step: "physical_verification",
         start_date: moment(selectedDateRange.from).format('DD/MM/YYYY'),
         end_date: selectedDateRange.to 
           ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
           : moment(selectedDateRange.from).format('DD/MM/YYYY'),
         time: selectedHalf
-      };
+      });
       
       const url = `/patient_dashboard/?current_step=physical_verification`;
       
@@ -101,7 +101,8 @@ const PhysicalVerification = () => {
         type: "POST",
         payload: payload,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         },
         loader: true
       });

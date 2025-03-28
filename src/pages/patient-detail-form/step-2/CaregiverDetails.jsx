@@ -161,7 +161,7 @@ const CaregiverDetails = ({ formik }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify({
           mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
@@ -245,7 +245,7 @@ const CaregiverDetails = ({ formik }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
