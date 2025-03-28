@@ -54,19 +54,21 @@ export default function PersonalDetailsForm({ formik }) {
           onBlur={formik.handleBlur}
           className="w-1/2"
         />
-        <FormDatePicker
-          key="date_of_birth"
-          label="Date of Birth"
-          name="date_of_birth"
-          id="date_of_birth"
-          placeholder="DD/MM/YYYY"
-          value={get(formik.values, "date_of_birth", "")}
-          onChange={(value) => formik.setFieldValue("date_of_birth", value)}
-          formik={formik}
-          min={moment().subtract(200, "years")}
-          max={moment()}
-          className="flex grow rounded-md border border-[#D5D5D5] font-lato placeholder:text-[#9A9A9A] hover:outline-0 focus:outline-0 placeholder:leading-none"
-        />
+   <FormDatePicker
+    key="date_of_birth"
+    label="Date of Birth"
+    name="date_of_birth"
+    id="date_of_birth"
+    placeholder="DD/MM/YYYY"
+    value={formik.values.date_of_birth}
+    formik={formik}
+    min={moment().subtract(200, "years")}
+    max={moment()}
+    className="flex grow rounded-md border border-[#D5D5D5] font-lato placeholder:text-[#9A9A9A] hover:outline-0 focus:outline-0 placeholder:leading-none"
+/>
+
+
+        
       </div>
 
       <div className="flex flex-col gap-[4px]">

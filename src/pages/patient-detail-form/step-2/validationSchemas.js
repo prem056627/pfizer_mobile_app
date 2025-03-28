@@ -170,9 +170,9 @@ const conditionalCaregiverValidationSchema = (id) => {
 
 // Generate validation schema combining required first caregiver and conditional additional caregivers
 export const combinedValidationSchema = Yup.object().shape({
-  ...firstCaregiverValidationSchema,
-  ...conditionalCaregiverValidationSchema(1),
-  ...conditionalCaregiverValidationSchema(2),
+  // ...firstCaregiverValidationSchema,
+  // ...conditionalCaregiverValidationSchema(1),
+  // ...conditionalCaregiverValidationSchema(2),
 });
 
 // Function to initialize caregiver details dynamically

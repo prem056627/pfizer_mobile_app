@@ -9,10 +9,21 @@ export const combinedValidationSchema = Yup.object().shape({
   gender: Yup.string().required("Gender is required"),
   
   date_of_birth: Yup.date()
-  .nullable()
-  .required('Date of birth is required')
-  .typeError('Please enter a valid date')
-,
+  .required("Date of Birth is required")
+  .test(
+    "is-over-18",
+    "You must be at least 18 years old",
+    (value) => {
+      if (!value) return false;
+      const today = new Date();
+      const eighteenYearsAgo = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
+      return value <= eighteenYearsAgo;
+    }
+  ),
   
   // mobile_number: Yup.string()
   //   .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
@@ -91,3 +102,22 @@ export const combinedValidationSchema = Yup.object().shape({
     //   then: Yup.string().matches(/^[A-Z0-9]{16}$/, "Invalid Driving License format"),
     // }),
 });
+
+
+
+
+
+
+// // Validation Schema
+// export const personalDetailsValidationSchema = Yup.object().shape({
+//   full_name: Yup.string().required("Full Name is required"),
+//   gender: Yup.string().required("Gender is required"),
+  
+//   mobile_number: Yup.string()
+//     .matches(/^[0-9]{10}$/, "Mobile number must be 10 digits")
+//     .required("Mobile Number is required"),
+//   email: Yup.string()
+//     .email("Invalid email format")
+//     .required("Email is required"),
+//   nationality: Yup.string().required("Nationality is required"),
+// });
