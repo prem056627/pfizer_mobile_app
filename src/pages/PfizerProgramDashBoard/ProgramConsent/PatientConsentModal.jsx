@@ -17,17 +17,20 @@ function PatientConsentModal() {
     const dispatch = useDispatch(); 
 
     function closeModal() {
-       dispatch(setProgramEnrollmentConsent(false));
+    //    dispatch(setProgramEnrollmentConsent(false));
+        dispatch(setProgramEnrollmentConsent({  consent: false }));
     //    dispatch(setCurrentView("home"));
         console.log("Modal closed");
     }
 const enrollmentConsent =  useSelector(selectProgramEnrollmentConsent);
+// console.log('enrollmentConsent:',enrollmentConsent.consent
+// );
 
     return (
         <Modal
             // label={'Profile'}
             labelType="center"
-            show={enrollmentConsent}
+            show={enrollmentConsent?.consent}
             closeModal={closeModal}
             ModalBody={<PatientConsent />}
             // ModalBody={< RequestCallBackForm />}

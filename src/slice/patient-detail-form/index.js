@@ -22,7 +22,11 @@ export const ProgramEnrollmentSlice = createSlice({
     program_status: 'active', // program status
     // program_status: 'profile_under_review', // program status
     // Programs Enroll dashboard
-    program_enroll_consent: false,
+    program_enroll_consent: {
+      program: null,
+      consent: false
+    },
+    
     program_enrollment_success: false,
     patient_enrollemnt_success: false,
     current_view: "Home",
@@ -67,6 +71,7 @@ export const ProgramEnrollmentSlice = createSlice({
     setProgramEnrollmentConsent: (state, action) => {
       state.program_enroll_consent = action.payload;
     },
+    
     setDocUploadStatus: (state, action) => {
       state.doc_upload_status = action.payload;
     },

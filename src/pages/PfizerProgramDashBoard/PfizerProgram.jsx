@@ -54,7 +54,7 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   const handleRequest = (program) => {
    
     dispatch(setSelectedEnrollProgram(program));
-    dispatch(setProgramEnrollmentConsent(true));
+    dispatch(setProgramEnrollmentConsent({ program, consent: true }));
   };
 
   const handleRequestShortfallProgram = () => {
