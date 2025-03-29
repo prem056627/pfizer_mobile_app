@@ -6,8 +6,8 @@ import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.s
 let initialData = {
  
     // before enrollment submit
-    // current_step: "patient_enrolment",
-    current_step: "program_enrolment_done",
+    current_step: "caregiver_addition",
+    // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2279,7 +2279,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:1,
+		enrolled_programs:0,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
