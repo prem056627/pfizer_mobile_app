@@ -96,10 +96,6 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
             const { response, success } = await triggerApi({
                 url: `/patient_dashboard/?current_step=place_paid_order`,
                 type: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-                },
                 payload: formData,
                 loader: true,
             });

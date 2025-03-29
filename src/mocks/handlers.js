@@ -6,8 +6,8 @@ import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.s
 let initialData = {
  
     // before enrollment submit
-    current_step: "patient_enrolment",
-    // current_step: "program_enrolment_done",
+    // current_step: "patient_enrolment",
+    current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2280,7 +2280,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:0,
+		enrolled_programs:1,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2307,61 +2307,12 @@ let initialData = {
 			program_type: ["Oncology", "Patient Assistance"],
 		}
       ],
-      // active_programs: [
-      //   {
-      //     id: 1,
-      //     name: "Palbace",
-      //     status: "Active",
-      //     uid: "10015",
-      //     enrollmentDate: "9th Jun, 2021",
-      //     schemes: "9+LFT",
-      //     doctorName: "Dr. John Doe",
-      //     orders: "3",
-      //     nextVisit: "15th Mar, 2025",
-      //     type: "Oncology",
-      //   },
-      //   {
-      //     id: 2,
-      //     name: "Xeljanz",
-      //     status: "Applied",
-      //     uid: "10016",
-      //     enrollmentDate: "12th Dec, 2021",
-      //     schemes: "6+LFT",
-      //     doctorName: "Dr. Sarah Smith",
-      //     orders: "5",
-      //     nextVisit: "20th Mar, 2025",
-      //     type: "Rheumatology",
-      //   },
-      //   {
-      //     id: 3,
-      //     name: "Ibrance",
-      //     status: "shortfall",
-      //     uid: "10017",
-      //     enrollmentDate: "3rd Jan, 2022",
-      //     schemes: "12+LFT",
-      //     doctorName: "Dr. Michael Chen",
-      //     orders: "8",
-      //     nextVisit: "1st Apr, 2025",
-      //     type: "Oncology",
-      //   },
-      //   {
-      //     id: 4,
-      //     name: "Enbrel",
-      //     status: "Active",
-      //     uid: "10018",
-      //     enrollmentDate: "15th Feb, 2022",
-      //     schemes: "3+LFT",
-      //     doctorName: "Dr. Emily Brown",
-      //     orders: "2",
-      //     nextVisit: "10th Mar, 2025",
-      //     type: "Immunology",
-      //   },
-      // ],
+    
       applied_programs: [
         {
           // program_name: "c",
           // program_status: "rejected",
-          program_status: "shortfall",
+          program_status: "active",
           // program_id: 10018,
           // program_scheme: '9+LFT',
           // doctor_name:"prem",
