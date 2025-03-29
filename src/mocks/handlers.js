@@ -6,8 +6,8 @@ import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.s
 let initialData = {
  
     // before enrollment submit
-    // current_step: "patient_enrolment",
-    current_step: "program_enrolment_done",
+    current_step: "patient_enrolment",
+    // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2239,6 +2239,7 @@ let initialData = {
       [7509, "Kaimur(Bhabua)"],
       [7510, "Sopore"],
     ],
+    mobile: "9823838878",
     state: [
       [1, "Andhra Pradesh"],
       [2, "Arunachal Pradesh"],
@@ -2279,7 +2280,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:1,
+		enrolled_programs:0,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2359,8 +2360,8 @@ let initialData = {
       applied_programs: [
         {
           // program_name: "c",
-          program_status: "active",
-          // program_status: "shortfall",
+          // program_status: "rejected",
+          program_status: "shortfall",
           // program_id: 10018,
           // program_scheme: '9+LFT',
           // doctor_name:"prem",
@@ -2378,6 +2379,9 @@ let initialData = {
             
           ],
           // program_status: "shortfall",
+          // shortfall
+          // suspended
+          // rejected
           program_enrollmentDate: "23 Mar 2025",
           program_scheme: "9+LFT",
           program_image: "NA",
@@ -2462,9 +2466,16 @@ let initialData = {
     {
         date: "22 Jan 25",
         time: "",
+        id: 3,
         description: "Please complete your eKYC Verification",
         title: "eKYC Verification Pending"
-    }
+    },
+    {
+      date: "27 Mar 2025",
+      description: "Your Physical Verification request is sent successfully !!",
+      id: 5,
+      title: "PV Request"
+  }
 ]
 ,
   caregiver_data: [
@@ -2526,7 +2537,7 @@ let initialData = {
       }
   ],
   physical_verification: {
-    show_verification_button: false,
+    show_verification_button: true,
     details : {
       status : "Verified",
        date : "22 Jan 2025",
