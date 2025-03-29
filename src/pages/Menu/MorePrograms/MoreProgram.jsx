@@ -132,7 +132,8 @@ function MoreProgram() {
        
         dispatch(setCurrentView("home"));
        dispatch(setSelectedEnrollProgram(program));
-      dispatch(setProgramEnrollmentConsent(true));
+      // dispatch(setProgramEnrollmentConsent(true));
+       dispatch(setProgramEnrollmentConsent({ program, consent: true }));
 
         dispatch(setIsMoreProgramPageOpen(false));
     };

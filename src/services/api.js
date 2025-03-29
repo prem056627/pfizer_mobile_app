@@ -8,7 +8,7 @@ export const callGetApi = async ({ fullUrl }) => {
 		method: 'GET',
 		redirect: 'follow',
 		headers: {
-			"Content-Type": "application/json",
+			// "Content-Type": "application/json",
 			"Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
 		},
 	});
@@ -20,7 +20,6 @@ export const callPostApi = async ({ fullUrl, payload }) => {
 		method: 'POST',
 		redirect: 'follow',
 		headers: {
-			// "Content-Type": "application/json",
 			"Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
 		},
 		body: payload instanceof FormData ? payload : JSON.stringify(payload),

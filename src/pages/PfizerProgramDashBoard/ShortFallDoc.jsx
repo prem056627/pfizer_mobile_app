@@ -60,11 +60,14 @@ const ShortFallDoc = () => {
   // Validate function that dynamically checks all required fields
   const validate = (values) => {
     const errors = {};
+    const MAX_FILES = 5;
     
     // Check each field from uploadFields
     uploadFields.forEach(field => {
       if (!values[field.id] || values[field.id].length === 0) {
         errors[field.id] = `${field.label} is required`;
+      } else if (values[field.id].length > MAX_FILES) {
+        errors[field.id] = `Maximum ${MAX_FILES} files allowed for ${field.label}`;
       }
     });
     
@@ -100,31 +103,9 @@ const ShortFallDoc = () => {
       setIsLoading(true);
   
       // Create new FormData
-      const formData = new FormData();
+      const formData = transformToFormData(values)
       
-      // Add all dynamic fields to FormData
-      let hasFiles = false;
-      uploadFields.forEach(field => {
-        if (values[field.id] && values[field.id].length > 0) {
-          formData.append(field.id, values[field.id][0]);
-          hasFiles = true;
-        }
-      });
-      
-      // If no files were added, return early
-      if (!hasFiles) {
-        return { success: false, error: "No files selected" };
-      }
-      
-      // Add any additional data if needed
-      formData.append('current_step', 'reupload_documents');
-      
-      // Log all FormData entries to verify content
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
-          `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
-      }
-      
+  
       // Set current_step parameter in the URL
       const url = `/patient_dashboard/?current_step=reupload_documents`;
       
@@ -179,8 +160,7 @@ const ShortFallDoc = () => {
       
       if (result.success) {
         notify();
-        // dispatch(setDocUploadStatus('profile_under_review'));
-        // dispatch(setProgramStatus('profile_under_review'));
+     
       } else {
         toast.error('Failed to upload documents. Please try again.');
       }
@@ -232,6 +212,7 @@ const ShortFallDoc = () => {
                     label={field.label}
                     id={field.id}
                     isMultiple={true}
+                    
                     onFileUpload={(files) => {
                       formik.setFieldValue(field.id, files);
                     }}

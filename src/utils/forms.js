@@ -7,9 +7,8 @@ export function transformToFormData(
 	formData = new FormData(),
 	parentKey = null
 ) {
-	// console.log(data);
 	forEach(data, (value, key) => {
-		if (value === null) return; // else "null" will be added
+		if (value === null) return;
 
 		let formattedKey = isEmpty(parentKey) ? key : `${parentKey}[${key}]`;
 
@@ -17,7 +16,9 @@ export function transformToFormData(
 			formData.set(formattedKey, value);
 		} else if (value instanceof Array) {
 			forEach(value, (ele) => {
-				if (ele instanceof Object) {
+				if (ele instanceof File) {
+					formData.append(`${formattedKey}`, ele);
+				} else if (ele instanceof Object) {
 					formData.append(`${formattedKey}`, JSON.stringify(ele));
 				} else {
 					formData.append(`${formattedKey}`, ele);
@@ -92,3 +93,44 @@ export const handleFileUpload = async (event, formik, formik_field) => {
 		console.log(error);
 	}
 };
+
+
+export function transformToPatientDetailsFormData(
+	data,
+	formData = new FormData(),
+	parentKey = null
+) {
+	forEach(data, (value, key) => {
+		if (value === null) return;
+
+		let formattedKey = isEmpty(parentKey) ? key : `${parentKey}[${key}]`;
+
+		if (value instanceof File) {
+			formData.set(formattedKey, value);
+		} else if (value instanceof Array) {
+			forEach(value, (ele, index) => {
+				if (ele instanceof File) {
+					formData.append(`${formattedKey}`, ele);
+				} else if (ele instanceof Object) {
+					Object.entries(ele).map(([key, keyValue]) => {
+						if (keyValue instanceof Array) {
+							forEach(keyValue, (eachValue) => {
+								if (eachValue instanceof File) {
+									formData.append(`${formattedKey}_${index}_${key}`, eachValue);
+								}
+							});
+						}
+					});
+					formData.append(`${formattedKey}`, JSON.stringify(ele));
+				} else {
+					formData.append(`${formattedKey}`, ele);
+				}
+			});
+		} else if (value instanceof Object) {
+			transformToFormData(value, formData, formattedKey);
+		} else {
+			formData.set(formattedKey, value);
+		}
+	});
+	return formData;
+}

@@ -29,16 +29,16 @@ import EkyModal from "../pages/Ekyc/EkyModal";
 import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
 
 const AppNavigation = () => {
-  // Token functionality
-  const TOKEN_KEY = "accessToken";
+// Token functionality
+const TOKEN_KEY = "accessToken";
 
-  // Function to set a dummy token
+// Function to set a dummy token
 const setDummyToken = () => {
-  localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
-  console.log("Token stored successfully!");
+localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
+console.log("Token stored successfully!");
 };
 
-// setDummyToken(); // Call this function once to set the token
+setDummyToken(); // Call this function once to set the token
 
   const logToReactNative = (message, data) => {
     if (window.ReactNativeWebView) {

@@ -13,10 +13,7 @@ const SchemeEnrollDocUpload = () => {
   const dispatch = useDispatch();
   const triggerApi = useApi();
   const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
-  // console.log('selectedEnrollProgramselectedEnrollProgram!!',selectedEnrollProgram);
-  // const navigate = useNavigate();
 
-// Get radio data based on program name
 const getRadioData = () => {
   const programName = selectedEnrollProgram.program_name;
   
@@ -153,39 +150,8 @@ const radioData = getRadioData();
     { id: 'prescription', label: 'Prescription' },
     { id: 'id_proof', label: 'ID Proof' },
     { id: 'address_proof', label: 'Address Proof' },
-    // { id: 'enrolment_form', label: 'Enrollment Form' },
-   
-    // { id: 'phone_number_proof', label: 'Phone Number Proof' }
   ];
 
- 
-
-  // Get extra fields based on program name
-  const getExtraFields = () => {
-    const programName = selectedEnrollProgram.program_name;
-    
-    // Extra fields for specific programs
-    if (programName === "Lorbriqua Care") {
-      return [
-        { id: 'caregiver_id_proof', label: 'Caregiver ID Proof' },
-        // { id: 'insurance_card', label: 'Insurance Card' },
-        // { id: 'genetic_report', label: 'Genetic Report' }
-      ];
-    } 
-    else if (programName === "Palbace Program") {
-      return [
-        { id: 'diagnosis', label: 'Diagnosis' },
-      
-      ];
-    }
-    else if (programName === "Crizalk Program") {
-      return [
-        { id: 'diagnosis', label: 'Diagnosis' },
-      ];
-    }
-    
-    return []; // Return empty array for other programs
-  };
 
   // Combine standard and extra fields
   const combinedUploadFields = [...uploadFields];
@@ -196,19 +162,7 @@ const radioData = getRadioData();
     scheme: '',
     id_proof: [],
     address_proof: [],
-    enrolment_form: [],
     prescription: [],
-    diagnosis: [],
-    // Add initial values for potential extra fields
-    phone_number_proof: [],
-    // insurance_card: [],
-    // genetic_report: [],
-    // hormone_report: [],
-    // recent_labs: [],
-    // consent_form: [],
-    // alk_test: [],
-    // medical_history: [],
-    // treatment_plan: []
   };
 
   const validate = (values) => {
@@ -225,17 +179,23 @@ const radioData = getRadioData();
         if (!uploadedFiles || uploadedFiles.length === 0) {
           errors[field.id] = 'Please upload the required document';
         } else {
-          // Validate file types and sizes (up to 5MB)
-          const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-          const maxSizeMB = 5;
+          // Validate file count
+          const maxFiles = 5;
+          if (uploadedFiles.length > maxFiles) {
+            errors[field.id] = `You can upload a maximum of ${maxFiles} files.`;
+          } else {
+            // Validate file types and sizes (up to 5MB)
+            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            const maxSizeMB = 5;
   
-          const invalidFiles = uploadedFiles.filter(file => {
-            const fileSizeMB = file.size / (1024 * 1024); // Convert size to MB
-            return !validTypes.includes(file.type) || fileSizeMB > maxSizeMB;
-          });
+            const invalidFiles = uploadedFiles.filter(file => {
+              const fileSizeMB = file.size / (1024 * 1024); // Convert size to MB
+              return !validTypes.includes(file.type) || fileSizeMB > maxSizeMB;
+            });
   
-          if (invalidFiles.length > 0) {
-            errors[field.id] = `Invalid file format or size. Use JPG, PNG, or PDF under ${maxSizeMB}MB.`;
+            if (invalidFiles.length > 0) {
+              errors[field.id] = `Invalid file format or size. Use JPG, PNG, or PDF under ${maxSizeMB}MB.`;
+            }
           }
         }
       });
@@ -244,9 +204,18 @@ const radioData = getRadioData();
     return errors;
   };
   
+  
 
   // Updated API call function to properly handle file uploads with FormData
   const makeApiCall = async (values) => {
+
+    let tempValues = values;
+		tempValues['program_id'] = selectedEnrollProgram?.program_id;
+		tempValues['program_name'] = selectedEnrollProgram.program_name;
+		tempValues['scheme'] = values?.scheme
+
+
+
     try {
         setIsLoading(true);
 
@@ -254,41 +223,13 @@ const radioData = getRadioData();
         const url = `/patient_dashboard/?current_step=program_enrolment`;
 
         // Create a FormData object
-        const formData = new FormData();
-
-        // Add non-file data
-        formData.append('program_id', values.program_id);
-        formData.append('program_name', values.program_name);
-        formData.append('scheme', values.scheme);
-
-        // Add files with unique names
-        for (const field of combinedUploadFields) {
-            const fieldId = field.id;
-            if (values[fieldId] && values[fieldId].length > 0) {
-                console.log(`Adding ${values[fieldId].length} files for ${fieldId}`);
-
-                values[fieldId].forEach((file, index) => {
-                    // Generate a unique filename using timestamp and index
-                    const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
-
-                    // Create a new File object with the updated name
-                    const renamedFile = new File([file], uniqueFileName, { type: file.type });
-
-                    formData.append(`${fieldId}`, renamedFile);
-                });
-            }
-        }
-
-        // Log FormData entries for debugging
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + (pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]));
-        }
-
-        // Make the API call with FormData
+  
+        let dynamicFormData = transformToFormData(tempValues);
+  
         const { response, success } = await triggerApi({
             url: url,
             type: "POST",
-            payload: formData,
+            payload: dynamicFormData,
             loader: true,
             headers: {} // Let the browser set Content-Type with boundary
         });
@@ -349,23 +290,10 @@ const radioData = getRadioData();
   };
 
 
-
-    // Function to refresh the application
-    const refreshApplication = () => {
-      // Method 1: Reload the current page
-      window.location.reload();
-      
-      // Alternative Method 2: If you're using React Router, you can navigate to the same page
-      // navigate(window.location.pathname);
-      
-      // Alternative Method 3: If you need to reset the state in Redux
-      // dispatch(resetApplicationState());
-    };
-
   function handleLater(){
 
      setTimeout(() => {
-            refreshApplication();
+      window.location.reload();
           }, 200);
   }
 
@@ -432,15 +360,10 @@ const radioData = getRadioData();
                   />
                 ))}
               </div>
-
-              {/* {formik.errors.submit && (
-                <div className="text-red-500 text-sm mt-1 px-4">{formik.errors.submit}</div>
-              )} */}
             </div>
           )}
           </div>
 
-          {/* Action Buttons */}
 
           {/* Fixed Footer */}
           <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">

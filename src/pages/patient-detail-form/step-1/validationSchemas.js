@@ -9,7 +9,7 @@ export const combinedValidationSchema = Yup.object().shape({
   gender: Yup.string().required("Gender is required"),
   
   date_of_birth: Yup.date()
-  .required("Date of Birth is required")
+  // .required("Date of Birth is required")
   .test(
     "is-over-18",
     "You must be at least 18 years old",

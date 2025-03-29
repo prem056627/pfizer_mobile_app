@@ -18,6 +18,8 @@ import CurrentResidentialAddress from "./CurrentResidentialAddress";
 import IDDetails from "./IDDetails";
 import { getProfileInitialValues,fieldGroups } from "./initialValues";
 import useApi from "../../../hooks/useApi";
+import { transformToPatientDetailsFormData } from "../../../utils/forms";
+import moment from 'moment';
 
 const FormDebugger = ({ values, errors, touched }) => {
   React.useEffect(() => {
@@ -62,8 +64,12 @@ const [isLoading, setIsLoading] = useState(true);
 
 // And here's the fixed client-side function:
 const makeApiCall = async (values) => {
-  // console.log("form Val!!! " , values ) ;
-  const payload_val = JSON.stringify(values);
+  let tempValues = values;
+  tempValues['date_of_birth'] = values?.date_of_birth
+  ? moment(values.date_of_birth).format('DD/MM/YYYY')  // Convert to string
+  : '';
+  console.log("form Val!!! " , tempValues ) ;
+  const payload_val =  transformToPatientDetailsFormData(tempValues)
   try {
     setIsLoading(true);
 
@@ -75,10 +81,10 @@ const makeApiCall = async (values) => {
       url: url,
       type: "POST",
       payload: payload_val || {},
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-      },
+      // headers: {
+      //   // "Content-Type": "application/json",
+      //   "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      // },
       loader: true,
     });
 

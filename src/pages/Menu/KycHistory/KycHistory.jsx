@@ -54,7 +54,7 @@ function KycHistory() {
           </div>
 
           {/* User details card */}
-          <div className={`w-full ${eky_status == "Active" ? ' bg-[#F1FFFC]':'bg-[#FFF5F5]' }  rounded-[24px] p-4`}>
+          {/* <div className={`w-full ${eky_status == "Active" ? ' bg-[#F1FFFC]':'bg-[#FFF5F5]' }  rounded-[24px] p-4`}>
             <div className="grid grid-cols-1 gap-2">
               <div>
                 <span className="w-32 font-sans text-sm mr-2 ">Name :</span>
@@ -115,7 +115,7 @@ function KycHistory() {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
