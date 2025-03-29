@@ -96,61 +96,61 @@ const CaregiverDetails = ({ formik }) => {
         caregiver_email: formik.values[`caregiver_0_email`] || null,
         caregiver_mobile: formik.values[`caregiver_0_mobile`] || null,
         caregiver_relation: formik.values[`relationship_0`] || "NA",
-    
+
         // Primary ID Details for Caregiver 0
         id_card_type: formik.values[`id_card_type_0`] || "",
         id_number: formik.values[`id_number_0`] || "",
         id_doc_upload: formik.values[`id_doc_upload_0`] || [],
-    
+
         // First Additional ID Details for Caregiver 0
-        id_card_type_1: formik.values[`id_card_1_type_00`] || "",
-        id_number_1: formik.values[`id_number_1_00`] || "",
+        id_card_type_1: formik.values[`id_card_1_type_0`] || "",
+        id_number_1: formik.values[`id_number_1_0`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_0`] || [],
       };
-    
+
       const caregiver1 = {
         caregiver_id: caregivers[1].caregiver_id,
         caregiver_name: formik.values[`caregiver_1_name`] || "",
         caregiver_email: formik.values[`caregiver_1_email`] || null,
         caregiver_mobile: formik.values[`caregiver_1_mobile`] || null,
         caregiver_relation: formik.values[`relationship_1`] || "NA",
-    
+
         // Primary ID Details for Caregiver 1
         id_card_type: formik.values[`id_card_type_1`] || "",
         id_number: formik.values[`id_number_1`] || "",
         id_doc_upload: formik.values[`id_doc_upload_1`] || [],
-    
+
         // First Additional ID Details for Caregiver 1
-        id_card_type_1: formik.values[`id_card_1_type_11`] || "",
-        id_number_1: formik.values[`id_number_1_11`] || "",
+        id_card_type_1: formik.values[`id_card_1_type_1`] || "",
+        id_number_1: formik.values[`id_number_1_1`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_1`] || [],
       };
-    
+
       const caregiver2 = {
         caregiver_id: caregivers[2].caregiver_id,
         caregiver_name: formik.values[`caregiver_2_name`] || "",
         caregiver_email: formik.values[`caregiver_2_email`] || null,
         caregiver_mobile: formik.values[`caregiver_2_mobile`] || null,
         caregiver_relation: formik.values[`relationship_2`] || "NA",
-    
+
         // Primary ID Details for Caregiver 2
         id_card_type: formik.values[`id_card_type_2`] || "",
         id_number: formik.values[`id_number_2`] || "",
         id_doc_upload: formik.values[`id_doc_upload_2`] || [],
-    
+
         // First Additional ID Details for Caregiver 2
-        id_card_type_1: formik.values[`id_card_type_22`] || "",
-        id_number_1: formik.values[`id_number_22`] || "",
+        id_card_type_1: formik.values[`id_card_1_type_2`] || "",
+        id_number_1: formik.values[`id_number_1_2`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_2`] || [],
       };
-    
+
       // Group the caregivers as separate objects in the caregiverData field
       formik.setFieldValue("caregiverData", {
         caregiver0,
         caregiver1,
         caregiver2,
       });
-    
+
       // Continue with the original submit
       originalOnSubmit(e);
     };
@@ -166,12 +166,8 @@ const CaregiverDetails = ({ formik }) => {
   // Return null if formik is not loaded yet
   if (!formik) return null;
 
-
-
-
-
-// Debug logging to verify files
-console.log('Uploaded Files:', formik.values[`id_doc_upload_0`]);
+  // Debug logging to verify files
+  console.log("Uploaded Files:", formik.values[`id_doc_upload_0`]);
   // console.log('prepareFormDataprepareFormData',prepareFormData);
 
   // Send OTP to caregiver's mobile
@@ -182,8 +178,7 @@ console.log('Uploaded Files:', formik.values[`id_doc_upload_0`]);
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify({
           mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
@@ -267,7 +262,7 @@ console.log('Uploaded Files:', formik.values[`id_doc_upload_0`]);
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
@@ -536,143 +531,151 @@ console.log('Uploaded Files:', formik.values[`id_doc_upload_0`]);
             )}
 
             {/* Caregiver details section (after verification) */}
-          {caregiver.isVerified && (
-  <div className="flex flex-col gap-2 pt-4">
-    {/* Verified mobile number (readonly) */}
-    <InputField
-      label="Caregiver's Mobile Number"
-      name={`caregiver_${caregiverId}_mobile`}
-      id={`caregiver_${caregiverId}_mobile`}
-      value={formik.values[`caregiver_${caregiverId}_mobile`] || ""}
-      error={
-        formik.touched[`caregiver_${caregiverId}_mobile`] &&
-        formik.errors[`caregiver_${caregiverId}_mobile`]
-      }
-      disabled
-    />
+            {caregiver.isVerified && (
+              <div className="flex flex-col gap-2 pt-4">
+                {/* Verified mobile number (readonly) */}
+                <InputField
+                  label="Caregiver's Mobile Number"
+                  name={`caregiver_${caregiverId}_mobile`}
+                  id={`caregiver_${caregiverId}_mobile`}
+                  value={formik.values[`caregiver_${caregiverId}_mobile`] || ""}
+                  error={
+                    formik.touched[`caregiver_${caregiverId}_mobile`] &&
+                    formik.errors[`caregiver_${caregiverId}_mobile`]
+                  }
+                  disabled
+                />
 
-    {/* Name field */}
-    <InputField
-      label="Caregiver's Name"
-      name={`caregiver_${caregiverId}_name`}
-      id={`caregiver_${caregiverId}_name`}
-      placeholder="Enter name"
-      value={formik.values[`caregiver_${caregiverId}_name`] || ""}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={
-        formik.touched[`caregiver_${caregiverId}_name`] &&
-        formik.errors[`caregiver_${caregiverId}_name`]
-      }
-    />
+                {/* Name field */}
+                <InputField
+                  label="Caregiver's Name"
+                  name={`caregiver_${caregiverId}_name`}
+                  id={`caregiver_${caregiverId}_name`}
+                  placeholder="Enter name"
+                  value={formik.values[`caregiver_${caregiverId}_name`] || ""}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched[`caregiver_${caregiverId}_name`] &&
+                    formik.errors[`caregiver_${caregiverId}_name`]
+                  }
+                />
 
-    {/* Email field */}
-    <InputField
-      label="Caregiver's Email ID"
-      name={`caregiver_${caregiverId}_email`}
-      id={`caregiver_${caregiverId}_email`}
-      placeholder="Enter email"
-      value={formik.values[`caregiver_${caregiverId}_email`] || ""}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={
-        formik.touched[`caregiver_${caregiverId}_email`] &&
-        formik.errors[`caregiver_${caregiverId}_email`]
-      }
-    />
+                {/* Email field */}
+                <InputField
+                  label="Caregiver's Email ID"
+                  name={`caregiver_${caregiverId}_email`}
+                  id={`caregiver_${caregiverId}_email`}
+                  placeholder="Enter email"
+                  value={formik.values[`caregiver_${caregiverId}_email`] || ""}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched[`caregiver_${caregiverId}_email`] &&
+                    formik.errors[`caregiver_${caregiverId}_email`]
+                  }
+                />
 
-    {/* Relationship dropdown */}
-    <SelectField
-      label="Relationship"
-      name={`relationship_${caregiverId}`}
-      id={`relationship_${caregiverId}`}
-      formik={formik}
-      placeholder="Select"
-      value={formik.values[`relationship_${caregiverId}`] || ""}
-      optionsData={relationshipOptions}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={
-        formik.touched[`relationship_${caregiverId}`] &&
-        formik.errors[`relationship_${caregiverId}`]
-      }
-    />
+                {/* Relationship dropdown */}
+                <SelectField
+                  label="Relationship"
+                  name={`relationship_${caregiverId}`}
+                  id={`relationship_${caregiverId}`}
+                  formik={formik}
+                  placeholder="Select"
+                  value={formik.values[`relationship_${caregiverId}`] || ""}
+                  optionsData={relationshipOptions}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched[`relationship_${caregiverId}`] &&
+                    formik.errors[`relationship_${caregiverId}`]
+                  }
+                />
 
-    {/* Primary ID Details */}
-    <div className="id-group flex flex-col gap-2">
-      {/* ID Card Type field */}
-      <SelectField
-        label="ID Card Type"
-        name={`id_card_type_${caregiverId}`}
-        id={`id_card_type_${caregiverId}`}
-        formik={formik}
-        placeholder="Select ID Card Type"
-        value={formik.values[`id_card_type_${caregiverId}`] || ""}
-        optionsData={idCardOptions}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
+                {/* Primary ID Details */}
+                <div className="id-group flex flex-col gap-2">
+                  {/* ID Card Type field */}
+                  <SelectField
+                    label="ID Card Type"
+                    name={`id_card_type_${caregiverId}`}
+                    id={`id_card_type_${caregiverId}`}
+                    formik={formik}
+                    placeholder="Select ID Card Type"
+                    value={formik.values[`id_card_type_${caregiverId}`] || ""}
+                    optionsData={idCardOptions}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
 
-      {/* ID Number field */}
-      <InputField
-        label="ID Number"
-        name={`id_number_${caregiverId}`}
-        id={`id_number_${caregiverId}`}
-        placeholder="Enter ID Number"
-        value={formik.values[`id_number_${caregiverId}`] || ""}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
+                  {/* ID Number field */}
+                  <InputField
+                    label="ID Number"
+                    name={`id_number_${caregiverId}`}
+                    id={`id_number_${caregiverId}`}
+                    placeholder="Enter ID Number"
+                    value={formik.values[`id_number_${caregiverId}`] || ""}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
 
-      {/* Document Upload field */}
-      <MultiFileUpload
-        label="Primary Doc Upload"
-        isMultiple={true}
-        formik={formik}
-        id={`id_doc_upload_${caregiverId}`}
-        name={`id_doc_upload_${caregiverId}`}
-        description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
-      />
-    </div>
+                  {/* Document Upload field */}
+                  <MultiFileUpload
+                    label="Primary Doc Upload"
+                    isMultiple={true}
+                    formik={formik}
+                    id={`id_doc_upload_${caregiverId}`}
+                    name={`id_doc_upload_${caregiverId}`}
+                    description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                  />
+                </div>
 
-    {/* Additional ID Details */}
-    <div className="id-group flex flex-col gap-2">
-      {/* Additional ID Card Type field */}
-      <SelectField
-        label="Additional ID Card Type"
-        name={`id_card_1_type_${caregiverId}${caregiverId}`}
-        id={`id_card_1_type_${caregiverId}${caregiverId}`}
-        formik={formik}
-        placeholder="Select Additional ID Card Type"
-        value={formik.values[`id_card_1_type_${caregiverId}${caregiverId}`] || ""}
-        optionsData={idCardOptions}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
+                {/* Additional ID Details */}
+                <div className="id-group flex flex-col gap-2">
+                  {/* Additional ID Card Type field */}
+                  <SelectField
+                    label="Additional ID Card Type"
+                    name={`id_card_1_type_${caregiverId}`}
+                    id={`id_card_1_type_${caregiverId}`}
+                    formik={formik}
+                    placeholder="Select Additional ID Card Type"
+                    value={
+                      formik.values[
+                        `id_card_1_type_${caregiverId}`
+                      ] || ""
+                    }
+                    optionsData={idCardOptions}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
 
-      {/* Additional ID Number field */}
-      <InputField
-        label="Additional ID Number"
-        name={`id_number_1_${caregiverId}${caregiverId}`}
-        id={`id_number_1_${caregiverId}${caregiverId}`}
-        placeholder="Enter Additional ID Number"
-        value={formik.values[`id_number_1_${caregiverId}${caregiverId}`] || ""}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
+                  {/* Additional ID Number field */}
+                  <InputField
+                    label="Additional ID Number"
+                    name={`id_number_1_${caregiverId}`}
+                    id={`id_number_1_${caregiverId}`}
+                    placeholder="Enter Additional ID Number"
+                    value={
+                      formik.values[
+                        `id_number_1_${caregiverId}`
+                      ] || ""
+                    }
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
 
-      {/* Additional Document Upload field */}
-      <MultiFileUpload
-        label="Additional Doc Upload"
-        isMultiple={true}
-        formik={formik}
-        id={`id_doc_1_upload_${caregiverId}`}
-        name={`id_doc_1_upload_${caregiverId}`}
-        description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
-      />
-    </div>
-  </div>
-)}
+                  {/* Additional Document Upload field */}
+                  <MultiFileUpload
+                    label="Additional Doc Upload"
+                    isMultiple={true}
+                    formik={formik}
+                    id={`id_doc_1_upload_${caregiverId}`}
+                    name={`id_doc_1_upload_${caregiverId}`}
+                    description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                  />
+                </div>
+              </div>
+            )}
           </div>
         );
       })}

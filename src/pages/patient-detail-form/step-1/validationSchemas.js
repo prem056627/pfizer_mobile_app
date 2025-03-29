@@ -50,7 +50,7 @@ export const combinedValidationSchema = Yup.object().shape({
     
     // Current Residential Address
     current: Yup.object().shape({
-      same_as_permanent: Yup.boolean(),
+      // same_as_permanent: Yup.boolean(),
       line1: Yup.string().when("same_as_permanent", {
         is: false,
         then: (schema) => schema.required("Address Line 1 is required"),

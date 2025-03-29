@@ -7,7 +7,7 @@ export const getProfileInitialValues = (storedData = {}) => {
     // Personal Details
     full_name: storedData.full_name || "",
     gender: storedData.gender || "",
-    date_of_birth: '',
+    date_of_birth: storedData.date_of_birth || '',
     mobile_number: storedData.mobile_number || "",
     email: storedData.email || "",
     nationality: storedData.nationality || "",
@@ -15,21 +15,23 @@ export const getProfileInitialValues = (storedData = {}) => {
     // Address
     address: {
       // Permanent Address
+      
+      
       permanent: {
-        line1: storedData.permanent_line1 || "",
-        line2: storedData.permanent_line2 || "",
-        city: storedData.permanent_city || "",
-        state: storedData.permanent_state || "",
-        pincode: storedData.permanent_pincode || "",
+        line1: storedData.address?.permanent?.line1 || "",
+        line2: storedData.address?.permanent?.line2 || "",
+        city: storedData.address?.permanent?.city || "",
+        state: storedData.address?.permanent?.state || "",
+        pincode: storedData.address?.permanent?.pincode || "",
       },
       // Current Residential Address
       current: {
-        same_as_permanent: storedData.same_as_permanent || false,
-        line1: storedData.current_line1 || "",
-        line2: storedData.current_line2 || "",
-        city: storedData.current_city || "",
-        state: storedData.current_state || "",
-        pincode: storedData.current_pincode || "",
+        same_as_permanent: storedData?.address?.current.line1 || false,
+        line1: storedData?.address?.current.line2 || "",
+        line2: storedData?.address?.current.current_line2 || "",
+        city: storedData?.address?.current.city || "",
+        state: storedData?.address?.current.state || "",
+        pincode: storedData?.address?.current.pincode || "",
       },
     },
     

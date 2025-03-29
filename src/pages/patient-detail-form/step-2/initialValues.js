@@ -13,8 +13,8 @@ export const getCaregiverDetailsInitialValues = (initialData) => {
   id_doc_upload_0: [],
   
   // Caregiver 0 - First Additional ID details
-  id_card_1_type_00: "",
-  id_number_1_00: "",
+  id_card_1_type_0: "",
+  id_number_1_0: "",
   id_doc_1_upload_0: [],
 
   // Caregiver 1 details
@@ -29,9 +29,9 @@ export const getCaregiverDetailsInitialValues = (initialData) => {
   id_doc_upload_1: [],
   
   // Caregiver 1 - First Additional ID details
-  id_card_1_type_11: "",
-  id_number_1_11: "",
-  id_doc_1_upload_11: [],
+  id_card_1_type_1: "",
+  id_number_1_1: "",
+  id_doc_1_upload_1: [],
 
   // Caregiver 2 details
   caregiver_2_name: "",
@@ -45,12 +45,11 @@ export const getCaregiverDetailsInitialValues = (initialData) => {
   id_doc_upload_2: [],
   
   // Caregiver 2 - First Additional ID details
-  id_card_type_22: "",
-  id_number_22: "",
-  id_doc_1_upload_22: [],
+  id_card_1_type_2: "",
+  id_number_1_2: "",
+  id_doc_1_upload_2: [],
 
-  // This will be populated by the form submission logic
-  caregiverData: {}
+ 
   };
 
   return defaultValues;
