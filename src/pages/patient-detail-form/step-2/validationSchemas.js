@@ -55,6 +55,32 @@ const firstCaregiverValidationSchema = {
       "Sister-In-Law", "Brother-In-Law", "Cousin", "Other"
     ], "Invalid relationship")
     .required(`Relationship is required`),
+
+
+    // Primary ID validation
+  id_card_type_0: Yup.string()
+  .required(`ID card type is required`),
+
+id_number_0: Yup.string()
+  .trim()
+  .required(`ID number is required`),
+
+id_doc_upload_0: Yup.array()
+  .min(1, `At least one document must be uploaded`),
+
+// Additional ID validation
+id_card_1_type_0: Yup.string()
+  .required(`Additional ID card type is required`),
+
+id_number_1_0: Yup.string()
+  .trim()
+  .required(`Additional ID number is required`),
+
+id_doc_1_upload_0: Yup.array()
+  .min(1, `At least one additional document must be uploaded`),
+
+
+    
 };
 
 // Create conditional validation schema for additional caregivers
@@ -170,22 +196,33 @@ const conditionalCaregiverValidationSchema = (id) => {
 
 // Generate validation schema combining required first caregiver and conditional additional caregivers
 export const combinedValidationSchema = Yup.object().shape({
-  // ...firstCaregiverValidationSchema,
-  // ...conditionalCaregiverValidationSchema(1),
-  // ...conditionalCaregiverValidationSchema(2),
+  ...firstCaregiverValidationSchema,
+  ...conditionalCaregiverValidationSchema(1),
+  ...conditionalCaregiverValidationSchema(2),
 });
 
 // Function to initialize caregiver details dynamically
 export const getCaregiverDetailsInitialValues = (initialData = {}) => {
   const defaultValues = {};
-  
+
   [0, 1, 2].forEach((id) => {
+    // Caregiver basic details
     defaultValues[`caregiver_${id}_mobile_verify`] = initialData[`caregiver_${id}_mobile_verify`] || "";
     defaultValues[`caregiver_${id}_mobile`] = initialData[`caregiver_${id}_mobile`] || "";
     defaultValues[`caregiver_${id}_name`] = initialData[`caregiver_${id}_name`] || "";
     defaultValues[`caregiver_${id}_email`] = initialData[`caregiver_${id}_email`] || "";
     defaultValues[`relationship_${id}`] = initialData[`relationship_${id}`] || "";
+
+    // Caregiver Primary ID details
+    defaultValues[`id_card_type_${id}`] = initialData[`id_card_type_${id}`] || "";
+    defaultValues[`id_number_${id}`] = initialData[`id_number_${id}`] || "";
+    defaultValues[`id_doc_upload_${id}`] = initialData[`id_doc_upload_${id}`] || [];
+
+    // Caregiver First Additional ID details
+    defaultValues[`id_card_1_type_${id}`] = initialData[`id_card_1_type_${id}`] || "";
+    defaultValues[`id_number_1_${id}`] = initialData[`id_number_1_${id}`] || "";
+    defaultValues[`id_doc_1_upload_${id}`] = initialData[`id_doc_1_upload_${id}`] || [];
   });
-  
+
   return defaultValues;
 };
