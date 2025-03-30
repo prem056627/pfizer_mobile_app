@@ -7,7 +7,7 @@ export const getProfileInitialValues = (storedData = {}) => {
     // Personal Details
     full_name: storedData.full_name || "",
     gender: storedData.gender || "",
-    date_of_birth: storedData.date_of_birth || '',
+    date_of_birth: storedData.date_of_birth ? new Date(storedData.date_of_birth) : null,
     mobile_number: storedData.mobile_number || "",
     email: storedData.email || "",
     nationality: storedData.nationality || "",

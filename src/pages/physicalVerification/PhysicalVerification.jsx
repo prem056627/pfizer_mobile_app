@@ -10,6 +10,7 @@ import CustomToast from './CustomToast';
 import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-form';
 import { useDispatch } from 'react-redux';
 import useApi from '../../hooks/useApi';
+import { transformToPatientDetailsFormData } from '../../utils/forms';
 
 const PhysicalVerification = () => {
   const [selectedDateRange, setSelectedDateRange] = useState({
@@ -30,8 +31,8 @@ const PhysicalVerification = () => {
 
   // Slot options for the select field
   const slotOptions = [
-    { value: 'First Half', label: 'First Half' },
-    { value: 'Second Half', label: 'Second Half' }
+    { value: 'Morning', label: 'Morning' },
+    { value: 'Afternoon', label: 'Afternoon' }
   ];
 
   const handleDateChange = (selectedDay) => {
@@ -85,25 +86,21 @@ const PhysicalVerification = () => {
       }
 
 
-      const payload = JSON.stringify({
+      const formData = {
         current_step: "physical_verification",
         start_date: moment(selectedDateRange.from).format('DD/MM/YYYY'),
         end_date: selectedDateRange.to 
           ? moment(selectedDateRange.to).format('DD/MM/YYYY') 
           : moment(selectedDateRange.from).format('DD/MM/YYYY'),
         time: selectedHalf
-      });
+      };
       
       const url = `/patient_dashboard/?current_step=physical_verification`;
       
       const { response, success } = await triggerApi({
         url: url,
         type: "POST",
-        payload: payload,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        payload: transformToPatientDetailsFormData(formData),
         loader: true
       });
 

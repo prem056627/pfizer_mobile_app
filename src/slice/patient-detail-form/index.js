@@ -48,6 +48,7 @@ export const ProgramEnrollmentSlice = createSlice({
     isMoreProgramPageOpen:false,
     isEkySuccessModalOpen:false,
     isKycHistoryModalOpen:false,
+    isCompletedKycHistoryModalOpen:false
   },
   reducers: {
     changeStep: (state, action) => {
@@ -121,6 +122,10 @@ setIsEkySuccessModalOpen:(state, action)=>{
 },
 setIsKycHistoryModalOpen:(state, action)=>{
   state.isKycHistoryModalOpen = action.payload;
+},
+
+setIsCompletedKycHistoryModalOpen:(state, action)=>{
+  state.isCompletedKycHistoryModalOpen = action.payload;
 }
   },
 });
@@ -146,7 +151,8 @@ export const {
   setIsMoreProgramPageOpen,
   setIsEkySuccessModalOpen,
   setIsKycHistoryModalOpen,
-  setSelectedEnrollProgram
+  setSelectedEnrollProgram,
+  setIsCompletedKycHistoryModalOpen
 } = ProgramEnrollmentSlice.actions;
 
 export const selectCurrentStep = (state) => state.patientDetailForm.currentStep;
@@ -200,5 +206,9 @@ export const selectIsEkySuccessModalOpen = (state) =>
 
 export const selectIsKycHistoryModalOpen= (state) =>
   state.patientDetailForm.isKycHistoryModalOpen;
+
+export const selectIsCompletedKycHistoryModalOpen = (state) =>
+  state.patientDetailForm.isCompletedKycHistoryModalOpen;
+
 
 export default ProgramEnrollmentSlice.reducer;

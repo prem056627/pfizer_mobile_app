@@ -55,20 +55,17 @@ export default function PersonalDetailsForm({ formik }) {
           className="w-1/2"
         />
 
-<FormDatePicker
-				key={'date_of_birth'}
-				label="Date of Birth"
-				name={'date_of_birth'}
-				id={'date_of_birth'}
-				placeholder="Select"
-				value={get(formik.values, 'date_of_birth', '')}
-				onChange={formik.handleChange}
-				formik={formik}
-				min={moment().subtract(100, 'years')}
-				max={moment()}
-			/>
-
-
+      <FormDatePicker
+  key={'date_of_birth'}
+  label="Date of Birth"
+  name={'date_of_birth'}
+  id={'date_of_birth'}
+  placeholder="Select"
+  value={formik.values.date_of_birth}
+  formik={formik}
+  min={moment().subtract(100, 'years')}
+  max={moment()}
+/>
         
       </div>
 

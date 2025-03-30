@@ -6,7 +6,7 @@ import { ReactComponent as History } from "../../assets/images/menus1/history.sv
 import { ReactComponent as File } from "../../assets/images/menus1/file.svg";
 import { ReactComponent as Logout } from "../../assets/images/menus1/logout.svg";
 import { useDispatch } from 'react-redux';
-import { setIsKycHistoryModalOpen, setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
+import { setIsCompletedKycHistoryModalOpen, setIsKycHistoryModalOpen, setIsMoreProgramPageOpen, setIsProfilePageOpen } from '../../slice/patient-detail-form';
 import { useTranslation } from 'react-i18next';
 const MenuScreen = () => {
 
@@ -36,6 +36,10 @@ const MenuScreen = () => {
       // console.log("Navigating to handleKycHistory");
       dispatch(setIsKycHistoryModalOpen(true))
   
+    }
+
+    function handleCompletedKycHistory(){
+      dispatch(setIsCompletedKycHistoryModalOpen(true))
     }
     
     function handleSessionLogout() {
@@ -72,6 +76,7 @@ const MenuScreen = () => {
       case 3: // Completed Verification
         // console.log("Showing completed verifications");
         // Add your verification history logic here
+        handleCompletedKycHistory()
         break;
       case 4: // KYC History
         // console.log("Opening KYC history");
@@ -110,13 +115,13 @@ const MenuScreen = () => {
         <Call className="w-6 h-6"/>
       )
     },
-    // {
-    //   id: 3,
-    //   title: 'Completed Verification',
-    //   icon: (
-    //    <Print className="w-6 h-6"/>
-    //   )
-    // },
+    {
+      id: 3,
+      title: 'Completed Verification',
+      icon: (
+       <Print className="w-6 h-6"/>
+      )
+    },
     {
       id: 4,
       title: 'KYC History',

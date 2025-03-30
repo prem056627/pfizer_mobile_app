@@ -64,10 +64,21 @@ import { setCurrentPageState, setPatientEnrollmentSuccessModalOpen } from "../..
 
 function PatientEnrollmentSuccess() {
 const dispatch = useDispatch();
+
+const refreshApplication = () => {
+  window.location.reload();
+};
+
     const handleRequest = () => {
+      setTimeout(() => {
+        refreshApplication();
+      }, 500);
         // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));
+
+        
+     
     }
   return (
     <div className="flex flex-col items-center justify-between gap-40   h-full  ">

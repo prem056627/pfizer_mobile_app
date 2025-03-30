@@ -156,9 +156,12 @@ const CaregiverDetailsForm = () => {
       if (success && response) {
         dispatch(setCurrentPageState(response?.current_step));
 
-        setTimeout(() => {
-          refreshApplication();
-        }, 500);
+        // setTimeout(() => {
+        //   refreshApplication();
+        // }, 500);
+        // const refreshApplication = () => {
+        //   window.location.reload();
+        // };
         return { success: true, data: response };
       } else {
         console.error("API call failed or returned no data.");

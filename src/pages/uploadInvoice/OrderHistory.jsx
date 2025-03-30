@@ -230,7 +230,7 @@ const OrderHistory = () => {
                   <p className="text-[#767676] text-[14px] font-open-sans ">
                     <span 
                       className={`px-2 py-1 ${
-                        order.order_status === 'Open' || order.order_status === 'Active' ? 'bg-[#D9FFD5] text-green-800' : 'bg-[#f8cdcd] text-red-800'
+                        order.order_status === 'Open' || order.order_status === 'Active' || order.order_status === 'Approved' ? 'bg-[#D9FFD5] text-green-800' : 'bg-[#f8cdcd] text-red-800'
                       } px-[8px] rounded-[6px] text-[12px]`}
                     >
                       {order.order_status}

@@ -15,6 +15,57 @@ function KycHistory() {
     // );
 
     const eky_status = patient_profile_data?.ekyc_verification?.status;
+
+
+
+
+      // Dummy profile KYC history data
+  const kycData = [
+    {
+      id: 1,
+      date: '28 Mar 2025',
+      document: 'Passport',
+      status: 'Verified'
+    },
+    {
+      id: 2,
+      date: '15 Mar 2025',
+      document: 'Address Proof',
+      status: 'Pending'
+    },
+    {
+      id: 3,
+      date: '22 Feb 2025',
+      document: 'Selfie',
+      status: 'Verified'
+    },
+    {
+      id: 4,
+      date: '10 Feb 2025',
+      document: 'Bank Statement',
+      status: 'Rejected'
+    },
+    {
+      id: 5,
+      date: '05 Jan 2025',
+      document: 'PAN Card',
+      status: 'Verified'
+    }
+  ];
+
+  // Function to get status color
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Verified':
+        return 'text-green-600';
+      case 'Pending':
+        return 'text-yellow-600';
+      case 'Rejected':
+        return 'text-red-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
   return (
     <div>
       <div>
@@ -23,146 +74,40 @@ function KycHistory() {
         </h1>
         <div className="h-[4px] w-11 rounded-full bg-primary"></div>
 
-        <div className="flex flex-col items-center w-full max-w-md mx-auto">
-          {/* Header curved section */}
-          <div className=" w-full">
-            <div className=""></div>
-
-            {/* Profile circle */}
-            <div className=" w-full flex justify-center items-center py-2 mt-8">
-            {patient_profile_data?.patient_data?.patient_gender === 'Female' ?   <AvatarFemale /> : <AvatarMale /> }
-            
-            </div>
-          </div>
-
-          {/* Status section */}
-          <div className="flex items-center mb-4">
-            <span className=" font-sans font-semibold ">Status : </span>
-            
-            {
-              eky_status == 'Active' ?  <><span className="text-[#34ab36] font-semibold mr-1 ml-1 ">
-              Approved
-              </span>  <Approved/> </>:<> <span className="text-[#AB3436] font-semibold mr-1 ml-1 ">
-              Not Approved
-            </span> <NotApprove /></>
-            }
-            
-            
-         
-
-           
-          </div>
-
-          {/* User details card */}
-          {/* <div className={`w-full ${eky_status == "Active" ? ' bg-[#F1FFFC]':'bg-[#FFF5F5]' }  rounded-[24px] p-4`}>
-            <div className="grid grid-cols-1 gap-2">
-              <div>
-                <span className="w-32 font-sans text-sm mr-2 ">Name :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                 {patient_profile_data?.patient_data?.patient_name}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">Gender :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                  {patient_profile_data?.patient_data?.patient_gender}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">
-                  Date of Birth :
-                </span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.patient_dob}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">
-                  Mobile Number :
-                </span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.patient_primary_phone}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">Email ID :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.patient_email}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">Address :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.addresses[0].line1}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">City :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.addresses[0].city}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">State :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.addresses[0].state}
-                </span>
-              </div>
-              <div>
-                <span className="w-32 font-sans text-sm mr-2">PIN Code :</span>
-                <span className="font-sans font-medium text-sm mr-2 color-[#0E0C0C]">
-                {patient_profile_data?.patient_data?.addresses[0].pincode}
-                </span>
-              </div>
-            </div>
-          </div> */}
-        </div>
+        
+        <div className="overflow-x-auto pt-8">
+        <table className="min-w-full">
+          <thead>
+            <tr className="border-b bg-gray-50">
+              <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Document</th>
+              <th className="py-2 px-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {kycData.map((item) => (
+              <tr key={item.id}>
+                <td className="py-3 px-3 text-sm text-gray-500">{item.date}</td>
+                <td className="py-3 px-3 text-sm font-medium text-gray-900">{item.document}</td>
+                <td className={`py-3 px-3 text-sm font-medium ${getStatusColor(item.status)}`}>
+                  {item.status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       </div>
 
-      {/* <div className="space-y-4 mt-8">
-        {programsData.map((program) => (
-          <div
-            key={program.id}
-            onClick={() => handleProgramClick(program.id)}
-            className={`
-              flex items-center rounded-lg overflow-hidden cursor-pointer 
-              transition-all duration-200 
-              ${selectedProgram === program.id 
-                ? "bg-primary" 
-                : "bg-[#F6F6FF]"}
-              hover:shadow-md
-            `}
-          >
-            <div className="w-24 h-24 flex-shrink-0">
-              {program.image}
-            </div>
-            <div className="p-2 ps-8 flex-grow pl-12">
-              <h3
-                className={`
-                  font-bold font-inter 
-                  ${selectedProgram === program.id 
-                    ? "text-white" 
-                    : "text-[#474747]"}
-                `}
-              >
-                {program.title}
-              </h3>
-              <p
-                className={`
-                  text-[12px] font-inter font-regular mt-2
-                  ${selectedProgram === program.id 
-                    ? "text-white " 
-                    : "text-[#5B5B5B]"}
-                `}
-              >
-                {program.description}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }
 
 export default KycHistory;
+
+
+
+
+
+
+

@@ -19,29 +19,29 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
         current_step: "place_paid_order",
         program_id: program?.program_id,
         order_file: [],
+        extra_doc:[],
     };
 
-    // // Updated validation schema with max files check
-    // const validationSchema = Yup.object({
-    //     order_file: Yup.array()
-    //         .min(1, 'Please upload at least one file')
-    //         .max(5, 'You can upload a maximum of 5 files')
-    //         .test('fileSize', 'File size must be less than 2MB', (files) => {
-    //             if (!files) return true;
-    //             return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
-    //         })
-    //         .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
-    //             if (!files) return true;
-    //             const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-    //             return files.every(file => validTypes.includes(file.type));
-    //         })
-    //         .required('File upload is required'),
-    // });
 
     const validationSchema = Yup.object({
         order_file: Yup.array()
             .min(1, 'Please upload at least one file')
-            .max(2, 'You can upload a maximum of 2 files')
+            .max(1, 'You can upload a maximum of 1 files')
+            .test('fileSize', 'File size must be less than 2MB', (files) => {
+                if (!files) return true;
+                return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
+            })
+            .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
+                if (!files) return true;
+                const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                return files.every(file => validTypes.includes(file.type));
+            })
+            .required('File upload is required'),
+
+
+            extra_doc: Yup.array()
+            .min(1, 'Please upload at least one file')
+            .max(1, 'You can upload a maximum of 1 files')
             .test('fileSize', 'File size must be less than 2MB', (files) => {
                 if (!files) return true;
                 return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
@@ -80,18 +80,18 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
     const makeApiCall = async (values) => {
         try {
             setIsLoading(true);
-            const formData = new FormData();
-            formData.append('current_step', values.current_step);
-            formData.append('program_id', values.program_id);
+            const formData = transformToFormData(values);
+            // formData.append('current_step', values.current_step);
+            // formData.append('program_id', values.program_id);
             
-            // Ensure unique filenames by appending a timestamp
-            if (values.order_file && values.order_file.length > 0) {
-                values.order_file.forEach((file, index) => {
-                    const uniqueName = `${Date.now()}_${file.name}`;
-                    const renamedFile = new File([file], uniqueName, { type: file.type });
-                    formData.append(`order_file[${index}]`, renamedFile);
-                });
-            }
+            // // Ensure unique filenames by appending a timestamp
+            // if (values.order_file && values.order_file.length > 0) {
+            //     values.order_file.forEach((file, index) => {
+            //         const uniqueName = `${Date.now()}_${file.name}`;
+            //         const renamedFile = new File([file], uniqueName, { type: file.type });
+            //         formData.append(`order_file[${index}]`, renamedFile);
+            //     });
+            // }
 
             const { response, success } = await triggerApi({
                 url: `/patient_dashboard/?current_step=place_paid_order`,
@@ -154,13 +154,22 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
 
                 return (
                     <Form className="complete-hidden-scroll-style flex flex-grow flex-col gap-4 overflow-y-auto">
-                        <div className="px-5">
+                        <div className="px-5 flex flex-col gap-4">
                             <MultiFileUpload
                                 isMultiple={true}
                                 formik={formik}
                                 id="order_file"
                                 name="order_file"
                                 label="Invoice"
+                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                            />
+
+                        <MultiFileUpload
+                                isMultiple={true}
+                                formik={formik}
+                                id="extra_doc"
+                                name="extra_doc"
+                                label="upload_other_documents"
                                 description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                             />
                             {/* {hasErrors && (

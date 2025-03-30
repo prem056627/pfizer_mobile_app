@@ -4,6 +4,7 @@ import InputField from "../../../components/Form/InputField";
 import SelectField from "../../../components/Form/SelectField";
 import MultiFileUpload from "../../../components/Form/MultiFileUpload";
 import { getCaregiverDetailsInitialValues } from "./initialValues";
+import { transformToPatientDetailsFormData } from "../../../utils/forms";
 
 // Relationship options for the dropdown
 const relationshipOptions = [
@@ -172,6 +173,12 @@ const CaregiverDetails = ({ formik }) => {
 
   // Send OTP to caregiver's mobile
   const sendOtp = (caregiverId) => {
+
+    const caregiverIdVerify = {
+      mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
+    }
+
+    const preparedFormData = transformToPatientDetailsFormData(caregiverIdVerify);
     // In a real app, this would make an API call to send OTP
     fetch(
       `/patient_dashboard/?current_step=verify_mobile&mobile_no=${formik.values[`caregiver_${caregiverId}_mobile_verify`]}`,
@@ -180,9 +187,7 @@ const CaregiverDetails = ({ formik }) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        body: JSON.stringify({
-          mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
-        }),
+        body: preparedFormData,
       }
     )
       .then((response) => response.json())
@@ -257,17 +262,21 @@ const CaregiverDetails = ({ formik }) => {
     const caregiver = caregivers.find((c) => c.id === caregiverId);
     const enteredOtp = caregiver.otp.join("");
 
+
+    const verifyOtp = {
+      mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
+      otp: enteredOtp,
+    }
+
+    const preparedFormData = transformToPatientDetailsFormData(verifyOtp);
+
     // In a real app, this would verify OTP with the backend
     fetch(`/patient_dashboard/?current_step=verify_otp`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify({
-        mobile_no: formik.values[`caregiver_${caregiverId}_mobile_verify`],
-        otp: enteredOtp,
-      }),
+      body: preparedFormData
     })
       .then((response) => response.json())
       .then((data) => {

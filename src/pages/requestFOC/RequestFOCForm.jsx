@@ -7,6 +7,7 @@ import { selectSelectedProgram, setRequestFocModalOpen } from '../../slice/patie
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import useApi from '../../hooks/useApi';
+import { transformToFormData } from '../../utils/forms';
 
 function RequestFOCForm({ setStep, fetchProgramDetails }) {
     const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
     const validationSchema = Yup.object({
         BrowseFiles: Yup.array()
             .min(1, 'Please upload at least one file')
-            .max(2, 'You can upload a maximum of 2 files')
+            .max(1, 'You can upload a maximum of 1 files')
             .test('fileSize', 'File size must be less than 5MB', (files) => {
                 if (!files) return true;
                 return files.every(file => file.size <= 5 * 1024 * 1024); // 5MB limit
@@ -89,30 +90,30 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
         setIsLoading(true);
 
         // Create FormData object
-        const formData = new FormData();
+        const formData = transformToFormData(values)
 
-        // Add normal fields
-        formData.append('current_step', values.current_step);
-        formData.append('program_id', values.program_id);
+        // // Add normal fields
+        // formData.append('current_step', values.current_step);
+        // formData.append('program_id', values.program_id);
 
-        // Add files individually with unique names
-        if (values.BrowseFiles && values.BrowseFiles.length > 0) {
-            values.BrowseFiles.forEach((file, index) => {
-                // Generate a unique filename by appending a timestamp
-                const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
+        // // Add files individually with unique names
+        // if (values.BrowseFiles && values.BrowseFiles.length > 0) {
+        //     values.BrowseFiles.forEach((file, index) => {
+        //         // Generate a unique filename by appending a timestamp
+        //         const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
                 
-                // Create a new File object with the updated name
-                const renamedFile = new File([file], uniqueFileName, { type: file.type });
+        //         // Create a new File object with the updated name
+        //         const renamedFile = new File([file], uniqueFileName, { type: file.type });
 
-                formData.append(`prescription_files[${index}]`, renamedFile);
-            });
-        }
+        //         formData.append(`prescription_files[${index}]`, renamedFile);
+        //     });
+        // }
 
-        // Log FormData contents for verification
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
-                `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
-        }
+        // // Log FormData contents for verification
+        // for (let pair of formData.entries()) {
+        //     console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
+        //         `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
+        // }
 
         // API request
         const { response, success } = await triggerApi({

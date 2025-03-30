@@ -8,6 +8,7 @@ import { ReactComponent as Empty } from "../../assets/images/menus1/empty_notify
 import { selectInitializeData } from '../../slice/patient-detail-form';
 import { useSelector } from 'react-redux';
 import useApi from '../../hooks/useApi';
+import { transformToPatientDetailsFormData } from '../../utils/forms';
 
 const Notifications = () => {
   const initiaData = useSelector(selectInitializeData);
@@ -44,20 +45,18 @@ const Notifications = () => {
     
     // Add the ID to the removing list to trigger animation
     setRemovingIds(prev => [...prev, id]);
-    
+
+    const formData = {
+      notification_id: notificationToDismiss.id,
+      notification_message: notificationToDismiss.message
+    }
+
     try {
       // Make API call to mark notification as read
       const apiResponse = await triggerApi({
         url: `/patient_dashboard/?current_step=mark_read`,
         type: "POST",
-        payload: JSON.stringify({
-          notification_id: notificationToDismiss.id,
-          notification_message: notificationToDismiss.message
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        payload: transformToPatientDetailsFormData(formData) ,
         loader: true,
       });
   
@@ -128,7 +127,7 @@ const Notifications = () => {
                   >
                     <div className="flex items-center gap-3">
                       <Notification />
-                      <div>
+                      <div className=" w-[85%]">
                         <p className="text-sm font-semibold font-open-sans">
                           {notification.message}
                         </p>

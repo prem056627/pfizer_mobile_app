@@ -27,6 +27,7 @@ import MoreProgramModal from "../pages/Menu/MorePrograms/MoreProgramModal";
 import { ToastContainer } from 'react-toastify';
 import EkyModal from "../pages/Ekyc/EkyModal";
 import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
+import CompleteKycModal from "../pages/Menu/completedKyc/CompleteKycModal";
 
 const AppNavigation = () => {
 // Token functionality
@@ -186,6 +187,7 @@ setDummyToken(); // Call this function once to set the token
       <MoreProgramModal/>
       <EkyModal/>
       <KycHistoryModal/>
+      <CompleteKycModal/>
     </Home>
   );
 };

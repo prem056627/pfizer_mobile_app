@@ -24,6 +24,7 @@ import {
 } from "../../slice/patient-detail-form";
 import OrderHistory from "../uploadInvoice/OrderHistory";
 import useApi from "../../hooks/useApi";
+import { transformToPatientDetailsFormData } from "../../utils/forms";
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
 
@@ -75,16 +76,12 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   const makeApiCall = async (values) => {
     try {
       setIsLoading(true);
-      const payload_val = JSON.stringify(values);
+      const payload_val = values;
 
       const { response, success } = await triggerApi({
         url: "/patient_dashboard/?current_step=ekyc_verification",
         type: "POST",
-        payload: payload_val,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-        }, // Ensure values contains required data
+        payload:transformToPatientDetailsFormData(payload_val) ,
         loader: true,
         // Don't set Content-Type for FormData
       });
@@ -251,9 +248,7 @@ const renderAvailablePrograms = () => (
                 >
                  
                   {program.program_status === "applied" ? "Applied" 
-        :program.program_status === "active" ? "Active" 
-
-: ""}
+        :program.program_status === "active" ? "Active" : ""}
                 </span>
               </div>
               <div className="flex gap-2 items-center justify-center">

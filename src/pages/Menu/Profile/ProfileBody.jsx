@@ -5,13 +5,11 @@ import { useSelector } from 'react-redux';
 import { selectInitializeData } from '../../../slice/patient-detail-form';
 
 function MyProfileDetails() {
-
 	const patient_profile_data = useSelector(selectInitializeData);
-	// console.log('patient_profile_data', patient_profile_data.patient_data);
-	// console.log('caregiver_detail data', patient_profile_data.caregiver_data);
 	
-const patient_detail = patient_profile_data.patient_data;
-const caregiver_detail = patient_profile_data.caregiver_data;
+	const patient_detail = patient_profile_data?.patient_data;
+	const caregivers = patient_profile_data?.caregiver_data;
+	
 	const notify = () =>
 		toast('Profile updated successfully', {
 			duration: 6000,
@@ -47,12 +45,13 @@ const caregiver_detail = patient_profile_data.caregiver_data;
 					{/* <button onClick={notify}>Make me a toast</button> */}
 					{/* <Toaster /> */}
 				</div>
-       			 <div>
+       			<div>
 					<h1 className="pb-2 font-open-sans text-[20px] font-semibold text-[#403939]">
 					Profile Details
 					</h1>
-				<div className="h-[4px] w-11 rounded-full bg-primary"></div>
+					<div className="h-[4px] w-11 rounded-full bg-primary"></div>
 				</div>
+				
 				{/* Personal details */}
 				<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
 					<h1 className="pb-4 font-open-sans text-base font-semibold">
@@ -93,7 +92,6 @@ const caregiver_detail = patient_profile_data.caregiver_data;
 							{patient_detail?.patient_email || 'N/A'}
 						</span>
 					</p>
-
 					<p className="py-1 font-normal text-[#69757E]">
 						Nationality:
 						<span className="font-open-sans font-bold text-[#69757E]">
@@ -101,96 +99,98 @@ const caregiver_detail = patient_profile_data.caregiver_data;
 							{patient_detail?.nationality || 'N/A'}
 						</span>
 					</p>
-					
 				</div>
 
 				{/* Address details */}
+				{patient_detail?.addresses && patient_detail.addresses.length > 0 && (
+					<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
+						<h1 className="pb-4 font-open-sans text-base font-semibold">
+							Current Address Details
+						</h1>
+						<p className="py-1 font-normal text-[#69757E]">
+							Address Line 1:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[0]?.line1 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Address Line 2:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[0]?.line2 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							City:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[0]?.city || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							State:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[0]?.state || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Pin Code:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[0]?.pincode || 'N/A'}
+							</span>
+						</p>
+					</div>
+				)}
+
+				{/* Residential address details */}
+				{patient_detail?.addresses && patient_detail.addresses.length > 1 && (
+					<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
+						<h1 className="pb-4 font-open-sans text-base font-semibold">
+							Residential Address Details
+						</h1>
+						<p className="py-1 font-normal text-[#69757E]">
+							Address Line 1:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[1]?.line1 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Address Line 2:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[1]?.line2 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							City:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[1]?.city || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							State:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[1]?.state || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Pin Code:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{patient_detail.addresses[1]?.pincode || 'N/A'}
+							</span>
+						</p>
+					</div>
+				)}
+
+				{/* ID details */}
 				<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
-					<h1 className="pb-4 font-open-sans text-base font-semibold">
-						Current Address Details
-					</h1>
-					<p className="py-1 font-normal text-[#69757E]">
-						Address Line 1:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[0].line1 || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						Address Line 2:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[0].line2 || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						City:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[0].city || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						State:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[0].state || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						Pin Code:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[0].pincode || 'N/A'}
-						</span>
-					</p>
-				</div>
-
-					{/* residential address details */}
-					<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
-					<h1 className="pb-4 font-open-sans text-base font-semibold">
-						Residential Address Details
-					</h1>
-					<p className="py-1 font-normal text-[#69757E]">
-						Address Line 1:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[1].line1 || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						Address Line 2:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[1].line2 || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						City:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[1].city || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						State:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[1].state || 'N/A'}
-						</span>
-					</p>
-					<p className="py-1 font-normal text-[#69757E]">
-						Pin Code:
-						<span className="font-open-sans font-bold text-[#69757E]">
-							{'  '}
-							{patient_detail?.addresses[1].pincode || 'N/A'}
-						</span>
-					</p>
-				</div>
-
-
-					{/* id  details */}
-					<div className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
 					<h1 className="pb-4 font-open-sans text-base font-semibold">
 						ID Details
 					</h1>
@@ -208,47 +208,44 @@ const caregiver_detail = patient_profile_data.caregiver_data;
 							{patient_detail?.id_number || 'N/A'}
 						</span>
 					</p>
-					
 				</div>
 
-
-
-				{caregiver_detail?.map((caregiver_detail, index) => (
-  <div key={caregiver_detail.caregiver_id} className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
-    <h1 className="pb-4 font-open-sans text-base font-semibold">
-      caregiver_detail's - {index + 1} 
-    </h1>
-    <p className="py-1 font-normal text-[#69757E]">
-      Mobile Number:
-      <span className="font-open-sans font-bold text-[#69757E]">
-        {'  '}
-        {caregiver_detail.caregiver_mobile || 'N/A'}
-      </span>
-    </p>
-    <p className="py-1 font-normal text-[#69757E]">
-       Name:
-      <span className="font-open-sans font-bold text-[#69757E]">
-        {'  '}
-        {caregiver_detail.caregiver_name || 'N/A'}
-      </span>
-    </p>
-    <p className="py-1 font-normal text-[#69757E]">
-     Email's ID:
-      <span className="font-open-sans font-bold text-[#69757E]">
-        {'  '}
-        {caregiver_detail.caregiver_email || 'N/A'}
-      </span>
-    </p>
-    <p className="py-1 font-normal text-[#69757E]">
-      Relationship:
-      <span className="font-open-sans font-bold text-[#69757E]">
-        {'  '}
-        {caregiver_detail.caregiver_relation || 'N/A'}
-      </span>
-    </p>
-  </div>
-))}
-
+				{/* Caregiver details */}
+				{Array.isArray(caregivers) && caregivers.map((caregiver, index) => (
+					<div key={caregiver?.caregiver_id || index} className="rounded-2xl border-2 border-[#DBDBDB] bg-white p-4">
+						<h1 className="pb-4 font-open-sans text-base font-semibold">
+							Caregiver Details - {index + 1} 
+						</h1>
+						<p className="py-1 font-normal text-[#69757E]">
+							Mobile Number:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_mobile || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Name:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_name || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Email:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_email || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							Relationship:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_relation || 'N/A'}
+							</span>
+						</p>
+					</div>
+				))}
 			</div>
 		</div>
 	);
