@@ -189,21 +189,21 @@ const makeApiCall = async (values) => {
     {
       title: "Address proof",
       isSubmitted: false,
-      isDefaultOpen: false,
+      isDefaultOpen: true,
       component: <AddressProofForm />,
       fields: fieldGroups.addressProof
     },
     {
       title: "Current Residential Address",
       isSubmitted: false,
-      isDefaultOpen: false,
+      isDefaultOpen: true,
       component: <CurrentResidentialAddress />,
       fields: fieldGroups.currentResidentialAddress
     },
     {
       title: "ID Details",
       isSubmitted: false,
-      isDefaultOpen: false,
+      isDefaultOpen: true,
       component: <IDDetails />,
       fields: fieldGroups.idDetails
     },

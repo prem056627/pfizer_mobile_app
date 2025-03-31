@@ -201,7 +201,7 @@ const CaregiverDetailsForm = () => {
     {
       title: "Caregiver Details",
       isSubmitted: false,
-      isDefaultOpen: false,
+      isDefaultOpen: true,
       component: <CaregiverDetails />,
     },
   ];

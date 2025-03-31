@@ -40,11 +40,22 @@ const OrderHistory = () => {
     dispatch(setRequestFocModalOpen(true));
   };
 
-  // Handle file view
-  const handleFileView = (fileName) => {
-    // console.log("Viewing file:", fileName);
-    // Implement file viewing functionality here
-  };
+// In your React web code
+const handleFileView = (file) => {
+  // Check if running inside a WebView (React Native)
+  if (window.ReactNativeWebView) {
+    // Send message to React Native
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'VIEW_FILE',
+        fileUrl: file
+      })
+    );
+  } else {
+    // Fallback for web browsers (when testing on web)
+    window.open(file, '_blank');
+  }
+};
 
 
 

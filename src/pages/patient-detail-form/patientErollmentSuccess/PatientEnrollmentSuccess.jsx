@@ -69,14 +69,15 @@ const refreshApplication = () => {
   window.location.reload();
 };
 
+
     const handleRequest = () => {
-      setTimeout(() => {
-        refreshApplication();
-      }, 500);
+     
         // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));
-
+        //  setTimeout(() => {
+          refreshApplication();
+        // }, 200);
         
      
     }

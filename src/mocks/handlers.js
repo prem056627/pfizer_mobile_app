@@ -1,5 +1,7 @@
 import { http, delay, HttpResponse } from 'msw';
 import ProgramCard1  from "../../src/assets/images/ProgramCards/Program_card_1.svg";
+import Doc_1  from "../../src/assets/images/ProgramCards/1.pdf";
+import Doc_2  from "../../src/assets/images/ProgramCards/2.pdf";
 
 
 
@@ -7,7 +9,7 @@ let initialData = {
  
     // before enrollment submit
     // patient_enrolment
-    // current_step: "patient_enrolment",
+    // current_step: "caregiver_addition",
     current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
@@ -2281,7 +2283,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:0,
+		enrolled_programs:1,
       available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2347,7 +2349,7 @@ let initialData = {
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
                       order_scheme:"9LD",
-                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                      order_file: [Doc_1, Doc_2],
                   },
                   {
                       order_id: "10002",
