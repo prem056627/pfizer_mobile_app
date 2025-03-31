@@ -34,12 +34,12 @@ const AppNavigation = () => {
 const TOKEN_KEY = "accessToken";
 
 // Function to set a dummy token
-const setDummyToken = () => {
-localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
-console.log("Token stored successfully!");
-};
+// const setDummyToken = () => {
+// localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
+// console.log("Token stored successfully!");
+// };
 
-setDummyToken(); // Call this function once to set the token
+// setDummyToken(); // Call this function once to set the token
 
   const logToReactNative = (message, data) => {
     if (window.ReactNativeWebView) {
@@ -83,11 +83,11 @@ setDummyToken(); // Call this function once to set the token
 
   const makeApiCall = async () => {
     // Check token before making API call
-    if (!checkToken()) {
-      console.log("No token found, redirecting to login.");
-      // You might want to add a redirect logic here
-      return;
-    }
+    // if (!checkToken()) {
+    //   console.log("No token found, redirecting to login.");
+    //   // You might want to add a redirect logic here
+    //   return;
+    // }
 
     try {
       setIsLoading(true);

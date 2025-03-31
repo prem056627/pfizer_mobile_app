@@ -392,7 +392,7 @@ export const PalbaceProgramConsent = () => {
 // PatientConsent Component
 function PatientConsent({
   formik,
-  label = "Submit",
+  label = "Agree",
   theme = "normal",
   allowDisabled = false,
 }) {
