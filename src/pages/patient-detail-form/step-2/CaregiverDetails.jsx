@@ -5,6 +5,8 @@ import SelectField from "../../../components/Form/SelectField";
 import MultiFileUpload from "../../../components/Form/MultiFileUpload";
 import { getCaregiverDetailsInitialValues } from "./initialValues";
 import { transformToPatientDetailsFormData } from "../../../utils/forms";
+import { setIsCaregiverSkipVisible, setIsKycHistoryModalOpen } from "../../../slice/patient-detail-form";
+import { useDispatch } from "react-redux";
 
 // Relationship options for the dropdown
 const relationshipOptions = [
@@ -12,11 +14,11 @@ const relationshipOptions = [
   { id: "Mother", label: "Mother" },
   { id: "Daughter", label: "Daughter" },
   { id: "Son", label: "Son" },
+  { id: "Son-In-Law", label: "	Son-In-Law" },
   { id: "Spouse", label: "Spouse" },
   { id: "Sister", label: "Sister" },
   { id: "Brother", label: "Brother" },
   { id: "Father-In-Law", label: "Father-In-Law" },
-  { id: "Mother-In-Law", label: "Mother-In-Law" },
   { id: "Daughter-In-Law", label: "Daughter-In-Law" },
   { id: "Son-In-Law", label: "Son-In-Law" },
   { id: "Sister-In-Law", label: "Sister-In-Law" },
@@ -25,16 +27,30 @@ const relationshipOptions = [
   { id: "Other", label: "Other" },
 ];
 
+
+
+	
+	
+	
+	
+	
+
+	
+	
+
+
+
 const idCardOptions = [
   { id: "passport", label: "Passport" },
   { id: "aadhaar", label: "Aadhaar" },
   { id: "pan", label: "PAN Card" },
-  { id: "voter", label: "Voter ID" },
+  { id: "others", label: "Others" },
   { id: "driving", label: "Driving License" },
 ];
 
 const CaregiverDetails = ({ formik }) => {
   // State to track caregivers and their details
+  const dispatch = useDispatch();
   const [caregivers, setCaregivers] = useState([
     {
       id: 0,
@@ -192,6 +208,8 @@ const CaregiverDetails = ({ formik }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+
+            dispatch(setIsCaregiverSkipVisible(true))
         // Update state to show OTP was sent
         setCaregivers((prevCaregivers) =>
           prevCaregivers.map((caregiver) =>

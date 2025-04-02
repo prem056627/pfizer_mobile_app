@@ -317,7 +317,7 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
                 className={`px-4 py-1 ${
                   program.program_status === 'shortfall' 
                   ? 'bg-red-100 text-red-800' 
-                  : program.program_status === 'suspended' 
+                  : program.program_status === 'suspend' 
                     ? 'bg-red-100 text-red-800' 
                     :  program.program_status === 'rejected' 
                     ? 'bg-red-100 text-red-800' 
@@ -327,7 +327,7 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
                 } text-[#3B3B3B]  px-[8px] rounded-[6px] text-[12px]`}
               >
                       {program.program_status === "shortfall" ? "Document Shortfall" 
-        : program.program_status === "suspended" ? "Suspended" 
+        : program.program_status === "suspend" ? "Suspend" 
         : program.program_status === "rejected" ? "Rejected" 
         :program.program_status === "applied" ? "Profile under Review" 
 

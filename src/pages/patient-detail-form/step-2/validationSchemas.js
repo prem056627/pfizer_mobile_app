@@ -1,4 +1,3 @@
-
 import * as Yup from "yup";
 
 const relationshipOptions = [
@@ -6,18 +5,54 @@ const relationshipOptions = [
   { id: "Mother", label: "Mother" },
   { id: "Daughter", label: "Daughter" },
   { id: "Son", label: "Son" },
+  { id: "Son-In-Law", label: "	Son-In-Law" },
   { id: "Spouse", label: "Spouse" },
   { id: "Sister", label: "Sister" },
   { id: "Brother", label: "Brother" },
   { id: "Father-In-Law", label: "Father-In-Law" },
-  { id: "Mother-In-Law", label: "Mother-In-Law" },
   { id: "Daughter-In-Law", label: "Daughter-In-Law" },
   { id: "Son-In-Law", label: "Son-In-Law" },
   { id: "Sister-In-Law", label: "Sister-In-Law" },
   { id: "Brother-In-Law", label: "Brother-In-Law" },
   { id: "Cousin", label: "Cousin" },
-  { id: "Other", label: "Other" }
+  { id: "Other", label: "Other" },
 ];
+// ID Card validation patterns and examples
+const idValidationConfig = {
+  passport: {
+    pattern: /^[A-Z][0-9]{7}$/,
+    message: "Passport number must be 1 letter followed by 7 digits (e.g., A1234567)"
+  },
+  aadhaar: {
+    pattern: /^[0-9]{12}$/,
+    message: "Aadhaar number must be 12 digits (e.g., 123456789012)"
+  },
+  pan: {
+    pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+    message: "PAN Card must be in format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
+  },
+  // voter: {
+  //   pattern: /^[A-Z]{3}[0-9]{7}$/,
+  //   message: "Voter ID must be 3 letters followed by 7 digits (e.g., ABC1234567)"
+  // },
+  driving: {
+    pattern: /^[A-Z]{2}[0-9]{13}$/,
+    message: "Driving License must be 2 letters followed by 13 digits (e.g., DL0420180012345)"
+  }
+};
+
+// Function to validate ID numbers based on ID type
+const validateIdNumber = function(value, idType) {
+  if (!value || !idType) return true;
+  
+  const config = idValidationConfig[idType];
+  if (!config) return true; // Skip if unknown ID type
+  
+  return config.pattern.test(value) ? 
+    true : 
+    this.createError({ message: config.message });
+};
+
 // Create validation schema for the first caregiver (required)
 const firstCaregiverValidationSchema = {
   caregiver_0_name: Yup.string()
@@ -48,7 +83,7 @@ const firstCaregiverValidationSchema = {
     .email("Enter a valid email address")
     .required(`Email is required`),
     
-    relationship_0: Yup.string()
+  relationship_0: Yup.string()
     .oneOf([
       "Father", "Mother", "Daughter", "Son", "Spouse", "Sister", "Brother",
       "Father-In-Law", "Mother-In-Law", "Daughter-In-Law", "Son-In-Law",
@@ -56,31 +91,41 @@ const firstCaregiverValidationSchema = {
     ], "Invalid relationship")
     .required(`Relationship is required`),
 
-
-    // Primary ID validation
+  // Primary ID validation with dynamic format checking
   id_card_type_0: Yup.string()
-  .required(`ID card type is required`),
+    .required(`ID card type is required`),
 
-id_number_0: Yup.string()
-  .trim()
-  .required(`ID number is required`),
+  id_number_0: Yup.string()
+    .trim()
+    .required(`ID number is required`)
+    .test(
+      "id-format-validation-0",
+      function(value) {
+        const idType = this.parent.id_card_type_0;
+        return validateIdNumber.call(this, value, idType);
+      }
+    ),
 
-id_doc_upload_0: Yup.array()
-  .min(1, `At least one document must be uploaded`),
+  id_doc_upload_0: Yup.array()
+    .min(1, `At least one document must be uploaded`),
 
-// Additional ID validation
-id_card_1_type_0: Yup.string()
-  .required(`Additional ID card type is required`),
+  // Additional ID validation with dynamic format checking
+  id_card_1_type_0: Yup.string()
+    .required(`Additional ID card type is required`),
 
-id_number_1_0: Yup.string()
-  .trim()
-  .required(`Additional ID number is required`),
+  id_number_1_0: Yup.string()
+    .trim()
+    .required(`Additional ID number is required`)
+    .test(
+      "id-format-validation-1-0",
+      function(value) {
+        const idType = this.parent.id_card_1_type_0;
+        return validateIdNumber.call(this, value, idType);
+      }
+    ),
 
-id_doc_1_upload_0: Yup.array()
-  .min(1, `At least one additional document must be uploaded`),
-
-
-    
+  id_doc_1_upload_0: Yup.array()
+    .min(1, `At least one additional document must be uploaded`),
 };
 
 // Create conditional validation schema for additional caregivers
@@ -164,33 +209,138 @@ const conditionalCaregiverValidationSchema = (id) => {
           }
         })
       ),
-      [`relationship_${id}`]: Yup.string()
-  .when('$self', (_, schema) =>
-    schema.test({
-      name: `relationship_${id}_conditional`,
-      test: function(value) {
-        const hasValue = hasStartedFillingCaregiver(this.parent);
-        if (!hasValue) return true;
-        
-        if (!value) return this.createError({
-          message: `Relationship is required if any caregiver ${id} information is provided`
-        });
-        
-        // Convert to lowercase and trim for more forgiving comparison
-        const normalizedValue = String(value).trim();
-        const validRelationshipIds = relationshipOptions.map(option => 
-          String(option.id).trim());
-        
-        // if (!validRelationshipIds.some(id => id.toLowerCase() === normalizedValue.toLowerCase())) {
-        //   return this.createError({
-        //     message: "Invalid relationship"
-        //   });
-        // }
-        
-        return true;
-      }
-    })
-  ),
+      
+    [`relationship_${id}`]: Yup.string()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `relationship_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value) return this.createError({
+              message: `Relationship is required if any caregiver ${id} information is provided`
+            });
+            
+            // Convert to lowercase and trim for more forgiving comparison
+            const normalizedValue = String(value).trim();
+            const validRelationshipIds = relationshipOptions.map(option => 
+              String(option.id).trim());
+            
+            return true;
+          }
+        })
+      ),
+
+    // Primary ID validation with conditional requirements and format checking
+    [`id_card_type_${id}`]: Yup.string()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_card_type_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value) return this.createError({
+              message: `ID card type is required if any caregiver ${id} information is provided`
+            });
+            
+            return true;
+          }
+        })
+      ),
+
+    [`id_number_${id}`]: Yup.string()
+      .trim()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_number_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value) return this.createError({
+              message: `ID number is required if any caregiver ${id} information is provided`
+            });
+            
+            // Validate format based on ID type
+            const idType = this.parent[`id_card_type_${id}`];
+            return validateIdNumber.call(this, value, idType);
+          }
+        })
+      ),
+
+    [`id_doc_upload_${id}`]: Yup.array()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_doc_upload_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value || value.length === 0) return this.createError({
+              message: `At least one document must be uploaded if any caregiver ${id} information is provided`
+            });
+            
+            return true;
+          }
+        })
+      ),
+
+    // Additional ID validation with conditional requirements and format checking
+    [`id_card_1_type_${id}`]: Yup.string()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_card_1_type_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value) return this.createError({
+              message: `Additional ID card type is required if any caregiver ${id} information is provided`
+            });
+            
+            return true;
+          }
+        })
+      ),
+
+    [`id_number_1_${id}`]: Yup.string()
+      .trim()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_number_1_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value) return this.createError({
+              message: `Additional ID number is required if any caregiver ${id} information is provided`
+            });
+            
+            // Validate format based on ID type
+            const idType = this.parent[`id_card_1_type_${id}`];
+            return validateIdNumber.call(this, value, idType);
+          }
+        })
+      ),
+
+    [`id_doc_1_upload_${id}`]: Yup.array()
+      .when('$self', (_, schema) =>
+        schema.test({
+          name: `id_doc_1_upload_${id}_conditional`,
+          test: function(value) {
+            const hasValue = hasStartedFillingCaregiver(this.parent);
+            if (!hasValue) return true;
+            
+            if (!value || value.length === 0) return this.createError({
+              message: `At least one additional document must be uploaded if any caregiver ${id} information is provided`
+            });
+            
+            return true;
+          }
+        })
+      ),
   };
 };
 
@@ -200,6 +350,13 @@ export const combinedValidationSchema = Yup.object().shape({
   ...conditionalCaregiverValidationSchema(1),
   ...conditionalCaregiverValidationSchema(2),
 });
+
+// Helper function to get ID validation format example based on ID type
+export const getIdFormatExample = (idType) => {
+  return idType && idValidationConfig[idType] 
+    ? idValidationConfig[idType].example 
+    : "";
+};
 
 // Function to initialize caregiver details dynamically
 export const getCaregiverDetailsInitialValues = (initialData = {}) => {

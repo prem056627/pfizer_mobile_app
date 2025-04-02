@@ -110,14 +110,14 @@ const MenuScreen = () => {
     {
       id: 2,
       title: 'Customer Care',
-      subtitle: 'support@1mg.com',
+      subtitle: 'access@mediangels.com',
       icon: (
         <Call className="w-6 h-6"/>
       )
     },
     {
       id: 3,
-      title: 'Completed Verification',
+      title: 'Verification History',
       icon: (
        <Print className="w-6 h-6"/>
       )

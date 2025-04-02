@@ -244,6 +244,36 @@ function MyProfileDetails() {
 								{caregiver?.caregiver_relation || 'N/A'}
 							</span>
 						</p>
+						{/* id */}
+
+						<p className="py-1 font-normal text-[#69757E]">
+							ID Card Type 1:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_id_card_type_1 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							ID Card Type 2:
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.caregiver_id_card_type_2 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+						ID Card Number 1 :
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.id_card_number_1 || 'N/A'}
+							</span>
+						</p>
+						<p className="py-1 font-normal text-[#69757E]">
+							ID Card Number 2 :
+							<span className="font-open-sans font-bold text-[#69757E]">
+								{'  '}
+								{caregiver?.id_card_number_2 || 'N/A'}
+							</span>
+						</p>
 					</div>
 				))}
 			</div>
@@ -252,3 +282,7 @@ function MyProfileDetails() {
 }
 
 export default MyProfileDetails;
+
+
+
+

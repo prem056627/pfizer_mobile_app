@@ -48,6 +48,8 @@ export const ProgramEnrollmentSlice = createSlice({
     isMoreProgramPageOpen:false,
     isEkySuccessModalOpen:false,
     isKycHistoryModalOpen:false,
+    isCaregiverSkipVisible:false,
+    isInitalDataLoad:false,
     isCompletedKycHistoryModalOpen:false
   },
   reducers: {
@@ -124,6 +126,15 @@ setIsKycHistoryModalOpen:(state, action)=>{
   state.isKycHistoryModalOpen = action.payload;
 },
 
+setIsCaregiverSkipVisible:(state, action)=>{
+  state.isCaregiverSkipVisible = action.payload;
+},
+setIsInitalDataLoad:(state, action)=>{
+  state.isInitalDataLoad = action.payload;
+},
+
+
+
 setIsCompletedKycHistoryModalOpen:(state, action)=>{
   state.isCompletedKycHistoryModalOpen = action.payload;
 }
@@ -151,7 +162,9 @@ export const {
   setIsMoreProgramPageOpen,
   setIsEkySuccessModalOpen,
   setIsKycHistoryModalOpen,
+  setIsCaregiverSkipVisible,
   setSelectedEnrollProgram,
+  setIsInitalDataLoad,
   setIsCompletedKycHistoryModalOpen
 } = ProgramEnrollmentSlice.actions;
 
@@ -204,8 +217,17 @@ export const selectIsMoreProgramPageOpen = (state) =>
 export const selectIsEkySuccessModalOpen = (state) =>
   state.patientDetailForm.isEkySuccessModalOpen;
 
-export const selectIsKycHistoryModalOpen= (state) =>
+export const selectIsKycHistoryModalOpen = (state) =>
   state.patientDetailForm.isKycHistoryModalOpen;
+
+export const selectIsCaregiverSkipVisible = (state) =>
+  state.patientDetailForm.isCaregiverSkipVisible;
+
+export const selectIsInitalDataLoad = (state) =>
+  state.patientDetailForm.isInitalDataLoad;
+
+
+
 
 export const selectIsCompletedKycHistoryModalOpen = (state) =>
   state.patientDetailForm.isCompletedKycHistoryModalOpen;

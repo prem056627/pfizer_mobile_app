@@ -21,11 +21,11 @@ const idValidationConfig = {
     example: "ABCDE1234F",
     message: "PAN Card must be in format: 5 letters, 4 digits, 1 letter"
   },
-  voter: {
-    pattern: /^[A-Z]{3}[0-9]{7}$/,
-    example: "ABC1234567",
-    message: "Voter ID must be 3 letters followed by 7 digits"
-  },
+  // voter: {
+  //   pattern: /^[A-Z]{3}[0-9]{7}$/,
+  //   example: "ABC1234567",
+  //   message: "Voter ID must be 3 letters followed by 7 digits"
+  // },
   driving: {
     pattern: /^[A-Z]{2}[0-9]{13}$/,
     example: "DL0420180012345",

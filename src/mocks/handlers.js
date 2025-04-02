@@ -9,8 +9,8 @@ let initialData = {
  
     // before enrollment submit
     // patient_enrolment
-    // current_step: "caregiver_addition",
-    current_step: "program_enrolment_done",
+    current_step: "caregiver_addition",
+    // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2315,7 +2315,7 @@ let initialData = {
         {
           // program_name: "c",
           // program_status: "rejected",
-          program_status: "active",
+          program_status: "suspend",
           // program_id: 10018,
           // program_scheme: '9+LFT',
           // doctor_name:"prem",
@@ -2414,7 +2414,9 @@ let initialData = {
       program_name: "Self Registered",
       patient_id: 10345,
       patient_primary_phone: "+919873281517",
-      patient_dob: "NA"
+      patient_dob: "NA",
+      card_type : "pdvdv",
+          id_card_number : "34242",
   },
 
   ekyc_history: [
@@ -2486,6 +2488,93 @@ let initialData = {
     }
 ]
 ,
+verification_history: [
+  {
+      order_id: "10819",
+      status: "Confirmed",
+      modified_at: "25-Mar-2025",
+      create_at: "25-Mar-2025"
+  },
+  {
+    order_id: "10319",
+    status: "Verification Completed",
+    modified_at: "25-Mar-2025",
+    create_at: "25-Mar-2025"
+},
+{
+  order_id: "19319",
+  status: "Closed",
+  modified_at: "25-Mar-2025",
+  create_at: "25-Mar-2025"
+},
+{
+  order_id: "10219",
+  status: "Confirmed",
+  modified_at: "25-Mar-2025",
+  create_at: "25-Mar-2025"
+},
+  {
+      order_id: "10817",
+      status: "Approved",
+      modified_at: "25-Mar-2025",
+      create_at: "25-Mar-2025"
+  },
+  {
+      order_id: "10820",
+      status: "on Hold",
+      modified_at: "25-Mar-2025",
+      create_at: "25-Mar-2025"
+  },
+  {
+      order_id: "10797",
+      status: "Approved",
+      modified_at: "23-Mar-2025",
+      create_at: "22-Mar-2025"
+  },
+  {
+      order_id: "10795",
+      status: "Open",
+      modified_at: "12-Mar-2025",
+      create_at: "12-Mar-2025"
+  },
+  {
+      order_id: "10796",
+      status: "Open",
+      modified_at: "21-Mar-2025",
+      create_at: "21-Mar-2025"
+  },
+  {
+      order_id: "10818",
+      status: "on Hold",
+      modified_at: "25-Mar-2025",
+      create_at: "25-Mar-2025"
+  },
+  {
+      order_id: "10821",
+      status: "on Hold",
+      modified_at: "25-Mar-2025",
+      create_at: "25-Mar-2025"
+  },
+  {
+      order_id: "10806",
+      status: "on Hold",
+      modified_at: "24-Mar-2025",
+      create_at: "24-Mar-2025"
+  },
+  {
+      order_id: "10805",
+      status: "Approved",
+      modified_at: "24-Mar-2025",
+      create_at: "24-Mar-2025"
+  },
+  {
+      order_id: "10812",
+      status: "Cancelled",
+      modified_at: "25-Mar-2025",
+      create_at: "24-Mar-2025"
+  }
+]
+,
   notifications: [
     {
         date: "22 Jan 25",
@@ -2515,7 +2604,11 @@ let initialData = {
               line1: "78 Maple Drive",
               line2: "Suite 2B",
               pincode: "60601"
-          }
+          },
+          caregiver_id_card_type_1 : "hello",
+          caregiver_id_card_type_2 : "pdvdv",
+          id_card_number_1 : "34242",
+          id_card_number_2 : "34234234"
       },
       {
           caregiver_relation: "Mother",
@@ -2529,7 +2622,11 @@ let initialData = {
               line1: "45 Beach Road",
               line2: "Apartment 12C",
               pincode: "33101"
-          }
+          },
+          caregiver_id_card_type_1 : "hello",
+          caregiver_id_card_type_2 : "pdvdv",
+          id_card_number_1 : "34242",
+          id_card_number_2 : "34234234"
       },
       {
           caregiver_relation: "Brother",
@@ -2543,7 +2640,11 @@ let initialData = {
               line1: "120 Pine Street",
               line2: "Floor 3",
               pincode: "98101"
-          }
+          },
+          caregiver_id_card_type_1 : "hello",
+          caregiver_id_card_type_2 : "pdvdv",
+          id_card_number_1 : "34242",
+          id_card_number_2 : "34234234"
       },
       {
           caregiver_relation: "Friend",
@@ -2557,7 +2658,11 @@ let initialData = {
               line1: "85 Ranch Road",
               line2: "Building 4",
               pincode: "73301"
-          }
+          },
+          caregiver_id_card_type_1 : "hello",
+          caregiver_id_card_type_2 : "pdvdv",
+          id_card_number_1 : "34242",
+          id_card_number_2 : "34234234"
       }
   ],
   physical_verification: {
@@ -2676,7 +2781,7 @@ export const handlers = [
         // For testing, let's accept any 6-digit OTP or specific test OTPs
         const validOtp = /^\d{6}$/.test(providedOtp) || providedOtp === "123456";
         
-        if (validOtp) {
+        if (!validOtp) {
           responseData = {
             current_step: "otp_verified",
             mobile_verified: true,

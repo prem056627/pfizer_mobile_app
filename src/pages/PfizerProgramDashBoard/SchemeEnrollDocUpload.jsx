@@ -335,9 +335,9 @@ const radioData = getRadioData();
             <div className="mb-8 overflow-y-auto  h-[600px] pb-0">
               <div className="flex flex-col justify-between items-start mt-12 mb-6 px-4" >
                 <h2 className="text-[18px] font-sans  font-semibold">Upload Documents</h2>
-                <a href="#" className="text-primary text-[14px]">
+                {/* <a href="#" className="text-primary text-[14px]">
                   Know more <span className="text-[#767676] font-sans font-semibold">about the program</span>
-                </a>
+                </a> */}
               </div>
               
               <div className="text-sm text-black  font-sans font-italic italic mb-4 px-4">

@@ -6,7 +6,7 @@
 // 	{ id: 'passport', label: 'Passport' },
 // 	{ id: 'aadhaar', label: 'Aadhaar' },
 // 	{ id: 'pan', label: 'PAN Card' },
-// 	{ id: 'voter', label: 'Voter ID' },
+// 	{ id: 'Others', label: 'Others ID' },
 // 	{ id: 'driving', label: 'Driving License' },
 // ];
 
@@ -60,7 +60,7 @@ const idCardOptions = [
   { id: 'passport', label: 'Passport' },
   { id: 'aadhaar', label: 'Aadhaar' },
   { id: 'pan', label: 'PAN Card' },
-  { id: 'voter', label: 'Voter ID' },
+  { id: 'Others', label: 'Others' },
   { id: 'driving', label: 'Driving License' },
 ];
 
@@ -69,7 +69,6 @@ const idFormatExamples = {
   passport: "A1234567 (1 letter followed by 7 digits)",
   aadhaar: "123456789012 (12 digits)",
   pan: "ABCDE1234F (5 letters, 4 digits, 1 letter)",
-  voter: "ABC1234567 (3 letters followed by 7 digits)",
   driving: "DL0420180012345 (2 letters followed by 13 digits)",
 };
 
