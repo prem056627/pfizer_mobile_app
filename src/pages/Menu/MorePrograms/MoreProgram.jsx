@@ -1,19 +1,5 @@
 import React, { useState } from "react";
-import { ReactComponent as Img1 } from '../../../../src/assets/images/more_programs/img-1.svg';
-import { ReactComponent as Img2 } from '../../../../src/assets/images/more_programs/img-2.svg';
-import { ReactComponent as Img3 } from '../../../../src/assets/images/more_programs/img-3.svg';
-import { ReactComponent as Img4 } from '../../../../src/assets/images/more_programs/img-4.svg';
-import { ReactComponent as Img5 } from '../../../../src/assets/images/more_programs/img-5.svg';
-import { ReactComponent as Img6 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img7 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img8 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img9 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img10 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img11 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img12 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img13 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img14 } from '../../../../src/assets/images/more_programs/img-6.svg';
-import { ReactComponent as Img15 } from '../../../../src/assets/images/more_programs/img-6.svg';
+import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { selectInitializeData, setCurrentView, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
 // const programsData = [
@@ -138,6 +124,23 @@ function MoreProgram() {
         dispatch(setIsMoreProgramPageOpen(false));
     };
 
+
+      function NoAvailablePrograms() {
+        return (
+          <div className="flex flex-col items-center justify-center h-96   p-6">
+            <div className="relative flex items-center justify-center w-24 h-24 rounded-full ">
+              {/* <span className="text-6xl text-purple-300">😞</span>
+              <span className="absolute top-0 right-2 text-4xl text-purple-300">!</span> */}
+                <NoProgram/>
+            </div>
+            <h2 className="mt-4 text-2xl text-center font-semibold text-gray-700">No Available Programs</h2>
+            <p className="mt-2 text-center text-gray-500">"We'll notify you when something arrives!"</p>
+          </div>
+        );
+      }
+    
+
+
   return (
     <div>
       <div>
@@ -192,7 +195,9 @@ function MoreProgram() {
 
 
 <div className="space-y-4 w-full pb-20 pt-10">
-    {AVAILABLE_PROGRAMS.map((program) => (
+
+{AVAILABLE_PROGRAMS.length > 0 ? (
+    AVAILABLE_PROGRAMS.map((program) => (
       <div key={program.program_id} className="w-full bg-white rounded-lg shadow-md border">
         <div className="p-4 flex gap-4">
         <div>
@@ -219,7 +224,12 @@ function MoreProgram() {
           ENROL
         </button>
       </div>
-    ))}
+    ))
+    ):(
+       <>
+      { NoAvailablePrograms()}
+       </>
+      )}
   </div>
     </div>
   );

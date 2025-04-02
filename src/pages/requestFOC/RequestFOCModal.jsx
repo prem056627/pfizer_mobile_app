@@ -27,7 +27,7 @@ function RequestFOCModal() {
 
     return (
         <InvoiceModal
-            label={'Upload Prescription'}
+            label={'Prescription #'}
             labelType="center"
             show={RequestFocOpen}
             closeModal={closeModal}
@@ -36,6 +36,7 @@ function RequestFOCModal() {
             // isScroll = false"
             type="center"
             isCloseVisible={true}
+             description="# - manditory fields"
         />
     );
 }

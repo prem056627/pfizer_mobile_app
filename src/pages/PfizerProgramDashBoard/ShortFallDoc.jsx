@@ -126,7 +126,7 @@ const ShortFallDoc = () => {
 
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
 
         return { success: true, data: response };
       } else {

@@ -31,7 +31,10 @@ import CompleteKycModal from "../pages/Menu/completedKyc/CompleteKycModal";
 
 const AppNavigation = () => {
 // Token functionality
-const TOKEN_KEY = "accessToken";
+ // Token check variables
+//  const TOKEN_CHECK_INTERVAL = 10; // Check every 1 second (can adjust as needed)
+//  const TOKEN_KEY = "accessToken";
+
 
 // Function to set a dummy token
 // const setDummyToken = () => {
@@ -53,20 +56,60 @@ const TOKEN_KEY = "accessToken";
     }
   };
 
-  function checkToken() {
-    try {
-      const accessToken = localStorage.getItem(TOKEN_KEY);
-      if (!accessToken) {
-        logToReactNative("No token found", { action: "redirect_to_login" });
-        return false;
-      }
-     
-      return true;
-    } catch (error) {
-      logToReactNative("Token check error", { error: error.message });
-      return false;
+
+  function handleSessionLogout() {
+    // console.log("session logout !!!");
+    localStorage.clear();
+
+    let message = {
+        label: 'LOGOUT',
+    };
+
+    let stringifiedMessage = JSON.stringify(message);
+
+    // Check if running inside a WebView
+    if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(stringifiedMessage);
+    } else {
+        // console.log("Logging out from web...");
+        window.location.href = '/logout'; // Ensure the URL is correct for your logout endpoint
     }
-  }
+}
+
+  // function checkToken() {
+  //   try {
+  //     const accessToken = localStorage.getItem(TOKEN_KEY);
+  //     if (!accessToken) {
+  //       logToReactNative("No token found", { action: "redirect_to_login" });
+  //       handleSessionLogout() ;
+  //       return false;
+  //     }
+     
+  //     return true;
+  //   } catch (error) {
+  //     logToReactNative("Token check error", { error: error.message });
+  //     return false;
+  //   }
+  // }
+
+  // function checkToken() {
+  //   try {
+  //     const accessToken = localStorage.getItem(TOKEN_KEY);
+      
+  //     if (!accessToken) {
+  //       logToReactNative("No token found", { action: "redirect_to_login" });
+  //       handleSessionLogout();
+  //       return false;
+  //     }
+      
+  //     logToReactNative("Token detected", { accessToken: accessToken.substring(0, 5) + '...' });
+  //     return true;
+  //   } catch (error) {
+  //     logToReactNative("Error checking token", { error: error.message });
+  //     handleSessionLogout();
+  //     return false;
+  //   }
+  // }
 
   // Component state
   const currentView = useSelector(selectCurrentView);
@@ -118,6 +161,40 @@ const TOKEN_KEY = "accessToken";
   useEffect(() => {
     makeApiCall();
   }, []);
+
+
+
+  // useEffect(() => {
+  //   let intervalId;
+  //   let isMounted = true;
+
+  //   const initializeApp = async () => {
+  //     if (checkToken()) {
+  //       clearInterval(intervalId);
+  //       if (isMounted) {
+  //         await makeApiCall();
+  //       }
+  //     }
+  //   };
+
+  //   // Start polling for token
+  //   intervalId = setInterval(initializeApp, TOKEN_CHECK_INTERVAL);
+
+  //   // Initial check
+  //   initializeApp();
+
+  //   return () => {
+  //     isMounted = false;
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
+
+  // // Additional effect to respond to view changes
+  // useEffect(() => {
+  //   if (checkToken()) {
+  //     makeApiCall();
+  //   }
+  // }, [currentView]);
 
   // Render content based on current view and app state
   const renderContent = () => {

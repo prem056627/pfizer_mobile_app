@@ -3,6 +3,36 @@
 import * as Yup from "yup";
 import moment from "moment";
 
+
+// ID Card validation patterns and examples
+const idValidationConfig = {
+  passport: {
+    pattern: /^[A-Z][0-9]{7}$/,
+    example: "A1234567",
+    message: "Passport number must be 1 letter followed by 7 digits"
+  },
+  aadhaar: {
+    pattern: /^[0-9]{12}$/,
+    example: "123456789012",
+    message: "Aadhaar number must be 12 digits"
+  },
+  pan: {
+    pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+    example: "ABCDE1234F",
+    message: "PAN Card must be in format: 5 letters, 4 digits, 1 letter"
+  },
+  voter: {
+    pattern: /^[A-Z]{3}[0-9]{7}$/,
+    example: "ABC1234567",
+    message: "Voter ID must be 3 letters followed by 7 digits"
+  },
+  driving: {
+    pattern: /^[A-Z]{2}[0-9]{13}$/,
+    example: "DL0420180012345",
+    message: "Driving License must be 2 letters followed by 13 digits"
+  }
+};
+
 export const combinedValidationSchema = Yup.object().shape({
   // Personal Details
   full_name: Yup.string().required("Full Name is required"),
@@ -78,46 +108,27 @@ export const combinedValidationSchema = Yup.object().shape({
   }),
 
   // ID Details
+  // ID Details with dynamic validation
   id_card_type: Yup.string().required("ID Card Type is required"),
   id_number: Yup.string()
     .required("ID Number is required")
-    // .when("id_card_type", {
-    //   is: "passport",
-    //   then: Yup.string().matches(/^[A-Z0-9]{8}$/, "Invalid Passport number"),
-    // })
-    // .when("id_card_type", {
-    //   is: "aadhaar",
-    //   then: Yup.string().matches(/^\d{12}$/, "Aadhaar must be a 12-digit number"),
-    // })
-    // .when("id_card_type", {
-    //   is: "pan",
-    //   then: Yup.string().matches(/^[A-Z]{5}[0-9]{4}[A-Z]$/, "Invalid PAN Card format"),
-    // })
-    // .when("id_card_type", {
-    //   is: "voter",
-    //   then: Yup.string().matches(/^[A-Z0-9]{10}$/, "Invalid Voter ID format"),
-    // })
-    // .when("id_card_type", {
-    //   is: "driving",
-    //   then: Yup.string().matches(/^[A-Z0-9]{16}$/, "Invalid Driving License format"),
-    // }),
+    .test(
+      "id-format-validation",
+      function(value) {
+        const idType = this.parent.id_card_type;
+        if (!idType || !value) return true; // Skip validation if no ID type selected yet
+        
+        const config = idValidationConfig[idType];
+        if (!config) return true; // Skip if unknown ID type
+        
+        return config.pattern.test(value) ? 
+          true : 
+          this.createError({ message: config.message });
+      }
+    )
+  
 });
 
 
 
 
-
-
-// // Validation Schema
-// export const personalDetailsValidationSchema = Yup.object().shape({
-//   full_name: Yup.string().required("Full Name is required"),
-//   gender: Yup.string().required("Gender is required"),
-  
-//   mobile_number: Yup.string()
-//     .matches(/^[0-9]{10}$/, "Mobile number must be 10 digits")
-//     .required("Mobile Number is required"),
-//   email: Yup.string()
-//     .email("Invalid email format")
-//     .required("Email is required"),
-//   nationality: Yup.string().required("Nationality is required"),
-// });

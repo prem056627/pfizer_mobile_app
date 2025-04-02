@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Physicalverification } from "../../assets/images/ProgramCards/physicalverification.svg";
 import { ReactComponent as PhysicalverificationSheduled } from "../../assets/images/ProgramCards/PhysicalverificationSheduled.svg";
 import { ReactComponent as Ekyc } from "../../assets/images/ProgramCards/ekyc.svg";
+import { ReactComponent as NoProgram } from "../../assets/images/ProgramCards/no_program.svg";
+
 import { ReactComponent as Upload } from '../../../src/assets/images/svg/upload.svg';
 import { ReactComponent as Pap } from '../../../src/assets/images/Ekyc/pap.svg';
 import {
@@ -143,40 +145,61 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   //   </div>
   // );
 
+  function NoAvailablePrograms() {
+    return (
+      <div className="flex flex-col items-center justify-center h-96   p-6">
+        <div className="relative flex items-center justify-center w-24 h-24 rounded-full ">
+          {/* <span className="text-6xl text-purple-300">😞</span>
+          <span className="absolute top-0 right-2 text-4xl text-purple-300">!</span> */}
+            <NoProgram/>
+        </div>
+        <h2 className="mt-4 text-2xl text-center font-semibold text-gray-700">No Available Programs</h2>
+        <p className="mt-2 text-center text-gray-500">"We'll notify you when something arrives!"</p>
+      </div>
+    );
+  }
+
 
   // Component to render all unactive/unenrolled programs
-const renderAvailablePrograms = () => (
-  <div className="space-y-4 w-full pb-20">
-    {AVAILABLE_PROGRAMS.map((program) => (
-      <div key={program.program_id} className="w-full bg-white rounded-lg shadow-md border">
-        <div className="p-4 flex gap-4">
-        <div>
-        <img src={program.program_image} alt={program.program_name} className="w-20 h-20 rounded-[12px]" />
-      </div>
-          <div className="flex-1">
-            <h3 className="text-md font-semibold ">{program.program_name}</h3>
-            <div className="flex gap-2 mt-2">
-              {program.program_type.map((type, index) => (
-                <span 
-                  key={index} 
-                  className="bg-orange-200 text-orange-800 px-[8px] rounded-[6px] text-[12px]  py-1 "
-                >
-                  {type}
-                </span>
-              ))}
+  const renderAvailablePrograms = () => (
+    <div className="space-y-4 w-full pb-20">
+      {AVAILABLE_PROGRAMS.length > 0 ? (
+        AVAILABLE_PROGRAMS.map((program) => (
+          <div key={program.program_id} className="w-full bg-white rounded-lg shadow-md border">
+            <div className="p-4 flex gap-4">
+              <div>
+                <img src={program.program_image} alt={program.program_name} className="w-20 h-20 rounded-[12px]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-md font-semibold">{program.program_name}</h3>
+                <div className="flex gap-2 mt-2">
+                  {program.program_type.map((type, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-orange-200 text-orange-800 px-[8px] rounded-[6px] text-[12px] py-1"
+                    >
+                      {type}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
+            <button
+              onClick={() => handleRequest(program)}
+              className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
+            >
+              ENROL
+            </button>
           </div>
-        </div>
-        <button
-          onClick={() => handleRequest(program)}
-          className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
-        >
-          ENROL
-        </button>
-      </div>
-    ))}
-  </div>
-);
+        ))
+      ) : (
+       <>
+      { NoAvailablePrograms()}
+       </>
+      )}
+    </div>
+  );
+  
 
   // const renderShortfallProgram = () => (
   //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
@@ -224,6 +247,10 @@ const renderAvailablePrograms = () => (
   //   </div>
   // );
   console.log('program,program',APPLIED_PROGRAMS)
+
+
+
+  
   
 
   // console.log('initiaData?.physical_verification?.show_verification_button',initiaData?.ekyc_verification?.show_verification_button);
@@ -231,7 +258,7 @@ const renderAvailablePrograms = () => (
     <>
      <div className="pt-[2px] w-full">
       {APPLIED_PROGRAMS.map((program) => (
-        program.program_status === 'active' || program.program_status === 'applied' ? (
+        program.program_status === 'active' || program.program_status === 'applied'|| program.program_status === 'ineligible' ? (
           <div key={program.program_id} className="bg-white rounded-lg shadow-sm p-4 mb-6 mt-2 border">
             <div className="flex justify-between items-center mb-2">
               <div className="flex gap-2 items-center">
@@ -242,13 +269,15 @@ const renderAvailablePrograms = () => (
                     ? 'bg-[#fffed5]' 
                     : program.program_status === 'active' 
                       ? 'bg-[#D9FFD5]' 
+                      : program.program_status === 'ineligible' 
+                      ? 'bg-[#ffd5d5]' 
                       : ''
                   
                   } text-[#3B3B3B] px-[8px] rounded-[6px] text-[12px]`}
                 >
                  
                   {program.program_status === "applied" ? "Applied" 
-        :program.program_status === "active" ? "Active" : ""}
+        :program.program_status === "active" ? "Active" :program.program_status === "ineligible" ? "Not Eligible" : ""}
                 </span>
               </div>
               <div className="flex gap-2 items-center justify-center">

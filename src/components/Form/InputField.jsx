@@ -1,6 +1,6 @@
 import { useField } from 'formik';
 
-function InputField({ label, type = 'text', id, ...props }) {
+function InputField({ label, type = 'text', id,helperText, ...props }) {
 	const [field, meta] = useField({ ...props });
 
 	const isTextarea = type === 'textarea';
@@ -33,6 +33,12 @@ function InputField({ label, type = 'text', id, ...props }) {
 				/>
 			)}
 
+		{/* Helper text for showing examples */}
+		{helperText && (
+						<div className="font-open-sans text-form-xs text-[#6B7280] italic">
+							Example: {helperText}
+						</div>
+					)}
 			{meta.touched && meta.error ? (
 				<div className="font-open-sans text-form-xs text-[#cc3300]">
 					{meta.error}

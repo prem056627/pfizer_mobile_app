@@ -2284,7 +2284,7 @@ let initialData = {
 
     program_data: {
 		enrolled_programs:1,
-      available_programs: [
+    available_programs: [
 		{
 			program_name: "Lorbriqua Care",
 			program_status: "active",
@@ -2311,7 +2311,7 @@ let initialData = {
 		}
       ],
     
-      applied_programs: [
+    applied_programs: [
         {
           // program_name: "c",
           // program_status: "rejected",
@@ -2416,6 +2416,76 @@ let initialData = {
       patient_primary_phone: "+919873281517",
       patient_dob: "NA"
   },
+
+  ekyc_history: [
+    {
+        order_id: "10819",
+        status: "on Hold",
+        modified_at: "25-Mar-2025",
+        create_at: "25-Mar-2025"
+    },
+    {
+        order_id: "10817",
+        status: "Approved",
+        modified_at: "25-Mar-2025",
+        create_at: "25-Mar-2025"
+    },
+    {
+        order_id: "10820",
+        status: "on Hold",
+        modified_at: "25-Mar-2025",
+        create_at: "25-Mar-2025"
+    },
+    {
+        order_id: "10797",
+        status: "Approved",
+        modified_at: "23-Mar-2025",
+        create_at: "22-Mar-2025"
+    },
+    {
+        order_id: "10795",
+        status: "Open",
+        modified_at: "12-Mar-2025",
+        create_at: "12-Mar-2025"
+    },
+    {
+        order_id: "10796",
+        status: "Open",
+        modified_at: "21-Mar-2025",
+        create_at: "21-Mar-2025"
+    },
+    {
+        order_id: "10818",
+        status: "on Hold",
+        modified_at: "25-Mar-2025",
+        create_at: "25-Mar-2025"
+    },
+    {
+        order_id: "10821",
+        status: "on Hold",
+        modified_at: "25-Mar-2025",
+        create_at: "25-Mar-2025"
+    },
+    {
+        order_id: "10806",
+        status: "on Hold",
+        modified_at: "24-Mar-2025",
+        create_at: "24-Mar-2025"
+    },
+    {
+        order_id: "10805",
+        status: "Approved",
+        modified_at: "24-Mar-2025",
+        create_at: "24-Mar-2025"
+    },
+    {
+        order_id: "10812",
+        status: "Cancelled",
+        modified_at: "25-Mar-2025",
+        create_at: "24-Mar-2025"
+    }
+]
+,
   notifications: [
     {
         date: "22 Jan 25",
@@ -2502,12 +2572,23 @@ ekyc_verification: {
     show_verification_button: true,
     
     status : "Inactive",
-    details: []
+    details: {
+      // status: "Approved",
+      // date: "25-Mar-2025",
+      // selfie_pan_match: "90",
+      submitted_date: "25-Mar-2025",
+      // selfie_aadhar_match: "80",
+      // order_id: "10817",
+      // pan_aadhar_match: "80",
+      // type: "initial_ekyc",
+      // approval_date: "25-Mar-2025"
+  }
 },
     success: true,
   }
   
 
+  
 
 export const handlers = [
 	// http.get('/patient/initialize-dashboard/', async () => {

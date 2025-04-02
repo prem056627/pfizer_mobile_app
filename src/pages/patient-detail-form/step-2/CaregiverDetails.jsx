@@ -376,6 +376,25 @@ const CaregiverDetails = ({ formik }) => {
     e.target.value = value;
   };
 
+
+
+  // Add this function to your component (inside the CaregiverDetails component but outside the return statement)
+const clearOtp = (caregiverId) => {
+  setCaregivers((prevCaregivers) =>
+    prevCaregivers.map((caregiver) =>
+      caregiver.id === caregiverId
+        ? { ...caregiver, otp: Array(6).fill(""), otpError: null }
+        : caregiver
+    )
+  );
+  
+  // Focus back on the first OTP input field
+  const firstInput = document.querySelector(
+    `input[name=otp-${caregiverId}-0]`
+  );
+  if (firstInput) firstInput.focus();
+};
+
   return (
     <div className="flex flex-col gap-4">
       {visibleCaregivers.map((caregiverId) => {
@@ -496,6 +515,15 @@ const CaregiverDetails = ({ formik }) => {
                           />
                         ))}
                       </div>
+
+                      {/* Add Clear OTP button here */}
+                    <button
+                      type="button"
+                      onClick={() => clearOtp(caregiverId)}
+                      className="text-primary text-sm font-semibold hover:underline mt-2 text-start"
+                    >
+                      Clear OTP
+                    </button>
 
                       {/* Add this error message display */}
                       {caregiver.otpError && (

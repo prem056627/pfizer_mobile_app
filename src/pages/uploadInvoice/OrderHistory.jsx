@@ -19,6 +19,7 @@ const OrderHistory = () => {
   const program = useSelector(selectSelectedProgram);
     const [isLoading, setIsLoading] = useState(true);
       const triggerApi = useApi();
+      
   // Use actual data from Redux store, no fallback dummy data
   const paidOrders = program?.orders?.paid_orders || [];
   const focOrders = program?.orders?.foc_orders || [];
@@ -94,10 +95,10 @@ const handleFileView = (file) => {
      
     }, []);
 
-    useEffect(() => {
-      makeApiCall();
+    // useEffect(() => {
+    //   makeApiCall();
      
-    }, [activeTab]);
+    // }, [activeTab]);
 
 
   // If no program is selected, show a fallback or redirect

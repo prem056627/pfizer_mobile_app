@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedProgram, setRequestFocModalOpen } from '../../slice/patient-detail-form';
+import { selectSelectedProgram, setRequestFocModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import useApi from '../../hooks/useApi';
@@ -18,28 +18,12 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
     const initialValues = {
         current_step: "place_foc_order",
         program_id: program?.program_id,
-        BrowseFiles: [],
+        prescription_files: [],
+
     };
 
-    // Updated validation schema with max files check and file type/size validation
-    // const validationSchema = Yup.object({
-    //     BrowseFiles: Yup.array()
-    //         .min(1, 'Please upload at least one file')
-    //         .max(5, 'You can upload a maximum of 5 files')
-    //         .test('fileSize', 'File size must be less than 5MB', (files) => {
-    //             if (!files) return true;
-    //             return files.every(file => file.size <= 5 * 1024 * 1024); // 2MB limit
-    //         })
-    //         .test('fileType', 'Only jpg, png, and pdf files are allowed', (files) => {
-    //             if (!files) return true;
-    //             const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-    //             return files.every(file => validTypes.includes(file.type));
-    //         })
-    //         .required('File upload is required'),
-    // });
-
     const validationSchema = Yup.object({
-        BrowseFiles: Yup.array()
+        prescription_files: Yup.array()
             .min(1, 'Please upload at least one file')
             .max(1, 'You can upload a maximum of 1 files')
             .test('fileSize', 'File size must be less than 5MB', (files) => {
@@ -92,28 +76,7 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
         // Create FormData object
         const formData = transformToFormData(values)
 
-        // // Add normal fields
-        // formData.append('current_step', values.current_step);
-        // formData.append('program_id', values.program_id);
 
-        // // Add files individually with unique names
-        // if (values.BrowseFiles && values.BrowseFiles.length > 0) {
-        //     values.BrowseFiles.forEach((file, index) => {
-        //         // Generate a unique filename by appending a timestamp
-        //         const uniqueFileName = `${Date.now()}_${index}_${file.name}`;
-                
-        //         // Create a new File object with the updated name
-        //         const renamedFile = new File([file], uniqueFileName, { type: file.type });
-
-        //         formData.append(`prescription_files[${index}]`, renamedFile);
-        //     });
-        // }
-
-        // // Log FormData contents for verification
-        // for (let pair of formData.entries()) {
-        //     console.log(pair[0] + ': ' + (pair[1] instanceof File ? 
-        //         `File: ${pair[1].name}, size: ${pair[1].size}` : pair[1]));
-        // }
 
         // API request
         const { response, success } = await triggerApi({
@@ -148,6 +111,15 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                 
                 // Show success toast
                 notify();
+
+                     setTimeout(() => {
+                                    // dispatch(setProgramEnrollmentSuccess(false));
+                                    window.location.reload();
+                         }, 2000);
+                
+                        dispatch(setViewingOrderHistory(false));
+                
+                
                 
                 // Refresh program details if the function exists
                 if (typeof fetchProgramDetails === 'function') {
@@ -160,11 +132,11 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                 }
             } else {
                 // Handle API error
-                setFieldError('BrowseFiles', 'Failed to submit request. Please try again.');
+                setFieldError('prescription_files', 'Failed to submit request. Please try again.');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-            setFieldError('BrowseFiles', 'An unexpected error occurred. Please try again.');
+            setFieldError('prescription_files', 'An unexpected error occurred. Please try again.');
         } finally {
             setSubmitting(false);
         }
@@ -177,25 +149,21 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
             onSubmit={onSubmit}
         >
             {(formik) => {
-                const isFileUploaded = formik.values.BrowseFiles.length > 0;
-                const hasErrors = Object.keys(formik.errors).length > 0 && formik.touched.BrowseFiles;
+                const isFileUploaded = formik.values.prescription_files.length > 0;
+                const hasErrors = Object.keys(formik.errors).length > 0 && formik.touched.prescription_files;
 
                 return (
                     <Form className="complete-hidden-scroll-style flex flex-grow flex-col gap-4 overflow-y-auto">
                         <div className="px-5">
-                            <MultiFileUpload
-                                isMultiple={true}
-                                formik={formik}
-                                id="BrowseFiles"
-                                name="BrowseFiles"
-                                label="Prescription"
-                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
-                            />
-                            {/* {hasErrors && (
-                                <div className="text-red-500 text-sm mt-1">
-                                    {formik.errors.BrowseFiles}
-                                </div>
-                            )} */}
+                        <MultiFileUpload
+                        isMultiple={true}
+                        formik={formik}
+                        id="prescription_files"  // Remove the trailing space
+                        name="prescription_files"  // Remove the trailing space
+                        label="Prescription"
+                        description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                    />
+                         
                         </div>
 
                         <div className="flex flex-col gap-5">

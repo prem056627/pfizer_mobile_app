@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedProgram, setUploadInvoiceModalOpen } from '../../slice/patient-detail-form';
+import { selectSelectedProgram, setUploadInvoiceModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import useApi from '../../hooks/useApi';
@@ -40,7 +40,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
 
 
             extra_doc: Yup.array()
-            .min(1, 'Please upload at least one file')
+            // .min(1, 'Please upload at least one file')
             .max(1, 'You can upload a maximum of 1 files')
             .test('fileSize', 'File size must be less than 2MB', (files) => {
                 if (!files) return true;
@@ -51,7 +51,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                 const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
                 return files.every(file => validTypes.includes(file.type));
             })
-            .required('File upload is required'),
+            // .required('File upload is required'),
     });
 
     const notify = () =>
@@ -120,6 +120,15 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                 
                 // Show success toast
                 notify();
+
+                setTimeout(() => {
+                    // dispatch(setProgramEnrollmentSuccess(false));
+                    window.location.reload();
+                }, 2000);
+
+                 dispatch(setViewingOrderHistory(false));
+
+
                 
                 // Refresh program details if the function exists
                 if (typeof fetchProgramDetails === 'function') {
@@ -160,8 +169,8 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 formik={formik}
                                 id="order_file"
                                 name="order_file"
-                                label="Invoice"
-                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                                label="Invoice #"
+                                // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                             />
 
                         <MultiFileUpload
@@ -169,8 +178,8 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 formik={formik}
                                 id="extra_doc"
                                 name="extra_doc"
-                                label="upload_other_documents"
-                                description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                                label="Please Upload the QR code mentioned at the box of your medicine"
+                                description="# - manditory fields"
                             />
                             {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">
