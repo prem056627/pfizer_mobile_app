@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectSelectedEnrollProgram, setCurrentPageState, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setSchemaShown } from '../../slice/patient-detail-form';
 import useApi from '../../hooks/useApi';
 import { transformToFormData } from '../../utils/forms';
+import { ReactComponent as Lorla } from '../../assets/images/svg/Lorbriqua_PAP_Scheme.svg';
+import { ReactComponent as Palbace } from '../../assets/images/svg/palbace_scheme.svg';
+import { ReactComponent as Crizalk } from '../../assets/images/svg/Crizalk_Scheme.svg';
 
 const SchemeEnrollDocUpload = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
@@ -24,35 +27,13 @@ const getRadioData = () => {
   if (programName === "Lorbriqua Care") {
     return [
       {
-        id: '1_1',
+        id: '1+1',
         value: '1+1',
-        label: '1+1',
+        label: ' ',
         description: ''
       },
-      {
-        id: '1_2',
-        value: '1+2',
-        label: '1+2',
-        description: ''
-      },
-      {
-        id: '1_3',
-        value: '1+3',
-        label: '1+3',
-        description: ''
-      },
-      {
-        id: '1_11',
-        value: '1+11',
-        label: '1+11',
-        description: ''
-      },
-      {
-        id: 'other',
-        value: 'Other',
-        label: 'Other',
-        description: ''
-      }
+      
+     
     ];
   } 
   else if (programName === "Palbace Program") {
@@ -60,37 +41,7 @@ const getRadioData = () => {
       {
         id: '9_lft',
         value: '9+LTF',
-        label: '9+LTF',
-        description: ''
-      },
-      {
-        id: '3_1_3_1_2_1_2_ltf',
-        value: '3+1.3+1,2+1,2+LTF',
-        label: '3+1.3+1,2+1,2+LTF',
-        description: ''
-      },
-      {
-        id: '10_ltf',
-        value: '10+LTF',
-        label: '10+LTF',
-        description: ''
-      },
-      {
-        id: '1_3',
-        value: '1+3',
-        label: '1+3',
-        description: ''
-      },
-      {
-        id: 'trade_no_pap',
-        value: 'Trade - No PAP',
-        label: 'Trade - No PAP',
-        description: ''
-      },
-      {
-        id: 'other',
-        value: 'Other',
-        label: 'Other',
+        label: '  1 + 3    Patient has to purchase 1 unit of Palbace, post which 3 assistance units will be provided',
         description: ''
       }
     ];
@@ -100,45 +51,10 @@ const getRadioData = () => {
       {
         id: '1_1',
         value: '1+1',
-        label: '1+1',
+        label: '  1 Paid + 1 Free up to 18 cycles, and then LifeTime Free: Patient buys 1 unit/box of Crizalk and gets 1 unit/box of Crizalk for a month as assistance. This pattern continues up to 18 cycles. After 18 cycles, patient is eligible to get lifetime free assistance',
         description: ''
       },
-      {
-        id: '8_lft',
-        value: '8+LFT',
-        label: '8+LFT',
-        description: ''
-      },
-      {
-        id: '9_lft',
-        value: '9+LFT',
-        label: '9+LFT',
-        description: ''
-      },
-      {
-        id: '14_lft',
-        value: '14+LFT',
-        label: '14+LFT',
-        description: ''
-      },
-      {
-        id: '18_lft',
-        value: '18+LFT',
-        label: '18+LFT',
-        description: ''
-      },
-      {
-        id: 'lft',
-        value: 'LFT',
-        label: 'LFT',
-        description: ''
-      },
-      {
-        id: 'others',
-        value: 'Others',
-        label: 'Others',
-        description: ''
-      }
+     
     ];
   }
   
@@ -315,6 +231,7 @@ const radioData = getRadioData();
           <div className=''>
 
           {!showUploadFields && (
+        <div className="w-full">
             <div className="mb-8 mt-8 px-4">
               <Radio
                 label="Select a scheme"
@@ -328,6 +245,23 @@ const radioData = getRadioData();
                 <div className="text-red-500 text-sm mt-1">{formik.errors.scheme}</div>
               )} */}
             </div>
+
+           {/* Render the correct image based on the selected program */}
+           {selectedEnrollProgram.program_name === "Lorbriqua Care" && (
+  <div className="rounded-lg">
+
+<Lorla className="max-w-full w-auto p-5 rounded-lg" />
+  </div>
+)}
+{selectedEnrollProgram.program_name === "Palbace Program" && (
+  <Palbace className="max-w-full w-auto p-5 rounded-lg" />
+)}
+{selectedEnrollProgram.program_name === "Crizalk Program" && (
+  <Crizalk className="max-w-full w-auto p-5 rounded-lg" />
+)}
+
+
+        </div>
           )}
 
           {/* Document Upload Section */}

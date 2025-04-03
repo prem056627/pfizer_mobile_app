@@ -27,19 +27,6 @@ const relationshipOptions = [
   { id: "Other", label: "Other" },
 ];
 
-
-
-	
-	
-	
-	
-	
-
-	
-	
-
-
-
 const idCardOptions = [
   { id: "passport", label: "Passport" },
   { id: "aadhaar", label: "Aadhaar" },
@@ -346,33 +333,214 @@ const CaregiverDetails = ({ formik }) => {
       });
   };
 
+
+
+
+   // Add this right before the return statement
+   const otpInputStyles = {
+    // Disable iOS/Android text selection highlighting
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+    WebkitUserSelect: 'none',
+    userSelect: 'none',
+    // Disable iOS text size adjustment
+    WebkitTextSizeAdjust: '100%',
+   
+
+
+    // backgroundColor: '#f0f8ff',  // Light blue background
+    // borderColor: '#ff6b6b',      // Reddish border
+    // borderWidth: '2px',          // Thicker border
+    // color: '#2e7d32',            // Green text color
+    // fontWeight: 'bold',          // B
+  };
+
   // Handle input change for OTP fields
   // Updated OTP input fields to prevent alphabetic input and prevent zoom
-  const handleOtpDigitChange = (caregiverId, index, value) => {
-    // Only allow single digits, prevent alphabetic input
-    if (value.length <= 1 && /^\d*$/.test(value)) {
-      setCaregivers((prevCaregivers) => {
-        return prevCaregivers.map((caregiver) => {
-          if (caregiver.id === caregiverId) {
-            const newOtp = [...caregiver.otp];
-            newOtp[index] = value;
+  // const handleOtpDigitChange = (caregiverId, index, value) => {
+  //   // Only allow single digits, prevent alphabetic input
+  //   if (value.length <= 1 && /^\d*$/.test(value)) {
+  //     setCaregivers((prevCaregivers) => {
+  //       return prevCaregivers.map((caregiver) => {
+  //         if (caregiver.id === caregiverId) {
+  //           const newOtp = [...caregiver.otp];
+  //           newOtp[index] = value;
 
-            return { ...caregiver, otp: newOtp };
-          }
-          return caregiver;
-        });
+  //           return { ...caregiver, otp: newOtp };
+  //         }
+  //         return caregiver;
+  //       });
+  //     });
+
+  //     // Auto-focus to next input if value is entered
+  //     if (value !== "" && index < 5) {
+  //       const nextInput = document.querySelector(
+  //         `input[name=otp-${caregiverId}-${index + 1}]`
+  //       );
+  //       if (nextInput) nextInput.focus();
+  //     }
+  //   }
+  // };
+
+  // Replace the current handleOtpDigitChange function
+const handleOtpDigitChange = (caregiverId, index, value) => {
+  // Only allow single digits, prevent non-numeric input
+  if (/^\d?$/.test(value)) {
+    setCaregivers((prevCaregivers) => {
+      return prevCaregivers.map((caregiver) => {
+        if (caregiver.id === caregiverId) {
+          const newOtp = [...caregiver.otp];
+          newOtp[index] = value;
+          return { ...caregiver, otp: newOtp };
+        }
+        return caregiver;
       });
+    });
 
-      // Auto-focus to next input if value is entered
-      if (value !== "" && index < 5) {
+    // Auto-focus to next input if value is entered
+    if (value !== "" && index < 5) {
+      setTimeout(() => {
         const nextInput = document.querySelector(
           `input[name=otp-${caregiverId}-${index + 1}]`
         );
         if (nextInput) nextInput.focus();
+      }, 10); // Small timeout to ensure UI updates before focus change
+    }
+  }
+};
+
+
+// handle keyboard
+
+
+// Handle keyboard navigation
+const handleOtpKeyDown = (caregiverId, index, e) => {
+  // Special handling for backspace
+  if (e.key === 'Backspace') {
+    // If current field is empty or text is selected, move to previous field
+    if ((caregivers[caregiverId].otp[index] === '' || 
+        window.getSelection().toString() === caregivers[caregiverId].otp[index]) && 
+        index > 0) {
+      
+      e.preventDefault(); // Prevent default backspace behavior
+      
+      // First clear current input if it has content
+      if (caregivers[caregiverId].otp[index] !== '') {
+        setCaregivers((prevCaregivers) => {
+          return prevCaregivers.map((caregiver) => {
+            if (caregiver.id === caregiverId) {
+              const newOtp = [...caregiver.otp];
+              newOtp[index] = '';
+              return { ...caregiver, otp: newOtp };
+            }
+            return caregiver;
+          });
+        });
+      } else {
+        // Move to previous input and clear its value
+        setTimeout(() => {
+          const prevInput = document.querySelector(
+            `input[name=otp-${caregiverId}-${index - 1}]`
+          );
+          if (prevInput) {
+            prevInput.focus();
+            
+            // Clear the previous field's value
+            setCaregivers((prevCaregivers) => {
+              return prevCaregivers.map((caregiver) => {
+                if (caregiver.id === caregiverId) {
+                  const newOtp = [...caregiver.otp];
+                  newOtp[index - 1] = '';
+                  return { ...caregiver, otp: newOtp };
+                }
+                return caregiver;
+              });
+            });
+          }
+        }, 10);
       }
     }
-  };
+  }
+  
+  // Handle arrow keys for navigation
+  if (e.key === 'ArrowLeft' && index > 0) {
+    e.preventDefault();
+    const prevInput = document.querySelector(
+      `input[name=otp-${caregiverId}-${index - 1}]`
+    );
+    if (prevInput) prevInput.focus();
+  }
+  
+  if (e.key === 'ArrowRight' && index < 5) {
+    e.preventDefault();
+    const nextInput = document.querySelector(
+      `input[name=otp-${caregiverId}-${index + 1}]`
+    );
+    if (nextInput) nextInput.focus();
+  }
+};
 
+
+// Handle paste events for OTP
+const handleOtpPaste = (caregiverId, index, e) => {
+  e.preventDefault();
+  const pastedData = e.clipboardData.getData('text').trim();
+  
+  // Check if pasted content consists of numbers only
+  if (/^\d+$/.test(pastedData)) {
+    const digits = pastedData.split('').slice(0, 6);
+    
+    setCaregivers((prevCaregivers) => {
+      return prevCaregivers.map((caregiver) => {
+        if (caregiver.id === caregiverId) {
+          // Create a new OTP array with the existing values
+          const newOtp = [...caregiver.otp];
+          
+          // Fill the OTP fields with pasted digits
+          digits.forEach((digit, idx) => {
+            if (index + idx < 6) {
+              newOtp[index + idx] = digit;
+            }
+          });
+          
+          return { ...caregiver, otp: newOtp };
+        }
+        return caregiver;
+      });
+    });
+    
+    // Focus on the next empty field or the last field if all filled
+    setTimeout(() => {
+      const nextEmptyIndex = Math.min(index + digits.length, 5);
+      const nextInput = document.querySelector(
+        `input[name=otp-${caregiverId}-${nextEmptyIndex}]`
+      );
+      if (nextInput) nextInput.focus();
+    }, 50);
+  }
+};
+
+// Add this function to handle input focus
+const handleOtpFocus = (e) => {
+  // For iOS to prevent zoom
+  e.target.style.fontSize = '16px';
+  
+  // Select all text on focus
+  e.target.select();
+};
+
+// Add this function to handle touch events for mobile
+const handleOtpTouchStart = (caregiverId, index, e) => {
+  // For iOS to improve touch response
+  const input = e.target;
+  input.focus();
+  
+  // Position the cursor at the end for better UX
+  setTimeout(() => {
+    if (input.value.length) {
+      input.setSelectionRange(1, 1);
+    }
+  }, 10);
+};
   // Add the next caregiver (show the next one from the predefined list)
   const addNewCaregiver = () => {
     const nextCaregiverId = visibleCaregivers.length;
@@ -504,7 +672,7 @@ const clearOtp = (caregiverId) => {
 
                       {/* OTP input fields */}
                       {/* OTP input fields */}
-                      <div className="flex gap-2">
+                      {/* <div className="flex gap-2">
                         {caregiver.otp.map((digit, index) => (
                           <input
                             key={index}
@@ -532,7 +700,54 @@ const clearOtp = (caregiverId) => {
                             }}
                           />
                         ))}
-                      </div>
+                      </div> */}
+
+                      {/* OTP input fields with improved mobile handling */}
+                    <div className="flex gap-2">
+                      {caregiver.otp.map((digit, index) => (
+                        <input
+                          key={index}
+                          name={`otp-${caregiverId}-${index}`}
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength="1"
+                          className="w-[52px] h-[52px] border rounded text-center text-lg"
+                          value={digit}
+                          onChange={(e) =>
+                            handleOtpDigitChange(
+                              caregiverId,
+                              index,
+                              e.target.value
+                            )
+                          }
+                          onKeyDown={(e) => 
+                            handleOtpKeyDown(
+                              caregiverId, 
+                              index, 
+                              e
+                            )
+                          }
+                          onPaste={(e) => 
+                            handleOtpPaste(
+                              caregiverId,
+                              index,
+                              e
+                            )
+                          }
+                          onFocus={handleOtpFocus}
+                          onTouchStart={(e) => handleOtpTouchStart(caregiverId, index, e)}
+                          autoComplete="off"
+                          style={{
+                            ...otpInputStyles,
+                            fontSize: '16px',
+                            WebkitAppearance: 'none',
+                            appearance: 'none',
+                            caretColor: 'transparent',
+                          }}
+                        />
+                      ))}
+                    </div>
 
                       {/* Add Clear OTP button here */}
                     <button

@@ -20,9 +20,9 @@ const refreshApplication = () => {
         // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));
-         setTimeout(() => {
-          refreshApplication();
-        }, 200);
+        //  setTimeout(() => {
+        //   refreshApplication();
+        // }, 200);
         
      
     }

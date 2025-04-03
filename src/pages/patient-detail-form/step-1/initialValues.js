@@ -27,8 +27,8 @@ export const getProfileInitialValues = (storedData = {}) => {
       // Current Residential Address
       current: {
         same_as_permanent: storedData?.address?.current.line1 || false,
-        line1: storedData?.address?.current.line2 || "",
-        line2: storedData?.address?.current.current_line2 || "",
+        line1: storedData?.address?.current.line1 || "",
+        line2: storedData?.address?.current.line2 || "",
         city: storedData?.address?.current.city || "",
         state: storedData?.address?.current.state || "",
         pincode: storedData?.address?.current.pincode || "",

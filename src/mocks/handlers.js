@@ -9,7 +9,7 @@ let initialData = {
  
     // before enrollment submit
     // patient_enrolment
-    current_step: "caregiver_addition",
+    current_step: "patient_enrolment",
     // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
@@ -2283,7 +2283,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:1,
+		enrolled_programs:0,
     available_programs: [
 		{
 			program_name: "Lorbriqua Care",

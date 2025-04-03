@@ -113,37 +113,14 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   };
   
 
+
+  
+
   // If viewing order history, render OrderHistory component instead
   if (viewingOrderHistory) {
     return <OrderHistory />;
   }
 
-  // const renderAvailablePrograms = () => (
-  //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
-  //     <div className="p-4 flex gap-4">
-  //       <div>
-  //         <ProgramCard1 />
-  //       </div>
-  //       <div className="flex-1">
-  //         <h3 className="text-md font-semibold">Palbace</h3>
-  //         <div className="flex gap-2 mt-2">
-  //           <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
-  //             Oncology
-  //           </span>
-  //           <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded">
-  //             Patient Assistance
-  //           </span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <button
-  //       onClick={handleRequest}
-  //       className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
-  //     >
-  //       ENROL
-  //     </button>
-  //   </div>
-  // );
 
   function NoAvailablePrograms() {
     return (
@@ -201,51 +178,6 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
   );
   
 
-  // const renderShortfallProgram = () => (
-  //   <div className="w-full  bg-white rounded-lg shadow-md mt-4 border">
-  //     <div className="flex items-center gap-2 p-4">
-  //       <h2 className="text-[18px] font-bold">Palbace</h2>
-  //       <span className="px-2 py-1 bg-red-100 text-red-800 text-sm rounded-full">
-  //      { programStatus === "doc_shortfall" ? "Document Shortfall" : "Profile under Review "}
-  //       </span>
-  //     </div>
-  //     <div className="px-4 flex gap-4">
-  //       <div className="space-y-2 text-gray-600 mb-6">
-  //         <p className="text-[#767676] text-[14px] font-sans font-bold">
-  //           UID 10015
-  //         </p>
-  //         <p className="text-[#767676] text-[14px] font-open-sans">
-  //           FOC Orders - 01
-  //         </p>
-  //         <p className="text-[#767676] text-[14px] font-open-sans">
-  //           Enrollment Date - 9th Jun, 2021
-  //         </p>
-  //         <p className="text-[#767676] text-[14px] font-open-sans">
-  //           Schemes - 9+LFT
-  //         </p>
-  //         <p className="text-[#767676] text-[14px] font-open-sans">
-  //           Doctor's Name - Dr. John Doe
-  //         </p>
-  //       </div>
-  //     </div>
-  //    {
-  //      programStatus === "doc_shortfall" &&  <div className="flex justify-center items-center p-2">
-  //      <button
-  //        onClick={handleRequestShortfallProgram}
-  //        className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
-  //      >
-  //       <div className="">
-  //       <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
-  //       <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
-  //       </div>
-  //      <div>
-  //      <Upload/>
-  //      </div>
-  //      </button>
-  //    </div>
-  //    }
-  //   </div>
-  // );
   console.log('program,program',APPLIED_PROGRAMS)
 
 

@@ -41,6 +41,8 @@ const AppNavigation = () => {
 // localStorage.setItem(TOKEN_KEY, "ECrq33VrFHaaKqZm9KBo2EnQNFPko8");
 // console.log("Token stored successfully!");
 // };
+  const currentPageState = useSelector(selectCurrentPageState);
+
 
 // setDummyToken(); // Call this function once to set the token
 
@@ -155,12 +157,21 @@ const AppNavigation = () => {
   };
 
   useEffect(() => {
-    makeApiCall();
-  }, [currentView]);
+    if (currentView || currentPageState) { // Example condition
+        makeApiCall();
+    }
+}, [currentView, currentPageState]);
 
   useEffect(() => {
     makeApiCall();
   }, []);
+
+  // useEffect(() => {
+  //   // When the page state changes to program_enrolment (dashboard), fetch data
+  //   if (currentPageState === 'program_enrolment') {
+     
+  //   }
+  // }, [currentPageState]);
 
 
 
