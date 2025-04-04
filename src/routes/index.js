@@ -16,7 +16,7 @@ import PhysicalVerificationModal from "../pages/physicalVerification/PhysicalVer
 import MenuScreen from "../pages/Menu/MenuScreen";
 import Notifications from "../pages/Notification/Notifications";
 import useApi from "../hooks/useApi";
-import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus } from "../slice/patient-detail-form";
+import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus, selectIsInitalDataLoad } from "../slice/patient-detail-form";
 import ProgramEnrollSuccessModal from "../pages/PfizerProgramDashBoard/ProgramEnrolllmentSuccessModal/ProgramEnrollSuccessModal";
 import ShortFallDoc from "../pages/PfizerProgramDashBoard/ShortFallDoc";
 import RequestFOCModal from "../pages/requestFOC/RequestFOCModal";
@@ -115,6 +115,9 @@ const AppNavigation = () => {
 
   // Component state
   const currentView = useSelector(selectCurrentView);
+  
+
+  const isInitalDataLoad = useSelector(selectIsInitalDataLoad)
   const [isLoading, setIsLoading] = useState(true);
   
   // Get data from Redux
@@ -157,10 +160,13 @@ const AppNavigation = () => {
   };
 
   useEffect(() => {
-    if (currentView || currentPageState) { // Example condition
+    console.log("HI from current view ",currentView);
+    if (currentView || isInitalDataLoad ) { // Example condition
+
+      // console.log("2",isInitalDataLoad);
         makeApiCall();
     }
-}, [currentView, currentPageState]);
+}, [currentView , isInitalDataLoad]);
 
   useEffect(() => {
     makeApiCall();

@@ -9,7 +9,7 @@ let initialData = {
  
     // before enrollment submit
     // patient_enrolment
-    current_step: "patient_enrolment",
+    current_step: "caregiver_addition",
     // current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
@@ -2283,7 +2283,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:0,
+		enrolled_programs:1,
     available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2315,7 +2315,7 @@ let initialData = {
         {
           // program_name: "c",
           // program_status: "rejected",
-          program_status: "suspend",
+          // program_status: "suspend",
           // program_id: 10018,
           // program_scheme: '9+LFT',
           // doctor_name:"prem",
@@ -2332,7 +2332,7 @@ let initialData = {
             { id: 'rroof', label: 'Addrer' },
             
           ],
-          // program_status: "shortfall",
+          program_status: "active",
           // shortfall
           // suspended
           // rejected
@@ -2670,9 +2670,12 @@ verification_history: [
     details : {
       status : "Verified",
        date : "22 Jan 2025",
-       time : "12:00 PM"
-              },
+       time : "12:00 PM",
+       phlebo_name:'Test Phlebo'
+        },
 },
+
+
 ekyc_verification: {
     show_verification_button: true,
     

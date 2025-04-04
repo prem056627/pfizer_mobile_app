@@ -186,6 +186,13 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                     {formik.errors.order_file}
                                 </div>
                             )} */}
+
+                        <p className="text-red-500 text-[12px] italic text-start mb-4">
+                                The file must be in jpg/pdf/png format.In case of multiple file upload please upload as a single pdf.
+                                Maximum size of the document should be 5MB.
+                        </p>
+
+                        
                         </div>
 
                         <div className="flex flex-col gap-5">

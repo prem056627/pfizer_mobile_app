@@ -161,8 +161,14 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                         id="prescription_files"  // Remove the trailing space
                         name="prescription_files"  // Remove the trailing space
                         label="Prescription"
-                        description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                        // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                     />
+
+
+                        <p className="text-red-500 text-[12px] italic text-start mb-4 py-4">
+                          The file must be in jpg/pdf/png format.In case of multiple file upload please upload as a single pdf.
+                          Maximum size of the document should be 5MB.
+                        </p>
                          
                         </div>
 

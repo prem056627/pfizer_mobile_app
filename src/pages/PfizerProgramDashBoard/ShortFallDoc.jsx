@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectInitializeData, setDocUploadStatus, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setProgramStatus, setSchemaShown } from '../../slice/patient-detail-form';
+import { selectInitializeData, selectSelectedEnrollProgram, setDocUploadStatus, setProgramEnrollmentConsent, setProgramEnrollmentSuccess, setProgramStatus, setSchemaShown } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import { transformToFormData } from '../../utils/forms';
@@ -13,6 +13,7 @@ const ShortFallDoc = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const triggerApi = useApi();
+  const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
 
   const initiaData = useSelector(selectInitializeData);
   const uploadFieldsforShoetfall = initiaData?.program_data?.applied_programs;
@@ -102,6 +103,8 @@ const ShortFallDoc = () => {
     try {
       setIsLoading(true);
   
+    let tempValues = values;
+		tempValues['program_id'] = selectedEnrollProgram?.program_id;
       // Create new FormData
       const formData = transformToFormData(values)
       

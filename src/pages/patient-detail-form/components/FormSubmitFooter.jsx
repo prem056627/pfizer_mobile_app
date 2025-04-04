@@ -14,6 +14,7 @@ import {
   setIsCaregiverSkipVisible,
 //   setCurrentPageState,
 } from '../../../slice/patient-detail-form';
+import useApi from '../../../hooks/useApi';
 
 
 
@@ -36,14 +37,62 @@ function FormSubmitFooter({ formik ,onSkip}) {
     //   setCurrentPageState(nextPageState);
     }
   };
+
+
+    const [isLoading, setIsLoading] = useState(true);
+    const triggerApi = useApi();
+
+
+
+   const makeApiCall = async () => {
+      try {
+        setIsLoading(true);
   
-  const onsubmitReverse = () => {
-    if (currentPageState === 'caregiver_addition') {
-      dispatch(setIsCaregiverSkipVisible(false))
-      // Go back to patient enrollment page
-      dispatch(setCurrentPageState('patient_enrolment'))
-    }
-  };
+        const url = `/patient_dashboard/?current_step=caregiver_addition&reverse=true`;
+
+        // // Prepare FormData using values
+        // const preparedFormData = transformToPatientDetailsFormData(values);
+        
+        const { response, success } = await triggerApi({
+          url: url,
+          type: "POST",
+          payload: {}, 
+          loader: true,
+        });
+  
+        if (success && response) {
+          dispatch(setCurrentPageState(response?.current_step));
+  
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 500);
+        
+          return { success: true, data: response };
+        } else {
+          console.error("API call failed or returned no data.");
+          return { success: false, error: "API call failed" };
+        }
+      } catch (error) {
+        console.error("Error in makeApiCall:", error);
+        return { success: false, error };
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+     
+    
+  
+    const onsubmitReverse = async () => {  // Add async here
+      if (currentPageState === 'caregiver_addition') {
+        dispatch(setIsCaregiverSkipVisible(false));
+        // Go back to patient enrollment page
+        dispatch(setCurrentPageState('patient_enrolment'));
+    
+        // const result = await makeApiCall();  // Now correctly awaited
+      }
+    };
+    
 
 
    // Local state to trigger re-render

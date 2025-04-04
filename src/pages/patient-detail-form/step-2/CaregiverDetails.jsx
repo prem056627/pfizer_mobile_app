@@ -519,28 +519,61 @@ const handleOtpPaste = (caregiverId, index, e) => {
   }
 };
 
-// Add this function to handle input focus
+// // Add this function to handle input focus
+// const handleOtpFocus = (e) => {
+//   // For iOS to prevent zoom
+//   e.target.style.fontSize = '16px';
+  
+//   // Select all text on focus
+//   e.target.select();
+// };
+
+// Update this function to better handle focus events
 const handleOtpFocus = (e) => {
+  // Prevent default iOS behavior
+  e.preventDefault();
+  
   // For iOS to prevent zoom
   e.target.style.fontSize = '16px';
   
-  // Select all text on focus
-  e.target.select();
+  // Select all text on focus with a slight delay
+  setTimeout(() => {
+    e.target.select();
+  }, 10);
 };
 
-// Add this function to handle touch events for mobile
+// // Add this function to handle touch events for mobile
+// const handleOtpTouchStart = (caregiverId, index, e) => {
+//   // For iOS to improve touch response
+//   const input = e.target;
+//   input.focus();
+  
+//   // Position the cursor at the end for better UX
+//   setTimeout(() => {
+//     if (input.value.length) {
+//       input.setSelectionRange(1, 1);
+//     }
+//   }, 10);
+// };
+
+// Replace your current handleOtpTouchStart function with this improved version
 const handleOtpTouchStart = (caregiverId, index, e) => {
+  e.stopPropagation(); // Prevent touch event from propagating
+  
   // For iOS to improve touch response
   const input = e.target;
-  input.focus();
   
-  // Position the cursor at the end for better UX
+  // Use a more reliable approach to focus
   setTimeout(() => {
+    input.focus();
+    
+    // Position the cursor at the end for better UX
     if (input.value.length) {
       input.setSelectionRange(1, 1);
     }
-  }, 10);
+  }, 50); // Increased timeout for iOS
 };
+
   // Add the next caregiver (show the next one from the predefined list)
   const addNewCaregiver = () => {
     const nextCaregiverId = visibleCaregivers.length;
@@ -750,13 +783,13 @@ const clearOtp = (caregiverId) => {
                     </div>
 
                       {/* Add Clear OTP button here */}
-                    <button
+                    {/* <button
                       type="button"
                       onClick={() => clearOtp(caregiverId)}
                       className="text-primary text-sm font-semibold hover:underline mt-2 text-start"
                     >
                       Clear OTP
-                    </button>
+                    </button> */}
 
                       {/* Add this error message display */}
                       {caregiver.otpError && (
@@ -767,7 +800,7 @@ const clearOtp = (caregiverId) => {
                     </div>
 
                     {/* Timer and verify button */}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-14">
                       {caregiver.timerSeconds > 0 ? (
                         <p className="text-gray-500">
                           Resend OTP in {caregiver.timerSeconds}
@@ -776,7 +809,7 @@ const clearOtp = (caregiverId) => {
                         <button
                           type="button"
                           onClick={() => sendOtp(caregiverId)}
-                          className="text-primary font-semibold hover:underline"
+                          className="text-primary font-semibold hover:underline text-start"
                         >
                           Resend OTP
                         </button>

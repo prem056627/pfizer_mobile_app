@@ -120,7 +120,31 @@ const radioData = getRadioData();
     return errors;
   };
   
+
   
+  function PoweredByFooter() {
+    const phoneNumber = "18002587008"; // Define the phone number
+    
+    return (
+      <div className="flex flex-row justify-between items-center mt-16">
+        <div className="flex flex-row items-center">
+          <p className="text-xs text-gray-500 italic">
+            Powered by <span className="font-bold text-black">TATA 1mg</span>
+          </p>
+        </div>
+        
+        <div className="flex items-center">
+          <span className="text-xs text-gray-500">Contact: </span>
+          <a 
+            href={`tel:${phoneNumber}`}
+            className="text-primary font-bold text-xs no-underline"
+          >
+            {phoneNumber}
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   // Updated API call function to properly handle file uploads with FormData
   const makeApiCall = async (values) => {
@@ -232,7 +256,7 @@ const radioData = getRadioData();
 
           {!showUploadFields && (
         <div className="w-full">
-            <div className="mb-8 mt-8 px-4">
+            <div className=" mt-8 px-[20px]">
               <Radio
                 label="Select a scheme"
                 name="scheme"
@@ -250,16 +274,22 @@ const radioData = getRadioData();
            {selectedEnrollProgram.program_name === "Lorbriqua Care" && (
   <div className="rounded-lg">
 
-<Lorla className="max-w-full w-auto p-5 rounded-lg" />
+<Lorla className="max-w-full w-auto p-5 rounded-lg  h-[300px]" />
+<p className="text-[14px] px-[20px] text-gray-700 font-open-sans">your enrolment and allotment to a scheme shall be subject to verification of all the documents and information shared by you.</p>
   </div>
 )}
 {selectedEnrollProgram.program_name === "Palbace Program" && (
-  <Palbace className="max-w-full w-auto p-5 rounded-lg" />
+  <Palbace className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
 )}
 {selectedEnrollProgram.program_name === "Crizalk Program" && (
-  <Crizalk className="max-w-full w-auto p-5 rounded-lg" />
+  <Crizalk className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
 )}
 
+
+<div className="mb-10 px-[20px]">
+
+{PoweredByFooter()}
+</div>
 
         </div>
           )}

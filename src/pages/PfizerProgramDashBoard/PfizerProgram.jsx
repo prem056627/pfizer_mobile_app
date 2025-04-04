@@ -60,7 +60,8 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
     dispatch(setProgramEnrollmentConsent({ program, consent: true }));
   };
 
-  const handleRequestShortfallProgram = () => {
+  const handleRequestShortfallProgram = (program) => {
+    dispatch(setSelectedEnrollProgram(program));
     dispatch(setDocUploadStatus('short_fall_doc'));
   };
 
@@ -248,13 +249,13 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
              
                 className={`px-4 py-1 ${
                   program.program_status === 'shortfall' 
-                  ? 'bg-red-100 text-red-800' 
+                  ? 'bg-yellow-100 text-yellow-900 ' 
                   : program.program_status === 'suspend' 
                     ? 'bg-red-100 text-red-800' 
                     :  program.program_status === 'rejected' 
                     ? 'bg-red-100 text-red-800' 
                     : ''
-
+                    //  border-l-4 border-yellow-500 
                 
                 } text-[#3B3B3B]  px-[8px] rounded-[6px] text-[12px]`}
               >
@@ -268,7 +269,7 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
               </span>
             </div>
             <div className="px-4 flex gap-4">
-              <div className="space-y-2 text-gray-600 mb-6">
+              <div className="2">
                 <p className="text-[#767676] text-[14px] font-sans font-bold">
                 UID - {initiaData?.patient_data?.patient_uid}
                 </p>
@@ -285,22 +286,32 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
                 </p> */}
               </div>
             </div>
-            {program.program_status === "shortfall" && (
-              <div className="flex justify-center items-center p-2">
-                <button
-                  onClick={handleRequestShortfallProgram}
-                  className="text-[14px] px-4 flex justify-between items-center w-full font-sans font-bold border border-primary bg-white rounded-lg text-primary py-2"
-                >
-                  <div>
-                    <p className="text-primary font-sans text-[15px] font-semibold">Update new document</p>
-                    <p className="text-[#A9A9A9] font-sans text-[15px] font-normal">Upload your ID Proof and Address Proof</p>
-                  </div>
-                  <div>
-                    <Upload />
-                  </div>
-                </button>
-              </div>
-            )}
+            {program?.program_status === "shortfall" && (
+  <div className="flex justify-center items-center p-4">
+    <div className="w-full bg-yellow-100 border-l-4 border-yellow-500 text-yellow-900 p-2 rounded-lg shadow-md flex items-center space-x-3">
+      <div className="w-10">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-6 w-6 text-yellow-500" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
+        />
+      </svg>
+      </div>
+      <p className="text-base font-medium  text-[14px]">
+        Please contact the PAP Team to get your documents updated.
+      </p>
+    </div>
+  </div>
+)}
+
           </div>
         )
       ))}
@@ -416,7 +427,7 @@ const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
         <span className="pl-2">
           <Pap className="w-8 h-8" />
         </span>
-        Phlebo  Team will soon reach out for verification
+        {initiaData?.physical_verification?.details?.phlebo_name} will soon reach out for verification
       </button>
     </div>
   ) : (

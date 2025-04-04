@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { ReactComponent as SuccessLogo } from "../../../assets/images/svg/successEnrollment.svg";
 import { handleRequest } from "msw";
 import { useDispatch } from "react-redux";
-import { setCurrentPageState, setPatientEnrollmentSuccessModalOpen } from "../../../slice/patient-detail-form";
+import { setCurrentPageState, setIsInitalDataLoad, setPatientEnrollmentSuccessModalOpen } from "../../../slice/patient-detail-form";
 
 function PatientEnrollmentSuccess() {
 const dispatch = useDispatch();
@@ -20,6 +20,8 @@ const refreshApplication = () => {
         // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));
+         dispatch(setIsInitalDataLoad(true));
+         
         //  setTimeout(() => {
         //   refreshApplication();
         // }, 200);

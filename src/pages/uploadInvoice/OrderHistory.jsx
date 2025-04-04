@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FabButton from "../../components/FabButton";
 import MenuFooter from "../../components/MenuFooter";
 import { 
+  selectCurrentView,
   selectSelectedProgram, 
   setCurrentPageState, 
   setInitializeData, 
@@ -19,12 +20,17 @@ const OrderHistory = () => {
   const program = useSelector(selectSelectedProgram);
     const [isLoading, setIsLoading] = useState(true);
       const triggerApi = useApi();
-      
+      const [loadingFile, setLoadingFile] = useState(null);
   // Use actual data from Redux store, no fallback dummy data
   const paidOrders = program?.orders?.paid_orders || [];
   const focOrders = program?.orders?.foc_orders || [];
+
+    const currentView = useSelector(selectCurrentView);
+    const hasOpenOrders = paidOrders.some(order => order.order_status === "Open");
   
-  console.log('paidOrders,focOrders', program);
+  console.log('paidOrders,focOrders', program?.orders?.paid_orders
+
+    );
   
   // Handle back navigation
   const handleBack = () => {
@@ -42,23 +48,50 @@ const OrderHistory = () => {
   };
 
 // In your React web code
+// const handleFileView = (file) => {
+//   // Check if running inside a WebView (React Native)
+//   if (window.ReactNativeWebView) {
+//     // Send message to React Native
+//     window.ReactNativeWebView.postMessage(
+//       JSON.stringify({
+//         type: 'VIEW_FILE',
+//         fileUrl: file
+//       })
+//     );
+//   } else {
+//     // Fallback for web browsers (when testing on web)
+//     window.open(file, '_blank');
+//   }
+// };
+
 const handleFileView = (file) => {
+  // Extract file name and type (if possible)
+  const fileName = file.split('/').pop() || 'document';
+  const fileType = fileName.split('.').pop().toLowerCase() || 'pdf';
+  
+  // Set loading state for this file
+  setLoadingFile(file);
+  
   // Check if running inside a WebView (React Native)
   if (window.ReactNativeWebView) {
     // Send message to React Native
     window.ReactNativeWebView.postMessage(
       JSON.stringify({
         type: 'VIEW_FILE',
-        fileUrl: file
+        fileUrl: file,
+        fileName: fileName,
+        fileType: fileType
       })
     );
+    
+    // Reset loading state after a short delay
+    setTimeout(() => setLoadingFile(null), 1500);
   } else {
     // Fallback for web browsers (when testing on web)
     window.open(file, '_blank');
+    setLoadingFile(null);
   }
 };
-
-
 
 
 
@@ -90,10 +123,20 @@ const handleFileView = (file) => {
     // console.log('initialDatainitialData',initialData);
     
   
-    useEffect(() => {
-      makeApiCall();
+    // useEffect(() => {
+    //   makeApiCall();
      
-    }, []);
+    // }, []);
+
+
+    useEffect(() => {
+        console.log("HI from histry view ",currentView);
+        if (currentView  ) { // Example condition
+    
+          // console.log("2",isInitalDataLoad);
+            makeApiCall();
+        }
+    }, [currentView ]);
 
     // useEffect(() => {
     //   makeApiCall();
@@ -206,26 +249,55 @@ const handleFileView = (file) => {
          
 
             {program.program_status === "active" && (
-      <>
-        <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
-          {activeTab === "paid" ? "Have new orders?" : "Need more free samples?"}
-        </p>
-        {activeTab === "paid" ? (
-          <button
-            onClick={UploadInvoiceHandle}
-            className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-          >
-            Upload Invoice
-          </button>
-        ) : (
-          <button
-            onClick={RequestFocHandle}
-            className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-          >
-            Request FOC
-          </button>
-        )}
-      </>
+    //  <>
+    //     <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
+    //       {activeTab === "paid" ? "Have new orders?" : "Need more free samples?"}
+    //     </p>
+    //     {activeTab === "paid" ? (
+    //       <button
+    //         onClick={UploadInvoiceHandle}
+    //         className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+    //       >
+    //         Upload Invoice
+    //       </button>
+    //     ) : (
+    //       <button
+    //         onClick={RequestFocHandle}
+    //         className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+    //       >
+    //         Request FOC
+    //       </button>
+    //     )}
+    //   </> 
+
+    <>
+    {/* Show "Have new orders?" only if activeTab is "paid" and no open orders */}
+    <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
+      {activeTab === "paid"
+        ? !hasOpenOrders && "Have new orders?"
+        : "Need more free samples?"}
+    </p>
+  
+    {/* Show "Upload Invoice" only if activeTab is "paid" and no open orders */}
+    {activeTab === "paid" && !hasOpenOrders && (
+      <button
+        onClick={UploadInvoiceHandle}
+        className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+      >
+        Upload Invoice
+      </button>
+    )}
+  
+    {/* Always show "Request FOC" when activeTab is NOT "paid" */}
+    {activeTab !== "paid" && (
+      <button
+        onClick={RequestFocHandle}
+        className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+      >
+        Request FOC
+      </button>
+    )}
+  </>
     )}
 
 
@@ -262,22 +334,22 @@ const handleFileView = (file) => {
                   </p>
                   
                   {/* File list section */}
-                  {order.order_file && order.order_file.length > 0 && (
-                    <div className="mt-3 flex gap-4 items-center">
-                      <p className="text-[#767676] text-[14px] ">View Files:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {order.order_file.map((file, fileIndex) => (
-                          <button 
-                            key={fileIndex}
-                            onClick={() => handleFileView(file)}
-                            className="inline-block bg-primary-200 text-primary text-[12px] py-1 px-3 rounded-full border border-primary"
-                          >
-                            {`file-${fileIndex + 1}`}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <div className="flex gap-1"> 
+                  {order.order_file.map((file, fileIndex) => (
+                      <button 
+                        key={fileIndex}
+                        onClick={() => handleFileView(file)}
+                        className={`inline-block text-[12px]  py-1 px-3 rounded-full border ${
+                          loadingFile === file 
+                            ? 'bg-gray-200 text-gray-600 border-gray-400' 
+                            : 'bg-primary-200 text-primary border-primary'
+                        }`}
+                        disabled={loadingFile === file}
+                      >
+                        {loadingFile === file ? 'Loading...' : `file-${fileIndex + 1}`}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))
