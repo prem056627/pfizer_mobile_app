@@ -160,7 +160,8 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                         formik={formik}
                         id="prescription_files"  // Remove the trailing space
                         name="prescription_files"  // Remove the trailing space
-                        label="Prescription"
+                        label="Prescription *"
+                         description="* - manditory fields"
                         // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                     />
 

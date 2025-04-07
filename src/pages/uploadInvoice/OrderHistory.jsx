@@ -130,13 +130,11 @@ const handleFileView = (file) => {
 
 
     useEffect(() => {
-        console.log("HI from histry view ",currentView);
-        if (currentView  ) { // Example condition
     
           // console.log("2",isInitalDataLoad);
             makeApiCall();
-        }
-    }, [currentView ]);
+      
+    }, [ ]);
 
     // useEffect(() => {
     //   makeApiCall();
@@ -326,12 +324,15 @@ const handleFileView = (file) => {
                   <p className="text-[#767676] text-[14px]">
                     Order Date: {order.order_date}
                   </p>
-                  <p className="text-[#767676] text-[14px]">
+                  {/* <p className="text-[#767676] text-[14px]">
                     Scheme: {order.order_scheme}
-                  </p>
-                  <p className="text-[#767676] text-[14px]">
-                    Doctor's Name: {order.doctor_name || program.doctor_name || "N/A"}
-                  </p>
+                  </p> */}
+                  {
+                    order?.onemg_status ?  <p className="text-[#767676] text-[14px] ">
+                    Onemg Status: {order?.onemg_status || "N/A"}
+                    </p>:null
+                  }
+                 
                   
                   {/* File list section */}
                   <div className="flex gap-1"> 

@@ -16,7 +16,7 @@ import PhysicalVerificationModal from "../pages/physicalVerification/PhysicalVer
 import MenuScreen from "../pages/Menu/MenuScreen";
 import Notifications from "../pages/Notification/Notifications";
 import useApi from "../hooks/useApi";
-import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus, selectIsInitalDataLoad } from "../slice/patient-detail-form";
+import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus, selectIsInitalDataLoad, setIsInitalDataLoad } from "../slice/patient-detail-form";
 import ProgramEnrollSuccessModal from "../pages/PfizerProgramDashBoard/ProgramEnrolllmentSuccessModal/ProgramEnrollSuccessModal";
 import ShortFallDoc from "../pages/PfizerProgramDashBoard/ShortFallDoc";
 import RequestFOCModal from "../pages/requestFOC/RequestFOCModal";
@@ -28,6 +28,7 @@ import { ToastContainer } from 'react-toastify';
 import EkyModal from "../pages/Ekyc/EkyModal";
 import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
 import CompleteKycModal from "../pages/Menu/completedKyc/CompleteKycModal";
+import AddCaregiverModal from "../pages/Menu/Profile/addCaregiver/AddCaregiverModal";
 
 const AppNavigation = () => {
 // Token functionality
@@ -159,18 +160,33 @@ const AppNavigation = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("HI from current view ",currentView);
-    if (currentView || isInitalDataLoad ) { // Example condition
+  // useEffect(()=>{
+  //   dispatch(setIsInitalDataLoad('route_page'));
+  // },[])
+   
 
-      // console.log("2",isInitalDataLoad);
-        makeApiCall();
-    }
-}, [currentView , isInitalDataLoad]);
+//   useEffect(() => {
 
-  useEffect(() => {
+
+//     if (isInitalDataLoad || currentView === 'home' ) { // Example condition
+
+//       // console.log("2",isInitalDataLoad);
+//         makeApiCall();
+//     }
+// }, [isInitalDataLoad , currentView]);
+
+//   useEffect(() => {
+//     makeApiCall();
+//   }, []);
+
+useEffect(() => {
+  if (isInitalDataLoad) {
     makeApiCall();
-  }, []);
+  } else if (currentView === 'home') {
+    makeApiCall();
+  }
+}, [isInitalDataLoad, currentView]);
+
 
   // useEffect(() => {
   //   // When the page state changes to program_enrolment (dashboard), fetch data
@@ -282,6 +298,7 @@ const AppNavigation = () => {
       <EkyModal/>
       <KycHistoryModal/>
       <CompleteKycModal/>
+      <AddCaregiverModal/>
     </Home>
   );
 };

@@ -9,8 +9,8 @@ let initialData = {
  
     // before enrollment submit
     // patient_enrolment
-    current_step: "caregiver_addition",
-    // current_step: "program_enrolment_done",
+    // current_step: "caregiver_addition",
+    current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2353,7 +2353,7 @@ let initialData = {
                   },
                   {
                       order_id: "10002",
-                      order_status: "Open",
+                      order_status: "Approved",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2369,6 +2369,7 @@ let initialData = {
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
                       order_scheme:"9LD",
+                      onemg_status:"updated",
                       order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
                   },
                   {
@@ -2592,78 +2593,78 @@ verification_history: [
 ]
 ,
   caregiver_data: [
-      {
-          caregiver_relation: "Father",
-          caregiver_email: "father_caregiver@gmail.com",
-          caregiver_name: "Robert Tester",
-          caregiver_id: 10009,
-          caregiver_mobile: "+1-222-333-4444",
-          caregiver_address: {
-              city: "Chicago",
-              state: "IL",
-              line1: "78 Maple Drive",
-              line2: "Suite 2B",
-              pincode: "60601"
-          },
-          caregiver_id_card_type_1 : "hello",
-          caregiver_id_card_type_2 : "pdvdv",
-          id_card_number_1 : "34242",
-          id_card_number_2 : "34234234"
-      },
-      {
-          caregiver_relation: "Mother",
-          caregiver_email: "mother_caregiver@gmail.com",
-          caregiver_name: "Sarah Tester",
-          caregiver_id: 10010,
-          caregiver_mobile: "+1-555-666-7777",
-          caregiver_address: {
-              city: "Miami",
-              state: "FL",
-              line1: "45 Beach Road",
-              line2: "Apartment 12C",
-              pincode: "33101"
-          },
-          caregiver_id_card_type_1 : "hello",
-          caregiver_id_card_type_2 : "pdvdv",
-          id_card_number_1 : "34242",
-          id_card_number_2 : "34234234"
-      },
-      {
-          caregiver_relation: "Brother",
-          caregiver_email: "brother_caregiver@gmail.com",
-          caregiver_name: "Mike Tester",
-          caregiver_id: 10011,
-          caregiver_mobile: "+1-888-999-0000",
-          caregiver_address: {
-              city: "Seattle",
-              state: "WA",
-              line1: "120 Pine Street",
-              line2: "Floor 3",
-              pincode: "98101"
-          },
-          caregiver_id_card_type_1 : "hello",
-          caregiver_id_card_type_2 : "pdvdv",
-          id_card_number_1 : "34242",
-          id_card_number_2 : "34234234"
-      },
-      {
-          caregiver_relation: "Friend",
-          caregiver_email: "friend_caregiver@gmail.com",
-          caregiver_name: "Jake Friend",
-          caregiver_id: 10012,
-          caregiver_mobile: "+1-111-222-3333",
-          caregiver_address: {
-              city: "Austin",
-              state: "TX",
-              line1: "85 Ranch Road",
-              line2: "Building 4",
-              pincode: "73301"
-          },
-          caregiver_id_card_type_1 : "hello",
-          caregiver_id_card_type_2 : "pdvdv",
-          id_card_number_1 : "34242",
-          id_card_number_2 : "34234234"
-      }
+      // {
+      //     caregiver_relation: "Father",
+      //     caregiver_email: "father_caregiver@gmail.com",
+      //     caregiver_name: "Robert Tester",
+      //     caregiver_id: 10009,
+      //     caregiver_mobile: "+1-222-333-4444",
+      //     caregiver_address: {
+      //         city: "Chicago",
+      //         state: "IL",
+      //         line1: "78 Maple Drive",
+      //         line2: "Suite 2B",
+      //         pincode: "60601"
+      //     },
+      //     caregiver_id_card_type_1 : "hello",
+      //     caregiver_id_card_type_2 : "pdvdv",
+      //     id_card_number_1 : "34242",
+      //     id_card_number_2 : "34234234"
+      // },
+      // {
+      //     caregiver_relation: "Mother",
+      //     caregiver_email: "mother_caregiver@gmail.com",
+      //     caregiver_name: "Sarah Tester",
+      //     caregiver_id: 10010,
+      //     caregiver_mobile: "+1-555-666-7777",
+      //     caregiver_address: {
+      //         city: "Miami",
+      //         state: "FL",
+      //         line1: "45 Beach Road",
+      //         line2: "Apartment 12C",
+      //         pincode: "33101"
+      //     },
+      //     caregiver_id_card_type_1 : "hello",
+      //     caregiver_id_card_type_2 : "pdvdv",
+      //     id_card_number_1 : "34242",
+      //     id_card_number_2 : "34234234"
+      // },
+      // {
+      //     caregiver_relation: "Brother",
+      //     caregiver_email: "brother_caregiver@gmail.com",
+      //     caregiver_name: "Mike Tester",
+      //     caregiver_id: 10011,
+      //     caregiver_mobile: "+1-888-999-0000",
+      //     caregiver_address: {
+      //         city: "Seattle",
+      //         state: "WA",
+      //         line1: "120 Pine Street",
+      //         line2: "Floor 3",
+      //         pincode: "98101"
+      //     },
+      //     caregiver_id_card_type_1 : "hello",
+      //     caregiver_id_card_type_2 : "pdvdv",
+      //     id_card_number_1 : "34242",
+      //     id_card_number_2 : "34234234"
+      // },
+      // {
+      //     caregiver_relation: "Friend",
+      //     caregiver_email: "friend_caregiver@gmail.com",
+      //     caregiver_name: "Jake Friend",
+      //     caregiver_id: 10012,
+      //     caregiver_mobile: "+1-111-222-3333",
+      //     caregiver_address: {
+      //         city: "Austin",
+      //         state: "TX",
+      //         line1: "85 Ranch Road",
+      //         line2: "Building 4",
+      //         pincode: "73301"
+      //     },
+      //     caregiver_id_card_type_1 : "hello",
+      //     caregiver_id_card_type_2 : "pdvdv",
+      //     id_card_number_1 : "34242",
+      //     id_card_number_2 : "34234234"
+      // }
   ],
   physical_verification: {
     show_verification_button: true,

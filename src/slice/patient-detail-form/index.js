@@ -29,7 +29,7 @@ export const ProgramEnrollmentSlice = createSlice({
     
     program_enrollment_success: false,
     patient_enrollemnt_success: false,
-    current_view: "Home",
+    current_view: "home",
     // currentStep: 'caregiver_addition',
 
     /////////// upload_file render flags
@@ -45,6 +45,7 @@ export const ProgramEnrollmentSlice = createSlice({
     physical_verification_modal_open: false,
     isFabButtonOpen:false,
     isProfilePageOpen:false,
+    isAddCaregiverFormOpen:false,
     isMoreProgramPageOpen:false,
     isEkySuccessModalOpen:false,
     isKycHistoryModalOpen:false,
@@ -116,6 +117,9 @@ export const ProgramEnrollmentSlice = createSlice({
     setIsProfilePageOpen: (state, action) => {
       state.isProfilePageOpen = action.payload;
     },
+    setIsAddCaregiverFormOpen: (state, action) => {
+      state.isAddCaregiverFormOpen = action.payload;
+    },
     setIsMoreProgramPageOpen:(state, action)=>{
       state.isMoreProgramPageOpen = action.payload;
     },
@@ -159,6 +163,7 @@ export const {
   setPhysicalVerificationModalOpen,
   setIsFabButtonOpen,
   setIsProfilePageOpen,
+  setIsAddCaregiverFormOpen,
   setIsMoreProgramPageOpen,
   setIsEkySuccessModalOpen,
   setIsKycHistoryModalOpen,
@@ -212,6 +217,11 @@ export const selectIsFabButtonOpen = (state) =>
 
 export const selectIsProfilePageOpen = (state) =>
   state.patientDetailForm.isProfilePageOpen;
+
+export const selectIsAddCaregiverFormOpen= (state) =>
+  state.patientDetailForm.isAddCaregiverFormOpen;
+
+
 export const selectIsMoreProgramPageOpen = (state) =>
   state.patientDetailForm.isMoreProgramPageOpen;
 export const selectIsEkySuccessModalOpen = (state) =>

@@ -5,20 +5,64 @@ import { ReactComponent as Notification } from "../../assets/images/svg/Notifica
 import { Transition } from 'react-transition-group';
 
 import { ReactComponent as Empty } from "../../assets/images/menus1/empty_notify.svg";
-import { selectInitializeData } from '../../slice/patient-detail-form';
-import { useSelector } from 'react-redux';
+import { selectInitializeData, setCurrentPageState, setInitializeData } from '../../slice/patient-detail-form';
+import { useDispatch, useSelector } from 'react-redux';
 import useApi from '../../hooks/useApi';
 import { transformToPatientDetailsFormData } from '../../utils/forms';
 
 const Notifications = () => {
-  const initiaData = useSelector(selectInitializeData);
-  const apiNotifications = initiaData.notifications || [];
+
   const triggerApi = useApi();
-  console.log(apiNotifications);
+  // console.log(apiNotifications);
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [removingIds, setRemovingIds] = useState([]);
+
+ const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  
+      const makeApiCall = async () => {
+        try {
+          setIsLoading(true);
+          const url = `/patient_dashboard/?current_step=notification_history`;
+          const { response, success } = await triggerApi({
+            url: url,
+            type: "GET",
+            loader: true,
+          });
+      
+          if (success && response) {
+            dispatch(setInitializeData(response));
+            // console.log('responseresponseresponse!!',response);
+            dispatch(setCurrentPageState(response.current_step)); 
+            // dispatch(setProgramStatus(response.program_status)); 
+          } else {
+            console.error("API call failed or returned no data.");
+          }
+        } catch (error) {
+          console.error("Error in makeApiCall:", error);
+        } finally {
+          setIsLoading(false); // Ensure loading state is reset
+        }
+      };
+    
+      // console.log('initialDatainitialData',initialData);
+      
+  
+  
+  
+      useEffect(() => {
+      
+            // console.log("2",isInitalDataLoad);
+              makeApiCall();
+        
+      }, [ ]);
+
+
+      const initiaData = useSelector(selectInitializeData);
+      const apiNotifications = initiaData.notifications || [];
 
   useEffect(() => {
     // Use the API notifications directly from the Redux store

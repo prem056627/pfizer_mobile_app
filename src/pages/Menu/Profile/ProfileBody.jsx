@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { ReactComponent as DropDownTickIcon } from '../../../../src/assets/images/svg/Form-dropDownTick-icon.svg';
-import { useSelector } from 'react-redux';
-import { selectInitializeData } from '../../../slice/patient-detail-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectInitializeData, setCurrentPageState, setInitializeData, setIsAddCaregiverFormOpen } from '../../../slice/patient-detail-form';
+import useApi from '../../../hooks/useApi';
 
 function MyProfileDetails() {
 	const patient_profile_data = useSelector(selectInitializeData);
@@ -37,6 +38,63 @@ function MyProfileDetails() {
 				'aria-live': 'polite',
 			},
 		});
+
+
+
+
+
+		
+		
+			const triggerApi = useApi();
+			  const dispatch = useDispatch();
+			  const [isLoading, setIsLoading] = useState(false);
+		  
+		  
+			   const makeApiCall_1 = async () => {
+				  // Check token before making API call
+				  // if (!checkToken()) {
+				  //   console.log("No token found, redirecting to login.");
+				  //   // You might want to add a redirect logic here
+				  //   return;
+				  // }
+			  
+				  try {
+					setIsLoading(true);
+					const url = `/patient_dashboard/?current_step=patient_data`;
+					const { response, success } = await triggerApi({
+					  url: url,
+					  type: "GET",
+					  loader: true,
+					});
+				
+					if (success && response) {
+					  dispatch(setInitializeData(response));
+					  dispatch(setCurrentPageState(response.current_step)); 
+					} else {
+					  console.error("API call failed or returned no data.");
+					}
+				  } catch (error) {
+					console.error("Error in makeApiCall:", error);
+				  } finally {
+					setIsLoading(false);
+				  }
+				};
+			  
+				// useEffect(()=>{
+				//   dispatch(setIsInitalDataLoad('route_page'));
+				// },[])
+				 
+			  
+				useEffect(() => {
+				
+					  makeApiCall_1();
+				  // }
+			  }, [ ]);
+		  
+ function OpenAddCaregiver() {
+	dispatch(setIsAddCaregiverFormOpen(true));
+	// console.log("Modal closed");
+  }
 
 	return (
 		<div className="relative h-auto w-full overflow-scroll">
@@ -276,6 +334,17 @@ function MyProfileDetails() {
 						</p>
 					</div>
 				))}
+				{caregivers.length <= 3 && (
+				<button
+					type="button"
+					className="flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide"
+					onClick={OpenAddCaregiver}
+				>
+					Add caregiver
+				</button>
+				)}
+
+
 			</div>
 		</div>
 	);

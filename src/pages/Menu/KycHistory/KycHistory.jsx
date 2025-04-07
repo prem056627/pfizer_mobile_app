@@ -1,8 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { selectInitializeData } from "../../../slice/patient-detail-form";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectInitializeData, setCurrentPageState, setInitializeData } from "../../../slice/patient-detail-form";
 import { CheckCircle, Clock, XCircle, AlertCircle } from "lucide-react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
+import useApi from "../../../hooks/useApi";
 function KycHistory() {
   const initialization_data = useSelector(selectInitializeData);
   // ekyc_history
@@ -12,7 +13,56 @@ function KycHistory() {
   // KYC history data from API
   const kycData = initialization_data?.ekyc_history;
 
+  
 
+
+
+    const triggerApi = useApi();
+      const dispatch = useDispatch();
+      const [isLoading, setIsLoading] = useState(false);
+  
+  
+       const makeApiCall_1 = async () => {
+          // Check token before making API call
+          // if (!checkToken()) {
+          //   console.log("No token found, redirecting to login.");
+          //   // You might want to add a redirect logic here
+          //   return;
+          // }
+      
+          try {
+            setIsLoading(true);
+            const url = `/patient_dashboard/?current_step=ekyc_history`;
+            const { response, success } = await triggerApi({
+              url: url,
+              type: "GET",
+              loader: true,
+            });
+        
+            if (success && response) {
+              dispatch(setInitializeData(response));
+              dispatch(setCurrentPageState(response.current_step)); 
+            } else {
+              console.error("API call failed or returned no data.");
+            }
+          } catch (error) {
+            console.error("Error in makeApiCall:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+      
+        // useEffect(()=>{
+        //   dispatch(setIsInitalDataLoad('route_page'));
+        // },[])
+         
+      
+        useEffect(() => {
+        
+              makeApiCall_1();
+          // }
+      }, [ ]);
+  
 
 
   function NoAvailablePrograms() {

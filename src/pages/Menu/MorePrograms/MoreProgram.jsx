@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { selectInitializeData, setCurrentView, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
-// const programsData = [
+import { selectInitializeData, setCurrentPageState, setCurrentView, setInitializeData, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
+import useApi from "../../../hooks/useApi";
+
 
   
 //   {
@@ -103,16 +104,63 @@ import { selectInitializeData, setCurrentView, setIsMoreProgramPageOpen, setProg
 //         program_image: ProgramCard1,
 //         program_type: ["Oncology", "Patient Assistance"],
 function MoreProgram() {
-  // const [selectedProgram, setSelectedProgram] = useState(null);
 
-  // const handleProgramClick = (programId) => {
-  //   setSelectedProgram(selectedProgram === programId ? null : programId);
-  // };
 
   const initiaData = useSelector(selectInitializeData);
   const dispatch = useDispatch();
 
   const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
+
+
+
+
+      const triggerApi = useApi();
+
+        const [isLoading, setIsLoading] = useState(false);
+    
+    
+         const makeApiCall_1 = async () => {
+            // Check token before making API call
+            // if (!checkToken()) {
+            //   console.log("No token found, redirecting to login.");
+            //   // You might want to add a redirect logic here
+            //   return;
+            // }
+        
+            try {
+              setIsLoading(true);
+              const url = `/patient_dashboard/?current_step=program_data`;
+              const { response, success } = await triggerApi({
+                url: url,
+                type: "GET",
+                loader: true,
+              });
+          
+              if (success && response) {
+                dispatch(setInitializeData(response));
+                dispatch(setCurrentPageState(response.current_step)); 
+              } else {
+                console.error("API call failed or returned no data.");
+              }
+            } catch (error) {
+              console.error("Error in makeApiCall:", error);
+            } finally {
+              setIsLoading(false);
+            }
+          };
+        
+          // useEffect(()=>{
+          //   dispatch(setIsInitalDataLoad('route_page'));
+          // },[])
+           
+        
+          useEffect(() => {
+          
+                makeApiCall_1();
+            // }
+        }, [ ]);
+    
+
 
     const handleRequest = (program) => {
        

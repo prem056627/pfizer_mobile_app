@@ -169,7 +169,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 formik={formik}
                                 id="order_file"
                                 name="order_file"
-                                label="Invoice #"
+                                label="Invoice *"
                                 // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                             />
 
@@ -179,7 +179,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                                 id="extra_doc"
                                 name="extra_doc"
                                 label="Please Upload the QR code mentioned at the box of your medicine"
-                                description="# - manditory fields"
+                                description="* - manditory fields"
                             />
                             {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">

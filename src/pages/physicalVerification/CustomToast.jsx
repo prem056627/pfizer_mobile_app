@@ -14,8 +14,8 @@ function CustomToast({ date, time, closeToast }) {
         {/* Text Content */}
         <div className=" mx-2text-center">
           <p className="text-gray-700 text-[14px] font-medium font-sans mx-6">
-            Your <strong className="text-primary">physical verification</strong>{" "}
-            is scheduled for <span className="text-primary font-semibold font-sans text-[14px]">{date} </span>at<span className="text-primary font-semibold font-sans text-[14px]">{time}</span> <Tick className="ml-1 inline" />
+          Your  <strong className="text-primary">physical verification</strong>{" "}
+      request  has been submitted to the PAP Team !!  <Tick className="ml-1 inline" />
           </p>
         </div>
       </div>
