@@ -49,6 +49,10 @@ export const getAddCaregiverDetailsInitialValues = (initialData) => {
     id_number_1_2: "",
     id_doc_1_upload_2: [],
   
+
+    care_giver_concent_0:false,
+    care_giver_concent_1:false,
+    care_giver_concent_2:false,
    
     };
   

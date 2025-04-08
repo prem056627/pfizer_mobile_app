@@ -126,13 +126,16 @@ const firstCaregiverValidationSchema = {
 
   id_doc_1_upload_0: Yup.array()
     .min(1, `At least one additional document must be uploaded`),
+
+      care_giver_concent_0: Yup.boolean()
+        .oneOf([true], 'Consent must be given')
 };
 
 // Create conditional validation schema for additional caregivers
 // Fields are only required if any field in that caregiver group has a value
 const conditionalCaregiverValidationSchema = (id) => {
   const caregiverFields = [`caregiver_${id}_name`, `caregiver_${id}_mobile_verify`, 
-                          `caregiver_${id}_mobile`, `caregiver_${id}_email`, `relationship_${id}`];
+                          `caregiver_${id}_mobile`, `caregiver_${id}_email`, `relationship_${id}`,`care_giver_concent_${id}`];
   
   // Condition to check if any field has a value (indicating user started filling this caregiver)
   const hasStartedFillingCaregiver = function(values) {
@@ -341,6 +344,24 @@ const conditionalCaregiverValidationSchema = (id) => {
           }
         })
       ),
+       [`care_giver_concent_${id}`]: Yup.boolean()
+            .when('$self', (_, schema) =>
+              schema.test({
+                name: `care_giver_concent_${id}`,
+                test: function(value) {
+                  const hasValue = hasStartedFillingCaregiver(this.parent);
+                  if (!hasValue) return true;
+          
+                  if (!value) {
+                    return this.createError({
+                      message: `Consent is required if any caregiver ${id} information is provided`,
+                    });
+                  }
+          
+                  return true;
+                },
+              })
+            )
   };
 };
 
@@ -369,6 +390,7 @@ export const getAddCaregiverDetailsInitialValues = (initialData = {}) => {
     defaultValues[`caregiver_${id}_name`] = initialData[`caregiver_${id}_name`] || "";
     defaultValues[`caregiver_${id}_email`] = initialData[`caregiver_${id}_email`] || "";
     defaultValues[`relationship_${id}`] = initialData[`relationship_${id}`] || "";
+    defaultValues[`care_giver_concent_${id}`] = initialData[`care_giver_concent_${id}`] || false
 
     // Caregiver Primary ID details
     defaultValues[`id_card_type_${id}`] = initialData[`id_card_type_${id}`] || "";

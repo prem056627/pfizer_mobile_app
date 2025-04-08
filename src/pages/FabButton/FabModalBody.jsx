@@ -26,21 +26,22 @@ function FabModalBody() {
 					<p>
 						<span
 							className="font-open-sans text-sm font-bold text-[#283A46] cursor-pointer"
-							onClick={() => handleLinkPress("tel:+919000029292")}
+							onClick={() => handleLinkPress("tel:18002587008")}
+							
 						>
-							+91 9000029292 /
+							18002587008 
 						</span>
-						<span
+						{/* <span
 							className="font-open-sans text-sm font-bold text-[#283A46] cursor-pointer"
 							onClick={() => handleLinkPress("tel:18002098860")}
 						>
 							{" "}1800 209 8860
-						</span>
+						</span> */}
 					</p>
 				</div>
 				<CallIcon
 					className="h-[38px] min-h-[38px] cursor-pointer"
-					onClick={() => handleLinkPress("tel:18002671982")}
+					onClick={() => handleLinkPress("tel:18002587008 ")}
 				/>
 			</div>
 

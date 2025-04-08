@@ -26,6 +26,8 @@ export const ProgramEnrollmentSlice = createSlice({
       program: null,
       consent: false
     },
+    caregiver_enroll_consent: false,
+    caregiver_enroll_consent_privacy:false,
     
     program_enrollment_success: false,
     patient_enrollemnt_success: false,
@@ -82,6 +84,15 @@ export const ProgramEnrollmentSlice = createSlice({
     setProgramEnrollmentSuccess: (state, action) => {
       state.program_enrollment_success = action.payload;
     },
+    setCaregiver_enroll_consent: (state, action) => {
+      state.caregiver_enroll_consent = action.payload;
+    },
+
+    setCaregiver_enroll_consent_privacy: (state, action) => {
+      state.caregiver_enroll_consent_privacy = action.payload;
+    },
+
+    
     setProgramStatus: (state, action) => {
       state.program_status = action.payload;
     },
@@ -170,7 +181,9 @@ export const {
   setIsCaregiverSkipVisible,
   setSelectedEnrollProgram,
   setIsInitalDataLoad,
-  setIsCompletedKycHistoryModalOpen
+  setIsCompletedKycHistoryModalOpen,
+  setCaregiver_enroll_consent,
+  setCaregiver_enroll_consent_privacy
 } = ProgramEnrollmentSlice.actions;
 
 export const selectCurrentStep = (state) => state.patientDetailForm.currentStep;
@@ -190,6 +203,14 @@ export const selectDocUploadStatus = (state) =>
   state.patientDetailForm.doc_upload_status;
 export const selectProgramEnrollmentSuccess = (state) =>
   state.patientDetailForm.program_enrollment_success;
+
+export const selectCaregiver_enroll_consent = (state) =>
+  state.patientDetailForm.caregiver_enroll_consent;
+
+export const selectCaregiver_enroll_consent_privacy = (state) =>
+  state.patientDetailForm.caregiver_enroll_consent_privacy;
+
+
 
 export const selectProgramStatus = (state) =>
   state.patientDetailForm.program_status;

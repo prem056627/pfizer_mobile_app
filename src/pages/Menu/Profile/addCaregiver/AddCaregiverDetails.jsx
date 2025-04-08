@@ -7,10 +7,10 @@ import SelectField from "../../../../components/Form/SelectField";
 // import { transformToPatientDetailsFormData } from "../../../utils/forms";
 // import { setIsCaregiverSkipVisible, setIsKycHistoryModalOpen } from "../../../slice/patient-detail-form";
 import { useDispatch } from "react-redux";
-import { setIsCaregiverSkipVisible } from "../../../../slice/patient-detail-form";
+import { setCaregiver_enroll_consent, setCaregiver_enroll_consent_privacy, setIsCaregiverSkipVisible } from "../../../../slice/patient-detail-form";
 import { transformToPatientDetailsFormData } from "../../../../utils/forms";
 import MultiFileUpload from "../../../../components/Form/MultiFileUpload";
-
+import { ReactComponent as IconToggleTick } from "../../../../assets/images/svg/checkbox-tick.svg";
 // Relationship options for the dropdown
 const relationshipOptions = [
   { id: "Father", label: "Father" },
@@ -67,7 +67,7 @@ const AddCaregiverDetails = ({ formik }) => {
       timerSeconds: 0,
     },
   ]);
-
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
   // State to track visible caregivers (starting with the first one)
   const [visibleCaregivers, setVisibleCaregivers] = useState([0]);
 
@@ -103,6 +103,7 @@ const AddCaregiverDetails = ({ formik }) => {
         caregiver_email: formik.values[`caregiver_0_email`] || null,
         caregiver_mobile: formik.values[`caregiver_0_mobile`] || null,
         caregiver_relation: formik.values[`relationship_0`] || "NA",
+        care_giver_concent:formik.values[`care_giver_concent_0`] || false,
 
         // Primary ID Details for Caregiver 0
         id_card_type: formik.values[`id_card_type_0`] || "",
@@ -121,6 +122,7 @@ const AddCaregiverDetails = ({ formik }) => {
         caregiver_email: formik.values[`caregiver_1_email`] || null,
         caregiver_mobile: formik.values[`caregiver_1_mobile`] || null,
         caregiver_relation: formik.values[`relationship_1`] || "NA",
+        care_giver_concent:formik.values[`care_giver_concent_1`] || false,
 
         // Primary ID Details for Caregiver 1
         id_card_type: formik.values[`id_card_type_1`] || "",
@@ -139,6 +141,7 @@ const AddCaregiverDetails = ({ formik }) => {
         caregiver_email: formik.values[`caregiver_2_email`] || null,
         caregiver_mobile: formik.values[`caregiver_2_mobile`] || null,
         caregiver_relation: formik.values[`relationship_2`] || "NA",
+        care_giver_concent:formik.values[`care_giver_concent_2`] || false,
 
         // Primary ID Details for Caregiver 2
         id_card_type: formik.values[`id_card_type_2`] || "",
@@ -610,6 +613,11 @@ const handleOtpTouchStart = (caregiverId, index, e) => {
 //   }, 10);
 // };
 
+const handleChangePrivacy = (e) => {
+  setPrivacyPolicyChecked(e.target.checked);
+  console.log("print e", e.target.checked);
+};
+
   // Add this function to your component (inside the CaregiverDetails component but outside the return statement)
 const clearOtp = (caregiverId) => {
   setCaregivers((prevCaregivers) =>
@@ -627,6 +635,98 @@ const clearOtp = (caregiverId) => {
   if (firstInput) firstInput.focus();
 };
 
+
+
+
+// For each caregiver you're rendering (in a loop or separately)
+const CaregiverPrivacyCheckbox = ({ index }) => { // or pass the whole caregiver object if needed
+  // Define state for this specific caregiver's checkbox
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(
+    !!formik.values[`care_giver_concent_${index}`]
+  );
+
+  // Handle checkbox change for this specific caregiver
+  const handleChangePrivacy = (e) => {
+    const isChecked = e.target.checked;
+    setPrivacyPolicyChecked(isChecked);
+    formik.setFieldValue(`care_giver_concent_${index}`, isChecked);
+  };
+
+  // Use useEffect to sync formik value with local state
+  useEffect(() => {
+    const formikValue = formik.values[`care_giver_concent_${index}`];
+    setPrivacyPolicyChecked(!!formikValue);
+  }, [formik.values[`care_giver_concent_${index}`]]);
+
+  return (
+    <div className="mt-4 w-full max-w-xl">
+      <label htmlFor={`care_giver_concent_${index}`} className="flex gap-2">
+        {privacyPolicyChecked ? (
+          <div className="relative flex items-center justify-center h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm bg-primary border-2 border-primary">
+            <IconToggleTick className="w-4 h-4" />
+          </div>
+        ) : (
+          <div className="h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm border-2 border-[#C4C4C4]"></div>
+        )}
+        <input
+          className="invisible absolute h-[0px] w-[0px]"
+          name={`care_giver_concent_${index}`}
+          id={`care_giver_concent_${index}`}
+          type="checkbox"
+          disabled={false}
+          checked={privacyPolicyChecked}
+          onChange={(e) => {
+            formik.handleChange(e);
+            handleChangePrivacy(e);
+          }}
+        />
+        <div className="flex flex-col">
+        <span className="font-open-sans text-sm leading-5 ">
+            <p className="font-lato text-[12px] italic text-[#696969]">
+              I agree with the 
+              
+              {" "}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePrivacyModal();
+                }}
+                className="text-primary hover:underline bg-transparent border-none p-0 m-0 cursor-pointer font-inherit"
+              >
+               privacy policy
+              </button>{" "}
+              
+               and {" "}
+             
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTermConditionModal();
+                }}
+                className="text-primary hover:underline bg-transparent border-none p-0 m-0 cursor-pointer font-inherit"
+              >
+                Terms & condition
+              </button>{" "}
+              as an authorized caretaker of the patient
+            </p>
+          </span>
+        </div>
+      </label>
+    </div>
+  );
+};
+
+const handleTermConditionModal = () => {
+ dispatch(setCaregiver_enroll_consent(true))
+};
+
+const handlePrivacyModal = () => {
+  dispatch(setCaregiver_enroll_consent_privacy(true))
+ };
+
+
+
+
   return (
     <div className="flex flex-col gap-4">
       {visibleCaregivers.map((caregiverId) => {
@@ -635,9 +735,7 @@ const clearOtp = (caregiverId) => {
           <div key={caregiver.id} className="border-b pb-4 mb-4">
             {/* Caregiver title */}
             <h3 className="font-semibold text-[#283A46] font-sans text-[14px] pt-2">
-              {caregiverId === 0
-                ? "Primary Caregiver"
-                : `Additional Caregiver ${caregiverId}`}
+            Add Caregiver
             </h3>
 
             {/* Mobile verification section (if not verified) */}
@@ -990,6 +1088,9 @@ const clearOtp = (caregiverId) => {
                     name={`id_doc_1_upload_${caregiverId}`}
                     description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                   />
+
+                <CaregiverPrivacyCheckbox index={caregiverId} />
+
                 </div>
               </div>
             )}

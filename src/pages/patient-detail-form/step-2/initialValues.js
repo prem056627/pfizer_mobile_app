@@ -11,6 +11,10 @@ export const getCaregiverDetailsInitialValues = (initialData) => {
   id_card_type_0: "",
   id_number_0: "",
   id_doc_upload_0: [],
+
+  care_giver_concent_0:false,
+  care_giver_concent_1:false,
+  care_giver_concent_2:false,
   
   // Caregiver 0 - First Additional ID details
   id_card_1_type_0: "",

@@ -5,9 +5,9 @@ import SelectField from "../../../components/Form/SelectField";
 import MultiFileUpload from "../../../components/Form/MultiFileUpload";
 import { getCaregiverDetailsInitialValues } from "./initialValues";
 import { transformToPatientDetailsFormData } from "../../../utils/forms";
-import { setIsCaregiverSkipVisible, setIsKycHistoryModalOpen } from "../../../slice/patient-detail-form";
+import { setCaregiver_enroll_consent, setCaregiver_enroll_consent_privacy, setIsCaregiverSkipVisible, setIsKycHistoryModalOpen } from "../../../slice/patient-detail-form";
 import { useDispatch } from "react-redux";
-
+import { ReactComponent as IconToggleTick } from "../../../assets/images/svg/checkbox-tick.svg";
 // Relationship options for the dropdown
 const relationshipOptions = [
   { id: "Father", label: "Father" },
@@ -67,9 +67,10 @@ const CaregiverDetails = ({ formik }) => {
 
   // State to track visible caregivers (starting with the first one)
   const [visibleCaregivers, setVisibleCaregivers] = useState([0]);
-
+const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
   // State to track if initialization has been done
   const [initialized, setInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // State for timers
   const [timers, setTimers] = useState({});
@@ -110,6 +111,7 @@ const CaregiverDetails = ({ formik }) => {
         id_card_type_1: formik.values[`id_card_1_type_0`] || "",
         id_number_1: formik.values[`id_number_1_0`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_0`] || [],
+        care_giver_concent:formik.values[`care_giver_concent_0`] || false,
       };
 
       const caregiver1 = {
@@ -128,6 +130,7 @@ const CaregiverDetails = ({ formik }) => {
         id_card_type_1: formik.values[`id_card_1_type_1`] || "",
         id_number_1: formik.values[`id_number_1_1`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_1`] || [],
+        care_giver_concent:formik.values[`care_giver_concent_1`] || false,
       };
 
       const caregiver2 = {
@@ -146,6 +149,7 @@ const CaregiverDetails = ({ formik }) => {
         id_card_type_1: formik.values[`id_card_1_type_2`] || "",
         id_number_1: formik.values[`id_number_1_2`] || "",
         id_doc_upload_1: formik.values[`id_doc_1_upload_2`] || [],
+        care_giver_concent:formik.values[`care_giver_concent_2`] || false,
       };
 
       // Group the caregivers as separate objects in the caregiverData field
@@ -176,6 +180,8 @@ const CaregiverDetails = ({ formik }) => {
 
   // Send OTP to caregiver's mobile
   const sendOtp = (caregiverId) => {
+
+    setIsLoading(true); // Set loading to true before the fetch starts
 
     const caregiverIdVerify = {
       mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
@@ -216,6 +222,9 @@ const CaregiverDetails = ({ formik }) => {
       })
       .catch((error) => {
         console.error("Error sending OTP:", error);
+      })
+      .finally(() => {
+        setIsLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -264,6 +273,8 @@ const CaregiverDetails = ({ formik }) => {
   // Verify the OTP entered by the user
   // Verify the OTP entered by the user
   const verifyOtp = (caregiverId) => {
+
+    setIsLoading(true);
     const caregiver = caregivers.find((c) => c.id === caregiverId);
     const enteredOtp = caregiver.otp.join("");
 
@@ -330,6 +341,9 @@ const CaregiverDetails = ({ formik }) => {
               : c
           )
         );
+      })
+      .finally(() => {
+        setIsLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -606,6 +620,10 @@ const clearOtp = (caregiverId) => {
         : caregiver
     )
   );
+
+
+
+
   
   // Focus back on the first OTP input field
   const firstInput = document.querySelector(
@@ -613,6 +631,103 @@ const clearOtp = (caregiverId) => {
   );
   if (firstInput) firstInput.focus();
 };
+
+// const handleChangePrivacy = (e) => {
+//   setPrivacyPolicyChecked(e.target.checked);
+//   console.log("print e", e.target.checked);
+// };
+
+// Assuming this is inside a component that renders checkboxes for each caregiver
+
+// For each caregiver you're rendering (in a loop or separately)
+const CaregiverPrivacyCheckbox = ({ index }) => { // or pass the whole caregiver object if needed
+  // Define state for this specific caregiver's checkbox
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(
+    !!formik.values[`care_giver_concent_${index}`]
+  );
+
+  // Handle checkbox change for this specific caregiver
+  const handleChangePrivacy = (e) => {
+    const isChecked = e.target.checked;
+    setPrivacyPolicyChecked(isChecked);
+    formik.setFieldValue(`care_giver_concent_${index}`, isChecked);
+  };
+
+  // Use useEffect to sync formik value with local state
+  useEffect(() => {
+    const formikValue = formik.values[`care_giver_concent_${index}`];
+    setPrivacyPolicyChecked(!!formikValue);
+  }, [formik.values[`care_giver_concent_${index}`]]);
+
+  return (
+    <div className="mt-4 w-full max-w-xl">
+      <label htmlFor={`care_giver_concent_${index}`} className="flex gap-2">
+        {privacyPolicyChecked ? (
+          <div className="relative flex items-center justify-center h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm bg-primary border-2 border-primary">
+            <IconToggleTick className="w-4 h-4" />
+          </div>
+        ) : (
+          <div className="h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm border-2 border-[#C4C4C4]"></div>
+        )}
+        <input
+          className="invisible absolute h-[0px] w-[0px]"
+          name={`care_giver_concent_${index}`}
+          id={`care_giver_concent_${index}`}
+          type="checkbox"
+          disabled={false}
+          checked={privacyPolicyChecked}
+          onChange={(e) => {
+            formik.handleChange(e);
+            handleChangePrivacy(e);
+          }}
+        />
+        <div className="flex flex-col">
+          <span className="font-open-sans text-sm leading-5 ">
+            <p className="font-lato text-[12px] italic text-[#696969]">
+              I agree with the 
+              
+              {" "}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePrivacyModal();
+                }}
+                className="text-primary hover:underline bg-transparent border-none p-0 m-0 cursor-pointer font-inherit"
+              >
+               privacy policy
+              </button>{" "}
+
+               and {" "}
+             
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTermConditionModal();
+                }}
+                className="text-primary hover:underline bg-transparent border-none p-0 m-0 cursor-pointer font-inherit"
+              >
+                Terms & condition
+              </button>{" "}
+              as an authorized caretaker of the patient
+            </p>
+          </span>
+        </div>
+      </label>
+    </div>
+  );
+};
+
+const handleTermConditionModal = () => {
+ dispatch(setCaregiver_enroll_consent(true))
+};
+
+const handlePrivacyModal = () => {
+  dispatch(setCaregiver_enroll_consent_privacy(true))
+ };
+
+
+
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -976,6 +1091,44 @@ const clearOtp = (caregiverId) => {
                     name={`id_doc_1_upload_${caregiverId}`}
                     description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
                   />
+
+{/* <div className="mt-4 w-full max-w-xl">
+  <label htmlFor="PrivacyPolicy" className="flex gap-2">
+    {privacyPolicyChecked ? (
+      <div className="relative flex items-center justify-center h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm bg-primary border-2 border-primary">
+        <IconToggleTick className="w-4 h-4" />
+      </div>
+    ) : (
+      <div className="h-[20px] min-h-[20px] w-[20px] min-w-[20px] rounded-sm border-2 border-[#C4C4C4]"></div>
+    )}
+   
+<input
+  className="invisible absolute h-[0px] w-[0px]"
+  name={`care_giver_concent_${caregiverId}`}
+  id={`care_giver_concent_${caregiverId}`}
+  type="checkbox"
+  disabled={false}
+  checked={privacyPolicyChecked}
+  onChange={(e) => handleChangePrivacy(e, caregiverId)}
+/>
+    <div className="flex flex-col">
+      <span className="font-open-sans text-sm leading-5 ">
+        <p className="font-lato text-[12px] italic text-[#696969]">
+          By proceeding, you confirm that you have read, understood, and agreed to the{" "}
+          <button
+  onClick={handlePrivacyModal}
+  className="text-primary hover:underline bg-transparent border-none p-0 m-0 cursor-pointer font-inherit"
+>
+  Privacy Policy and Terms
+</button>
+{" "}
+          and Conditions, and you consent to be contacted.
+        </p>
+      </span>
+    </div>
+  </label>
+</div> */}
+ <CaregiverPrivacyCheckbox index={caregiverId} />
                 </div>
               </div>
             )}

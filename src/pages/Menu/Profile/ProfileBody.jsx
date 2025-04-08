@@ -10,6 +10,7 @@ function MyProfileDetails() {
 	
 	const patient_detail = patient_profile_data?.patient_data;
 	const caregivers = patient_profile_data?.caregiver_data;
+	console.log('caregivers',caregivers?.length);
 	
 	const notify = () =>
 		toast('Profile updated successfully', {
@@ -334,7 +335,7 @@ function MyProfileDetails() {
 						</p>
 					</div>
 				))}
-				{caregivers.length <= 3 && (
+				{caregivers?.length < 3 && (
 				<button
 					type="button"
 					className="flex h-12 items-center justify-center gap-2 rounded-md bg-primary p-4 text-white font-open-sans font-semibold tracking-wide"

@@ -29,6 +29,8 @@ import EkyModal from "../pages/Ekyc/EkyModal";
 import KycHistoryModal from "../pages/Menu/KycHistory/KycHistoryModal";
 import CompleteKycModal from "../pages/Menu/completedKyc/CompleteKycModal";
 import AddCaregiverModal from "../pages/Menu/Profile/addCaregiver/AddCaregiverModal";
+import CaregiverConcentModal from "../pages/patient-detail-form/caregiverConcent/CaregiverConcentModal";
+import CareTakerPrivacyModal from "../pages/patient-detail-form/caregiverConcent/CareTakerPrivacy/CareTakerPrivacyModal";
 
 const AppNavigation = () => {
 // Token functionality
@@ -299,6 +301,8 @@ useEffect(() => {
       <KycHistoryModal/>
       <CompleteKycModal/>
       <AddCaregiverModal/>
+      <CaregiverConcentModal/>
+      <CareTakerPrivacyModal/>
     </Home>
   );
 };

@@ -41,7 +41,7 @@ const AddCaregiverForm = () => {
     try {
       setIsLoading(true);
 
-      const url = `/patient_dashboard/?current_step=update_caregive`;
+      const url = `/patient_dashboard/?current_step=update_caregiver`;
       
       // Prepare FormData using values
       const preparedFormData = transformToPatientDetailsFormData(values);
