@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MenuFooter from '../../components/MenuFooter';
 import FabButton from '../../components/FabButton';
 import { ReactComponent as Notification } from "../../assets/images/svg/Notification.svg";
@@ -11,80 +11,79 @@ import useApi from '../../hooks/useApi';
 import { transformToPatientDetailsFormData } from '../../utils/forms';
 
 const Notifications = () => {
-
   const triggerApi = useApi();
-  // console.log(apiNotifications);
-
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [removingIds, setRemovingIds] = useState([]);
-
- const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-
+  const initialData = useSelector(selectInitializeData);
+  const apiNotifications = initialData.notifications || [];
   
-      const makeApiCall = async () => {
-        try {
-          setIsLoading(true);
-          const url = `/patient_dashboard/?current_step=notification_history`;
-          const { response, success } = await triggerApi({
-            url: url,
-            type: "GET",
-            loader: true,
-          });
-      
-          if (success && response) {
-            dispatch(setInitializeData(response));
-            // console.log('responseresponseresponse!!',response);
-            dispatch(setCurrentPageState(response.current_step)); 
-            // dispatch(setProgramStatus(response.program_status)); 
-          } else {
-            console.error("API call failed or returned no data.");
-          }
-        } catch (error) {
-          console.error("Error in makeApiCall:", error);
-        } finally {
-          setIsLoading(false); // Ensure loading state is reset
-        }
-      };
-    
-      // console.log('initialDatainitialData',initialData);
-      
-  
-  
-  
-      useEffect(() => {
-      
-            // console.log("2",isInitalDataLoad);
-              makeApiCall();
-        
-      }, [ ]);
-
-
-      const initiaData = useSelector(selectInitializeData);
-      const apiNotifications = initiaData.notifications || [];
+  // Use a ref to track if we're in the middle of making an API call
+  const isRequestInProgress = useRef(false);
 
   useEffect(() => {
-    // Use the API notifications directly from the Redux store
-    if (apiNotifications && apiNotifications.length > 0) {
-      console.log("apiNotifications", apiNotifications);
+    // This single function handles the API call
+    const makeApiCall = async () => {
+      // If a request is already in progress, don't start another
+      if (isRequestInProgress.current) return;
       
-      // Format notifications to match the new structure
-      const formattedNotifications = apiNotifications.map((notification) => ({
-        id: notification.id, // Use the existing ID
-        date: notification.date || '',
-        message: notification.title || '',
-        subMessage: notification.description || '',
-      }));
-      
-      setNotifications(formattedNotifications);
-    }
-    setLoading(false);
-  }, [apiNotifications]);
+      try {
+        // Mark that we're starting a request
+        isRequestInProgress.current = true;
+        setIsLoading(true);
+        
+        const url = `/patient_dashboard/?current_step=notification_history`;
+        const { response, success } = await triggerApi({
+          url: url,
+          type: "GET",
+          loader: true,
+        });
+    
+        if (success && response) {
+          dispatch(setInitializeData(response));
+          dispatch(setCurrentPageState(response.current_step));
+          
+          // Process notifications directly
+          if (response.notifications && response.notifications.length > 0) {
+            const formattedNotifications = response.notifications.map((notification) => ({
+              id: notification.id,
+              date: notification.date || '',
+              message: notification.title || '',
+              subMessage: notification.description || '',
+            }));
+            
+            setNotifications(formattedNotifications);
+          } else {
+            setNotifications([]);
+          }
+        } else {
+          console.error("API call failed or returned no data.");
+        }
+      } catch (error) {
+        console.error("Error in makeApiCall:", error);
+      } finally {
+        // Mark that the request is complete
+        isRequestInProgress.current = false;
+        setIsLoading(false);
+        setLoading(false);
+      }
+    };
+
+    // Call the API function
+    makeApiCall();
+    
+    // No dependencies - this will run every time the component mounts,
+    // but our isRequestInProgress ref prevents duplicate calls
+  }, []);
 
   const handleDismiss = async (id) => {
     // Find the notification to be dismissed
     const notificationToDismiss = notifications.find(n => n.id === id);
+    
+    if (!notificationToDismiss) return;
+    
     console.log("notificationToDismiss", notificationToDismiss.id);
     
     // Add the ID to the removing list to trigger animation
@@ -100,7 +99,7 @@ const Notifications = () => {
       const apiResponse = await triggerApi({
         url: `/patient_dashboard/?current_step=mark_read`,
         type: "POST",
-        payload: transformToPatientDetailsFormData(formData) ,
+        payload: transformToPatientDetailsFormData(formData),
         loader: true,
       });
   
@@ -135,21 +134,19 @@ const Notifications = () => {
     <div className="bg-white relative font-['Open_Sans'] pt-6 no-scrollbar">
       {/* Transaction Section */}
       <div className="px-2 bg-white mx-4 rounded-[20px]">
-      {notifications.length !== 0 ? <h2 className="text-lg font-semibold w-full mb-4">Transaction</h2> : null}
+        {notifications.length !== 0 ? <h2 className="text-lg font-semibold w-full mb-4">Transaction</h2> : null}
         
         {loading ? (
           <div className="overlay-spinner" />
         ) : notifications.length === 0 ? (
           <div className="flex justify-center items-center h-[60vh]">
-           <div className='p-4 text-center  flex flex-col items-center gap-4'>
-           <Empty/>
-             <div>
-             <h1 className='font-bold font-sans text-[#5D5D5D] text-[24px]'>No Notifications yet</h1>
-             <p className='font-regular font-sans text-[#808080] text-[16px]'> "We'll notify you when something arrives!"</p>
-             </div>
-           </div>
-        
-
+            <div className='p-4 text-center flex flex-col items-center gap-4'>
+              <Empty/>
+              <div>
+                <h1 className='font-bold font-sans text-[#5D5D5D] text-[24px]'>No Notifications yet</h1>
+                <p className='font-regular font-sans text-[#808080] text-[16px]'>"We'll notify you when something arrives!"</p>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="space-y-3">

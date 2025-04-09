@@ -23,6 +23,9 @@ export const getProfileInitialValues = (storedData = {}) => {
         city: storedData.address?.permanent?.city || "",
         state: storedData.address?.permanent?.state || "",
         pincode: storedData.address?.permanent?.pincode || "",
+        address_proof_type:storedData.address?.permanent?.address_proof_type||"",
+        address_proof_number:storedData.address?.permanent?.address_proof_number||""
+    
       },
       // Current Residential Address
       current: {
@@ -32,6 +35,8 @@ export const getProfileInitialValues = (storedData = {}) => {
         city: storedData?.address?.current.city || "",
         state: storedData?.address?.current.state || "",
         pincode: storedData?.address?.current.pincode || "",
+         address_proof_type:storedData.address?.permanent?.address_proof_type||"",
+        address_proof_number:storedData.address?.permanent?.address_proof_number||""
       },
     },
     
@@ -56,7 +61,9 @@ export const fieldGroups = {
     'address.permanent.addressline2',
     'address.permanent.city',
     'address.permanent.state',
-    'address.permanent.pincode'
+    'address.permanent.pincode',
+    'address.permanent.address_proof_type',
+    'address.permanent.address_proof_number'
   ],
   currentResidentialAddress: [
     'address.current.same_as_permanent',
@@ -64,7 +71,9 @@ export const fieldGroups = {
     'address.current.addressline2',
     'address.current.city',
     'address.current.state',
-    'address.current.pincode'
+    'address.current.pincode',
+     'address.current.address_proof_type',
+    'address.current.address_proof_number'
   ],
   idDetails: [
     'id_card_type',

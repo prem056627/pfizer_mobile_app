@@ -121,7 +121,7 @@ const AppNavigation = () => {
   
 
   const isInitalDataLoad = useSelector(selectIsInitalDataLoad)
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Get data from Redux
   const dispatch = useDispatch();
@@ -180,9 +180,10 @@ const AppNavigation = () => {
 //   useEffect(() => {
 //     makeApiCall();
 //   }, []);
-
+console.log('isInitalDataLoad',isInitalDataLoad)
 useEffect(() => {
   if (isInitalDataLoad) {
+    console.log('isInitalDataLoad',isInitalDataLoad)
     makeApiCall();
   } else if (currentView === 'home') {
     makeApiCall();
@@ -267,8 +268,10 @@ useEffect(() => {
     }
   };
 
+  // console.log("initialData!!!",initialData.data)
+
   // Loading state
-  if (isLoading || initialData.data) {
+  if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-white p-6 pt-11">
         <div className="flex-col justify-center">

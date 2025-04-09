@@ -682,7 +682,7 @@ const CaregiverPrivacyCheckbox = ({ index }) => { // or pass the whole caregiver
         />
         <div className="flex flex-col">
         <span className="font-open-sans text-sm leading-5 ">
-            <p className="font-lato text-[12px] italic text-[#696969]">
+            <p className="font-open-sans text-[12px]  leading-4 text-dark-gray">
               I agree with the 
               
               {" "}
@@ -857,7 +857,7 @@ const handlePrivacyModal = () => {
                           inputMode="numeric"
                           pattern="[0-9]*"
                           maxLength="1"
-                          className="w-[52px] h-[52px] border rounded text-center text-lg"
+                          className="w-[52px] h-[52px] xs:w-[46px] xs:h-[46px] border rounded text-center text-lg"
                           value={digit}
                           onChange={(e) =>
                             handleOtpDigitChange(

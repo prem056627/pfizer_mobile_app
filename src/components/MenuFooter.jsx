@@ -70,7 +70,7 @@ import { ReactComponent as HomeLogo } from '../assets/images/menu/Home.svg';
 import { ReactComponent as Notify } from '../assets/images/menu/Notify.svg';
 import { ReactComponent as Menu } from '../assets/images/menu/menu.svg';
 import { useDispatch, useSelector } from 'react-redux'; // Added useSelector
-import { selectCurrentView, setCurrentView } from '../slice/patient-detail-form';
+import { selectCurrentView, setCurrentView, setIsInitalDataLoad } from '../slice/patient-detail-form';
 
 function MenuItem({ label, icon: Icon, isActive, onClick }) {
     return (
@@ -126,8 +126,10 @@ function MenuFooter() {
             dispatch(setCurrentView("home"));
         } else if (key === 'Menu') {
             dispatch(setCurrentView("menu"));
+             dispatch(setIsInitalDataLoad(false));
         } else if (key === 'Notification') {
             dispatch(setCurrentView("notifications"));
+             dispatch(setIsInitalDataLoad(false));
         }
     };
 

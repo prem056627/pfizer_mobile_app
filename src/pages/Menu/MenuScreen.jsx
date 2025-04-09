@@ -112,7 +112,7 @@ const MenuScreen = () => {
       title: 'Customer Care',
       subtitle: 'access@mediangels.com',
       icon: (
-        <Call className="w-6 h-6"/>
+        <Call className="w-8 h-8 "/>
       )
     },
     {

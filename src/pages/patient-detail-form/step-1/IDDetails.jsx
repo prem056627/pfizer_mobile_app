@@ -115,7 +115,7 @@ export default function IDDetails({ formik }) {
           value={formik.values.id_number}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          helperText={exampleText}
+          // helperText={exampleText}
           error={formik.touched.id_number && formik.errors.id_number}
         />
       </div>

@@ -26,7 +26,7 @@ function CompleteKycModal() {
 
   return (
     <Modal
-      // label={'Profile'}
+      label={'Profile'}
       labelType="center"
       show={isKycHistoryOpen}
       closeModal={closeModal}

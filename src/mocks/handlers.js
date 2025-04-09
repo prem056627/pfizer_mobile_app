@@ -10,7 +10,7 @@ let initialData = {
     // before enrollment submit
     // patient_enrolment
     // current_step: "caregiver_addition",
-    current_step: "program_enrolment",
+    current_step: "program_enrolment_done",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2344,7 +2344,7 @@ let initialData = {
               paid_orders: [
                   {
                       order_id: "10001",
-                      order_status: "Approved",
+                      order_status: "Open",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",

@@ -10,6 +10,14 @@ const AddressProofForm = ({ formik }) => {
   const STATE_MAPPING = initialDataa?.state;
   const CITY_MAPPING = initialDataa?.city;
 
+  const idCardOptions = [
+    { id: "passport", label: "Passport" },
+    { id: "aadhaar", label: "Aadhaar" },
+    { id: "pan", label: "PAN Card" },
+    { id: "others", label: "Others" },
+    { id: "driving", label: "Driving License" },
+  ];
+
   return (
     <div className="flex grow flex-col gap-4">
       <InputField
@@ -103,6 +111,38 @@ const AddressProofForm = ({ formik }) => {
           formik.errors.address?.permanent?.pincode
         }
       />
+ {/* address_proof_type:storedData.address?.permanent?.address_proof_type||"",
+ address_proof_number:storedData.address?.permanent?.address_proof_number||"" */}
+
+<SelectField
+  label="Address Proof Type"
+  name="address.permanent.address_proof_type"
+  id="address.permanent.address_proof_type"
+  formik={formik}
+  placeholder="Select Additional ID Card Type"
+  value={formik.values.address.permanent.address_proof_type}
+  optionsData={idCardOptions}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={
+    formik.touched.address?.permanent?.address_proof_type &&
+    formik.errors.address?.permanent?.address_proof_type
+  }
+/>
+
+<InputField
+  label="Address Proof Number"
+  name="address.permanent.address_proof_number"
+  id="address.permanent.address_proof_number"
+  placeholder="Enter Additional ID Number"
+  value={formik.values.address.permanent.address_proof_number}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={
+    formik.touched.address?.permanent?.address_proof_number &&
+    formik.errors.address?.permanent?.address_proof_number
+  }
+/>
     </div>
   );
 };

@@ -27,6 +27,7 @@ const OrderHistory = () => {
 
     const currentView = useSelector(selectCurrentView);
     const hasOpenOrders = paidOrders.some(order => order.order_status === "Open");
+    const hasOpenFocOrders = focOrders.some(order => order.order_status === "Open");
   
   console.log('paidOrders,focOrders', program?.orders?.paid_orders
 
@@ -270,12 +271,12 @@ const handleFileView = (file) => {
 
     <>
     {/* Show "Have new orders?" only if activeTab is "paid" and no open orders */}
-    <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
-      {activeTab === "paid"
-        ? !hasOpenOrders && "Have new orders?"
-        : "Need more free samples?"}
-    </p>
-  
+    <p className="text-[#767676] font-open-sans text-[14px] font-normal">
+  {activeTab === "paid"
+    ? (!hasOpenOrders && "Have new orders?")
+    : (!hasOpenFocOrders && "Need more free samples?")}
+</p>
+
     {/* Show "Upload Invoice" only if activeTab is "paid" and no open orders */}
     {activeTab === "paid" && !hasOpenOrders && (
       <button
@@ -287,7 +288,7 @@ const handleFileView = (file) => {
     )}
   
     {/* Always show "Request FOC" when activeTab is NOT "paid" */}
-    {activeTab !== "paid" && (
+    {activeTab !== "paid" && !hasOpenFocOrders && (
       <button
         onClick={RequestFocHandle}
         className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"

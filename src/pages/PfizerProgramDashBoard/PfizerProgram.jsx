@@ -78,55 +78,6 @@ const PfizerProgram = () => {
     dispatch(setPhysicalVerificationModalOpen(true));
   };
 
-  // get API
-
-
-  //  const makeApiCall_1 = async () => {
-  //     // Check token before making API call
-  //     // if (!checkToken()) {
-  //     //   console.log("No token found, redirecting to login.");
-  //     //   // You might want to add a redirect logic here
-  //     //   return;
-  //     // }
-  
-  //     try {
-  //       setIsLoading(true);
-       
-  //       const url = `/patient_dashboard/?current_step=initialize`;
-  //       const { response, success } = await triggerApi({
-  //         url: url,
-  //         type: "GET",
-  //         loader: true,
-  //       });
-    
-  //       if (success && response) {
-  //         dispatch(setInitializeData(response));
-  //         dispatch(setCurrentPageState(response.current_step)); 
-  //       } else {
-  //         console.error("API call failed or returned no data.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error in makeApiCall:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  
-    // useEffect(()=>{
-    //   dispatch(setIsInitalDataLoad('route_page'));
-    // },[])
-     
-  
-
-//   useEffect(() => {
-//     console.log("HI from current view ",currentView);
-//     // console.log("HI from isInitalDataLoad view ",isInitalDataLoad);
-//     if (currentView === 'home' ) { // Example condition
-
-//       // console.log("2",isInitalDataLoad);
-//       makeApiCall_1();
-//     }
-// }, [currentView ]);
 
 
   const makeApiCall = async (values) => {
@@ -417,49 +368,7 @@ const PfizerProgram = () => {
             Value Added Services
           </h2>
           <div className="space-y-6 pb-30  mb-20">
-            {/* physical verification has been sheduled */}
-            {/* <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
-        <div className="flex gap-4  items-center ">
-          <div className="p-3 rounded-lg">
-            <PhysicalverificationSheduled width={70} />
-          </div>
-          <div>
-            
-            <p className="text-[15px] font-sans font-semibold text-[#606060]">
-            Your <span className="text-primary">physical verification</span> has been <span className="text-primary">scheduled</span>  .
-            </p>
-          </div>
-        </div>
-        <button className=" flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
-        <span className="pl-4">
-         <Pap className="w-8 h-8 "/>
-        </span>
-         PAP Team will soon reach out to for verification
-        </button>
-      </div> */}
-
-            {/* physical verification has been sheduled by Phlebo */}
-            {/* <div className="bg-white rounded-lg shadow-sm  border rounded-b-[20px]">
-        <div className="flex gap-4  items-center ">
-          <div className="p-3 rounded-lg">
-            <PhysicalverificationSheduled width={70} />
-          </div>
-          <div>
-        
-            <p className="text-[15px] font-sans font-semibold text-[#606060]">
-            Your <span className="text-primary">physical verification</span>  is scheduled for  <span className="text-primary">24-02-2024</span> at .
-            <span className="text-primary">  2.40PM.</span>
-            
-            </p>
-          </div>
-        </div>
-        <button className=" flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-[2px] rounded-b-[20px] font-medium">
-        <span className="pl-2">
-         <Pap className="w-8 h-8 "/>
-        </span>
-        &lt;Phlebo&gt; Team will soon reach out to for verification
-        </button>
-      </div> */}
+          
             {/* defautl physical very card */}
             {initiaData?.physical_verification?.show_verification_button && (
               <div className="bg-white rounded-lg shadow-sm p-4 border ">

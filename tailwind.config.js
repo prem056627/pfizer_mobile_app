@@ -2,6 +2,9 @@
 module.exports = {
 	content: ['./src/**/*.{js,jsx,ts,tsx}'],
 	theme: {
+		screens: {
+			'xs': {'max': '399px'}, // Custom screen for below 400px
+		  },
 		extend: {
 			fontFamily: {
 				inter: ['Inter', 'sans-serif'],
@@ -101,6 +104,7 @@ module.exports = {
 				'table-menu': '0px 4px 24px 0px rgba(0, 0, 0, 0.16)',
 				notification: '0px 4px 24px 0px rgba(0, 0, 0, 0.16)',
 			},
+			
 			height: {
 				screen: 'var(--app-height)',
 			},

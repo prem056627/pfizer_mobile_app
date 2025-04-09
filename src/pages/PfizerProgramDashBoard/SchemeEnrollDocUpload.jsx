@@ -127,7 +127,7 @@ const SchemeEnrollDocUpload = () => {
     const phoneNumber = "18002587008"; // Define the phone number
 
     return (
-      <div className="flex flex-row justify-between items-center mt-16">
+      <div className="flex flex-row justify-between items-center mt-2 px-5">
         <div className="flex flex-row items-center">
           <p className="text-xs text-gray-500 italic">
             Powered by <span className="font-bold text-black">TATA 1mg</span>
@@ -241,7 +241,7 @@ const SchemeEnrollDocUpload = () => {
       {(formik) => (
         <form
           onSubmit={formik.handleSubmit}
-          className="relative flex flex-col pt-6  container mx-auto   "
+          className="relative flex flex-col pt-6  container mx-auto  mb-20 "
         >
           {/* Pfizer Logo */}
           <div className=" ">
@@ -277,14 +277,16 @@ const SchemeEnrollDocUpload = () => {
                   <Palbace className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
                 )}
                 {selectedEnrollProgram.program_name === "Crizalk Program" && (
-                  <Crizalk className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
+                 <> <Crizalk className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
+
+
+                 <p className="text-[14px] px-[20px] text-gray-700 font-open-sans">Your enrolment and allotment to a scheme shall be subject to verification of all the documents and information shared by you.</p></>
                 )}
              </div>
 
           
 
-                <div className={`mb-10 px-[20px] ${selectedEnrollProgram.program_name === "Palbace Program"?'mt-[150px]':'mt-[100px]'
-                } `}>{PoweredByFooter()}</div>
+               
               </div>
             )}
 
@@ -327,9 +329,16 @@ const SchemeEnrollDocUpload = () => {
               </div>
             )}
           </div>
+         
+          
+
 
           {/* Fixed Footer */}
           <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
+
+          {!showUploadFields && (<div className={`'
+                } `}>{PoweredByFooter()}</div>)}
+
             <div className="max-w-2xl mx-auto">
               <div className="flex items-center gap-4 px-4 py-8">
                 <button

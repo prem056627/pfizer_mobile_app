@@ -18,7 +18,7 @@ function ProfileModal() {
 
   return (
     <Modal
-      // label={'Profile'}
+      label={'Profile'}
       labelType="center"
       show={isProfilePageOpen}
       closeModal={closeModal}

@@ -9,27 +9,27 @@ const idValidationConfig = {
   passport: {
     pattern: /^[A-Z][0-9]{7}$/,
     example: "A1234567",
-    message: "Passport number must be 1 letter followed by 7 digits"
+    message: "Passport number must be 1 letter followed by 7 digits (e.g., A1234567)"
   },
   aadhaar: {
     pattern: /^[0-9]{12}$/,
     example: "123456789012",
-    message: "Aadhaar number must be 12 digits"
+    message: "Aadhaar number must be 12 digits (e.g., 123456789012)"
   },
   pan: {
     pattern: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
     example: "ABCDE1234F",
-    message: "PAN Card must be in format: 5 letters, 4 digits, 1 letter"
+    message: "PAN Card must be in format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)"
   },
   // voter: {
   //   pattern: /^[A-Z]{3}[0-9]{7}$/,
   //   example: "ABC1234567",
-  //   message: "Voter ID must be 3 letters followed by 7 digits"
+  //   message: "Voter ID must be 3 letters followed by 7 digits (e.g., ABC1234567)"
   // },
   driving: {
     pattern: /^[A-Z]{2}[0-9]{13}$/,
     example: "DL0420180012345",
-    message: "Driving License must be 2 letters followed by 13 digits"
+    message: "Driving License must be 2 letters followed by 13 digits (e.g., DL0420180012345)"
   }
 };
 
@@ -55,10 +55,6 @@ export const combinedValidationSchema = Yup.object().shape({
     }
   ),
   
-  // mobile_number: Yup.string()
-  //   .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
-  //   .required("Mobile Number is required"),
-  
   email: Yup.string()
     .email("Invalid email format")
     .required("Email ID is required"),
@@ -76,6 +72,23 @@ export const combinedValidationSchema = Yup.object().shape({
       pincode: Yup.string()
         .matches(/^[0-9]{6}$/, "Pincode must be exactly 6 digits")
         .required("Pincode is required"),
+      address_proof_type: Yup.string().required("Address Proof Type is required"),
+      address_proof_number: Yup.string()
+        .required("Address Proof Number is required")
+        .test(
+          "address-proof-format-validation",
+          function(value) {
+            const proofType = this.parent.address_proof_type;
+            if (!proofType || !value) return true; // Skip validation if no proof type selected yet
+            
+            const config = idValidationConfig[proofType];
+            if (!config) return true; // Skip if unknown proof type
+            
+            return config.pattern.test(value) ? 
+              true : 
+              this.createError({ message: config.message });
+          }
+        )
     }),
     
     // Current Residential Address
@@ -104,6 +117,31 @@ export const combinedValidationSchema = Yup.object().shape({
           .required("Pincode is required"),
         otherwise: (schema) => schema,
       }),
+      address_proof_type: Yup.string().when("same_as_permanent", {
+        is: false,
+        then: (schema) => schema.required("Address Proof Type is required"),
+        otherwise: (schema) => schema,
+      }),
+      address_proof_number: Yup.string().when("same_as_permanent", {
+        is: false,
+        then: (schema) => schema
+          .required("Address Proof Number is required")
+          .test(
+            "address-proof-format-validation",
+            function(value) {
+              const proofType = this.parent.address_proof_type;
+              if (!proofType || !value) return true; // Skip validation if no proof type selected yet
+              
+              const config = idValidationConfig[proofType];
+              if (!config) return true; // Skip if unknown proof type
+              
+              return config.pattern.test(value) ? 
+                true : 
+                this.createError({ message: config.message });
+            }
+          ),
+        otherwise: (schema) => schema,
+      }),
     }),
   }),
 
@@ -126,9 +164,6 @@ export const combinedValidationSchema = Yup.object().shape({
           this.createError({ message: config.message });
       }
     )
-  
 });
-
-
 
 
