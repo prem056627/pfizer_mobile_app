@@ -15,7 +15,7 @@ export const ProgramEnrollmentSlice = createSlice({
       // },
     },
     // current_page_state: 'enrollment_not_complete',
-    current_page_state: "patient_enrolment",
+    current_page_state: "",
     // program_status: 'un_active', // program status
     // program_status: "active", // program status
     program_name :'Opdyta',

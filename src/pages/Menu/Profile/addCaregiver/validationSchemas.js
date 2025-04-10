@@ -111,7 +111,16 @@ const firstCaregiverValidationSchema = {
 
   // Additional ID validation with dynamic format checking
   id_card_1_type_0: Yup.string()
-    .required(`Additional ID card type is required`),
+    .required(`Additional ID card type is required`)
+    // ADDED: Test to ensure additional ID type is different from primary ID type
+    .test(
+      "different-id-type-validation-0",
+      "Additional ID type must be different from primary ID type",
+      function(value) {
+        const primaryIdType = this.parent.id_card_type_0;
+        return value !== primaryIdType;
+      }
+    ),
 
   id_number_1_0: Yup.string()
     .trim()
@@ -306,6 +315,16 @@ const conditionalCaregiverValidationSchema = (id) => {
             return true;
           }
         })
+      )
+      // ADDED: Test to ensure additional ID type is different from primary ID type
+      .test(
+        `different-id-type-validation-${id}`,
+        "Additional ID type must be different from primary ID type",
+        function(value) {
+          if (!value) return true; // Skip if no value
+          const primaryIdType = this.parent[`id_card_type_${id}`];
+          return value !== primaryIdType;
+        }
       ),
 
     [`id_number_1_${id}`]: Yup.string()

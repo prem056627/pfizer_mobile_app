@@ -1,81 +1,87 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectInitializeData, setCurrentPageState, setInitializeData } from "../../../slice/patient-detail-form";
 import { CheckCircle, Clock, XCircle, AlertCircle } from "lucide-react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import useApi from "../../../hooks/useApi";
+import { LoaderContext } from "../../../context/LoaderContextProvider";
+
 function CompleteKyc() {
   const initialization_data = useSelector(selectInitializeData);
-  // ekyc_history
-  console.log('initialization_data',initialization_data?.verification_history);
-  // const eky_status = patient_profile_data?.ekyc_verification?.status;
+  const isApiCallInProgress = useRef(false);
+  // Module-level variable that persists across all renders
+// This will maintain state even with StrictMode's double invocation
+let hasApiBeenCalled = false;
 
   // KYC history data from API
   const kycData = initialization_data?.verification_history;
 
   const triggerApi = useApi();
-    const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { setLoading, isLoading } = useContext(LoaderContext);
 
-
-     const makeApiCall_1 = async () => {
-        // Check token before making API call
-        // if (!checkToken()) {
-        //   console.log("No token found, redirecting to login.");
-        //   // You might want to add a redirect logic here
-        //   return;
-        // }
+  const makeApiCall_1 = async () => {
+    // First check module-level flag
+    if (hasApiBeenCalled) {
+      console.log("API has already been called previously. Skipping.");
+      return;
+    }
     
-        try {
-          setIsLoading(true);
-          const url = `/patient_dashboard/?current_step=verification_history`;
-          const { response, success } = await triggerApi({
-            url: url,
-            type: "GET",
-            loader: true,
-          });
+    // Then check component-level ref
+    if (isApiCallInProgress.current) {
+      console.log("API call already in progress. Skipping.");
+      return;
+    }
+    
+    try {
+      console.log("Starting API call");
+      isApiCallInProgress.current = true;
+      setLoading(true);
       
-          if (success && response) {
-            dispatch(setInitializeData(response));
-            dispatch(setCurrentPageState(response.current_step)); 
-          } else {
-            console.error("API call failed or returned no data.");
-          }
-        } catch (error) {
-          console.error("Error in makeApiCall:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-    
-      // useEffect(()=>{
-      //   dispatch(setIsInitalDataLoad('route_page'));
-      // },[])
-       
-    
-      useEffect(() => {
-      
-            makeApiCall_1();
-        // }
-    }, [ ]);
+      const url = `/patient_dashboard/?current_step=verification_history`;
+      const { response, success } = await triggerApi({
+        url: url,
+        type: "GET",
+        loader: true,
+      });
+  
+      if (success && response) {
+        dispatch(setInitializeData(response));
+        dispatch(setCurrentPageState(response.current_step)); 
+        
+        // Set the module-level flag to true after successful call
+        hasApiBeenCalled = true;
+      } else {
+        console.error("API call failed or returned no data.");
+      }
+    } catch (error) {
+      console.error("Error in makeApiCall:", error);
+    } finally {
+      isApiCallInProgress.current = false;
+      setLoading(false);
+    }
+  };
 
-
+  // This will make sure we only call the API once, even in StrictMode  
+  useEffect(() => {
+    // Only attempt the API call if it hasn't been called yet at the module level
+    if (!hasApiBeenCalled) {
+      makeApiCall_1();
+    }
+  }, []);
 
   function NoAvailablePrograms() {
     return (
-      <div className="flex flex-col items-center justify-center h-96   p-6">
-        <div className="relative flex items-center justify-center w-24 h-24 rounded-full ">
-          {/* <span className="text-6xl text-purple-300">😞</span>
-          <span className="absolute top-0 right-2 text-4xl text-purple-300">!</span> */}
-            <NoProgram/>
+      <div className="flex flex-col items-center justify-center h-96 p-6">
+        <div className="relative flex items-center justify-center w-24 h-24 rounded-full">
+          <NoProgram/>
         </div>
-        <h2 className="mt-4 text-2xl text-center font-semibold text-gray-700"> No Verification History data available</h2>
+        <h2 className="mt-4 text-2xl text-center font-semibold text-gray-700">No Verification History data available</h2>
         <p className="mt-2 text-center text-gray-500">"We'll notify you when something arrives!"</p>
       </div>
     );
   }
-
-
 
   // Function to get status styling and icon with safe access
   const getStatusInfo = (status) => {
@@ -141,7 +147,6 @@ function CompleteKyc() {
     }
   };
   
-
   // Safe data check
   const safeKycData = Array.isArray(kycData) ? kycData : [];
 
@@ -161,7 +166,7 @@ function CompleteKyc() {
         {/* Show message if no data */}
         {!hasData && (
           <>
-         { NoAvailablePrograms()}
+           {NoAvailablePrograms()}
           </>
         )}
         

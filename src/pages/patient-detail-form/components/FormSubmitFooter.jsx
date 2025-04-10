@@ -39,48 +39,7 @@ function FormSubmitFooter({ formik ,onSkip}) {
   };
 
 
-    const [isLoading, setIsLoading] = useState(true);
-    const triggerApi = useApi();
 
-
-
-   const makeApiCall = async () => {
-      try {
-        setIsLoading(true);
-  
-        const url = `/patient_dashboard/?current_step=caregiver_addition&reverse=true`;
-
-        // // Prepare FormData using values
-        // const preparedFormData = transformToPatientDetailsFormData(values);
-        
-        const { response, success } = await triggerApi({
-          url: url,
-          type: "POST",
-          payload: {}, 
-          loader: true,
-        });
-  
-        if (success && response) {
-          dispatch(setCurrentPageState(response?.current_step));
-  
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 500);
-        
-          return { success: true, data: response };
-        } else {
-          console.error("API call failed or returned no data.");
-          return { success: false, error: "API call failed" };
-        }
-      } catch (error) {
-        console.error("Error in makeApiCall:", error);
-        return { success: false, error };
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-     
     
   
     const onsubmitReverse = async () => {  // Add async here

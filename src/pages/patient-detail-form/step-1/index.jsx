@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import PersonlDetailsForm from "./PersonlDetailsForm";
@@ -20,6 +20,7 @@ import { getProfileInitialValues,fieldGroups } from "./initialValues";
 import useApi from "../../../hooks/useApi";
 import { transformToPatientDetailsFormData } from "../../../utils/forms";
 import moment from 'moment';
+import { LoaderContext } from "../../../context/LoaderContextProvider";
 
 const FormDebugger = ({ values, errors, touched }) => {
   React.useEffect(() => {
@@ -54,7 +55,8 @@ const PersonalDetails = () => {
 
 
 const [formData, setFormData] = useLocalStorage("formData", {});
-const [isLoading, setIsLoading] = useState(true);
+const { setLoading, isLoading } = useContext(LoaderContext);
+
   const triggerApi = useApi();
   
   // Get initial values from stored data
@@ -71,7 +73,7 @@ const makeApiCall = async (values) => {
   console.log("form Val!!! " , tempValues ) ;
   const payload_val =  transformToPatientDetailsFormData(tempValues)
   try {
-    setIsLoading(true);
+    setLoading(true);
 
     // Set current_step parameter in the URL
     const currentStep = currentPageState; // This should be dynamically assigned
@@ -100,7 +102,7 @@ const makeApiCall = async (values) => {
     console.error("Error in makeApiCall:", error);
     return { success: false, error };
   } finally {
-    setIsLoading(false);
+    setLoading(false);
   }
 };
 

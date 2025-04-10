@@ -2283,7 +2283,7 @@ let initialData = {
     // after enrollment submit
 
     program_data: {
-		enrolled_programs:0,
+		enrolled_programs:1,
     available_programs: [
 		{
 			program_name: "Lorbriqua Care",
@@ -2344,7 +2344,7 @@ let initialData = {
               paid_orders: [
                   {
                       order_id: "10001",
-                      order_status: "Open",
+                      order_status: "Close",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2374,7 +2374,7 @@ let initialData = {
                   },
                   {
                       order_id: "10002",
-                      order_status: "Open",
+                      order_status: "Approve",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",

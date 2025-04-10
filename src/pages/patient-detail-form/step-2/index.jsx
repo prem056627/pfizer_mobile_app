@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 
@@ -20,13 +20,15 @@ import FormSubmitFooter from "../components/FormSubmitFooter";
 import useLocalStorage from "../../../hooks/useLocalstorage";
 import CaregiverDetails from "./CaregiverDetails";
 import { transformToFormDataOrder, transformToPatientDetailsFormData } from "../../../utils/forms";
+import { LoaderContext } from "../../../context/LoaderContextProvider";
 
 const CaregiverDetailsForm = () => {
   const dispatch = useDispatch();
 
   const currentPageState = useSelector(selectCurrentPageState);
   const [formData, setFormData] = useLocalStorage("formData", {});
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setLoading] = useState(true);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const triggerApi = useApi();
   
   const initialValues = {
@@ -43,7 +45,7 @@ const CaregiverDetailsForm = () => {
 
   const makeApiCall = async (values) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
 
       const url = `/patient_dashboard/?current_step=caregiver_addition`;
       
@@ -73,7 +75,7 @@ const CaregiverDetailsForm = () => {
       console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -105,7 +107,7 @@ const CaregiverDetailsForm = () => {
   // In your component, add a function to skip this step
 const skipCaregiverStep = async () => {
   try {
-    setIsLoading(true);
+    setLoading(true);
     
     // Call your API to inform the backend that we're skipping this step
     const url = `/patient_dashboard/?current_step=caregiver_addition&skip=true`;
@@ -141,7 +143,7 @@ const skipCaregiverStep = async () => {
     console.error("Error in skipCaregiverStep:", error);
     return { success: false, error };
   } finally {
-    setIsLoading(false);
+    setLoading(false);
   }
 };
 

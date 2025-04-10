@@ -9,14 +9,13 @@ import { setCurrentPageState, setIsInitalDataLoad, setPatientEnrollmentSuccessMo
 
 function PatientEnrollmentSuccess() {
 const dispatch = useDispatch();
-const [isLoading, setIsLoading] = useState(true);
 const refreshApplication = () => {
   window.location.reload();
 };
 
 
     const handleRequest = () => {
-         setIsLoading(true);
+  
         // console.log("Request Sent");
          dispatch(setPatientEnrollmentSuccessModalOpen(false));
          dispatch(setCurrentPageState('program_enrolment'));

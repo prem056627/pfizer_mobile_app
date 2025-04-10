@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedProgram, setRequestFocModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
+import { selectSelectedProgram, setIsInitalDataLoad, setRequestFocModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import useApi from '../../hooks/useApi';
 import { transformToFormData } from '../../utils/forms';
+import { LoaderContext } from '../../context/LoaderContextProvider';
 
 function RequestFOCForm({ setStep, fetchProgramDetails }) {
     const dispatch = useDispatch();
     const triggerApi = useApi();
-    const [isLoading, setIsLoading] = useState(false);
+   
+    const { setLoading, isLoading } = useContext(LoaderContext);
     const program = useSelector(selectSelectedProgram);
 
     const initialValues = {
@@ -71,7 +73,7 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
   // API call using FormData with files
   const makeApiCall = async (values) => {
     try {
-        setIsLoading(true);
+        setLoading(true);
 
         // Create FormData object
         const formData = transformToFormData(values)
@@ -96,7 +98,7 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
         console.error("Error in makeApiCall:", error);
         return { success: false, error };
     } finally {
-        setIsLoading(false);
+        setLoading(false);
     }
 };
 
@@ -112,12 +114,14 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                 // Show success toast
                 notify();
 
-                     setTimeout(() => {
-                                    // dispatch(setProgramEnrollmentSuccess(false));
-                                    window.location.reload();
-                         }, 2000);
+                   
                 
                         dispatch(setViewingOrderHistory(false));
+
+                          setTimeout(() => {
+                            dispatch(setIsInitalDataLoad(true));
+                         }, 500);
+                        
                 
                 
                 
@@ -141,6 +145,12 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
             setSubmitting(false);
         }
     };
+
+    //    useEffect(()=>{
+    //      dispatch(setIsInitalDataLoad(false));
+    // console.log("hi");
+    //     },[])
+    
 
     return (
         <Formik 

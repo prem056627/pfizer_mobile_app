@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import InputField from "../../../../components/Form/InputField";
 import SelectField from "../../../../components/Form/SelectField";
@@ -11,6 +11,7 @@ import { setCaregiver_enroll_consent, setCaregiver_enroll_consent_privacy, setIs
 import { transformToPatientDetailsFormData } from "../../../../utils/forms";
 import MultiFileUpload from "../../../../components/Form/MultiFileUpload";
 import { ReactComponent as IconToggleTick } from "../../../../assets/images/svg/checkbox-tick.svg";
+import { LoaderContext } from "../../../../context/LoaderContextProvider";
 // Relationship options for the dropdown
 const relationshipOptions = [
   { id: "Father", label: "Father" },
@@ -73,6 +74,8 @@ const AddCaregiverDetails = ({ formik }) => {
 
   // State to track if initialization has been done
   const [initialized, setInitialized] = useState(false);
+    const { setLoading, isLoading } = useContext(LoaderContext);
+  
 
   // State for timers
   const [timers, setTimers] = useState({});
@@ -183,6 +186,8 @@ const AddCaregiverDetails = ({ formik }) => {
   // Send OTP to caregiver's mobile
   const sendOtp = (caregiverId) => {
 
+    setLoading(true); // Set loading to true before the fetch starts
+
     const caregiverIdVerify = {
       mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
     }
@@ -222,6 +227,8 @@ const AddCaregiverDetails = ({ formik }) => {
       })
       .catch((error) => {
         console.error("Error sending OTP:", error);
+      }).finally(() => {
+        setLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -270,6 +277,7 @@ const AddCaregiverDetails = ({ formik }) => {
   // Verify the OTP entered by the user
   // Verify the OTP entered by the user
   const verifyOtp = (caregiverId) => {
+    setLoading(true);
     const caregiver = caregivers.find((c) => c.id === caregiverId);
     const enteredOtp = caregiver.otp.join("");
 
@@ -336,6 +344,9 @@ const AddCaregiverDetails = ({ formik }) => {
               : c
           )
         );
+      })
+      .finally(() => {
+        setLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -792,13 +803,13 @@ const handlePrivacyModal = () => {
                     >
                       GET OTP
                     </button>
-                    {formik.values[`caregiver_${caregiverId}_mobile_verify`] &&
+                    {/* {formik.values[`caregiver_${caregiverId}_mobile_verify`] &&
                       formik.values[`caregiver_${caregiverId}_mobile_verify`]
                         .length < 10 && (
                         <div className="text-red-500 text-xs mt-1">
                           Please enter 10 digit mobile number
                         </div>
-                      )}
+                      )} */}
                   </>
                 ) : (
                   <div className="flex flex-col gap-4 pt-4">

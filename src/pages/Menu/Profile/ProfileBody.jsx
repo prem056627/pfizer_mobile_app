@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { ReactComponent as DropDownTickIcon } from '../../../../src/assets/images/svg/Form-dropDownTick-icon.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectInitializeData, setCurrentPageState, setInitializeData, setIsAddCaregiverFormOpen } from '../../../slice/patient-detail-form';
 import useApi from '../../../hooks/useApi';
+import { LoaderContext } from '../../../context/LoaderContextProvider';
 
 function MyProfileDetails() {
 	const patient_profile_data = useSelector(selectInitializeData);
@@ -12,43 +13,17 @@ function MyProfileDetails() {
 	const caregivers = patient_profile_data?.caregiver_data;
 	console.log('caregivers',caregivers?.length);
 	
-	const notify = () =>
-		toast('Profile updated successfully', {
-			duration: 6000,
-			position: 'top-right',
 
-			// Styling
-			style: {
-				borderBottom: '3px solid #1EA41D',
-				fontFamily: 'open sans',
-				fontSize: '14px',
-				padding: '16px',
-				fontWeight: '800',
-				color: '#1EA41D',
-				background: '#E8F6E8',
-				width: '100%',
-			},
-			className: 'custom-toast',
-
-			// Custom Icon
-			icon: <DropDownTickIcon />,
-
-			// Aria
-			ariaProps: {
-				role: 'status',
-				'aria-live': 'polite',
-			},
-		});
-
-
-
-
+// This will maintain state even with StrictMode's double invocation
+let hasApiBeenCalled = false;
+const isApiCallInProgress = useRef(false);
 
 		
 		
 			const triggerApi = useApi();
 			  const dispatch = useDispatch();
-			  const [isLoading, setIsLoading] = useState(false);
+			//   const [isLoading, setLoading] = useState(false);
+			  const { setLoading, isLoading } = useContext(LoaderContext);
 		  
 		  
 			   const makeApiCall_1 = async () => {
@@ -58,9 +33,22 @@ function MyProfileDetails() {
 				  //   // You might want to add a redirect logic here
 				  //   return;
 				  // }
+
+				   // First check module-level flag
+					if (hasApiBeenCalled) {
+						console.log("API has already been called previously. Skipping.");
+						return;
+					}
+					
+					// Then check component-level ref
+					if (isApiCallInProgress.current) {
+						console.log("API call already in progress. Skipping.");
+						return;
+					}
 			  
 				  try {
-					setIsLoading(true);
+					isApiCallInProgress.current = true;
+					setLoading(true);
 					const url = `/patient_dashboard/?current_step=patient_data`;
 					const { response, success } = await triggerApi({
 					  url: url,
@@ -71,26 +59,29 @@ function MyProfileDetails() {
 					if (success && response) {
 					  dispatch(setInitializeData(response));
 					  dispatch(setCurrentPageState(response.current_step)); 
+
+					   // Set the module-level flag to true after successful call
+					   hasApiBeenCalled = true;
 					} else {
 					  console.error("API call failed or returned no data.");
 					}
 				  } catch (error) {
 					console.error("Error in makeApiCall:", error);
 				  } finally {
-					setIsLoading(false);
+					isApiCallInProgress.current = false;
+                   setLoading(false);
 				  }
 				};
 			  
-				// useEffect(()=>{
-				//   dispatch(setIsInitalDataLoad('route_page'));
-				// },[])
+			
 				 
 			  
 				useEffect(() => {
-				
+					// Only attempt the API call if it hasn't been called yet at the module level
+					if (!hasApiBeenCalled) {
 					  makeApiCall_1();
-				  // }
-			  }, [ ]);
+					}
+				  }, []);
 		  
  function OpenAddCaregiver() {
 	dispatch(setIsAddCaregiverFormOpen(true));

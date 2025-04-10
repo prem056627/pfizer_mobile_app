@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Formik } from "formik";
 import MultiFileUpload from "../../components/Form/MultiFileUpload";
 import Radio from "../../components/Form/Radio";
@@ -15,10 +15,11 @@ import { transformToFormData } from "../../utils/forms";
 import { ReactComponent as Lorla } from "../../assets/images/svg/Lorbriqua_PAP_Scheme.svg";
 import { ReactComponent as Palbace } from "../../assets/images/svg/palbace_scheme.svg";
 import { ReactComponent as Crizalk } from "../../assets/images/svg/Crizalk_Scheme.svg";
+import { LoaderContext } from "../../context/LoaderContextProvider";
 
 const SchemeEnrollDocUpload = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const dispatch = useDispatch();
   const triggerApi = useApi();
   const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
@@ -155,7 +156,7 @@ const SchemeEnrollDocUpload = () => {
     tempValues["scheme"] = values?.scheme;
 
     try {
-      setIsLoading(true);
+      setLoading(true);
 
       // Set current_step parameter in the URL
       const url = `/patient_dashboard/?current_step=program_enrolment`;
@@ -190,7 +191,7 @@ const SchemeEnrollDocUpload = () => {
       console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -336,7 +337,7 @@ const SchemeEnrollDocUpload = () => {
           {/* Fixed Footer */}
           <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
 
-          {!showUploadFields && (<div className={`'
+          { (<div className={`'
                 } `}>{PoweredByFooter()}</div>)}
 
             <div className="max-w-2xl mx-auto">

@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedProgram, setUploadInvoiceModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
+import { selectSelectedProgram, setIsInitalDataLoad, setUploadInvoiceModalOpen, setViewingOrderHistory } from '../../slice/patient-detail-form';
 import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import useApi from '../../hooks/useApi';
 import { transformToFormData } from '../../utils/forms';
+import { LoaderContext } from '../../context/LoaderContextProvider';
 
-function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
+function UploadInvoiceForm() {
     const dispatch = useDispatch();
     const triggerApi = useApi();
-    const [isLoading, setIsLoading] = useState(false);
+    const { setLoading, isLoading } = useContext(LoaderContext);
     const program = useSelector(selectSelectedProgram);
 
     const initialValues = {
@@ -79,7 +80,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
     // Simple Base64 approach without extra structure
     const makeApiCall = async (values) => {
         try {
-            setIsLoading(true);
+            setLoading(true);
             const formData = transformToFormData(values);
             // formData.append('current_step', values.current_step);
             // formData.append('program_id', values.program_id);
@@ -105,7 +106,7 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
             console.error("Error in makeApiCall:", error);
             return { success: false, error };
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -121,24 +122,20 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
                 // Show success toast
                 notify();
 
-                setTimeout(() => {
-                    // dispatch(setProgramEnrollmentSuccess(false));
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(() => {
+                //     // dispatch(setProgramEnrollmentSuccess(false));
+                //     window.location.reload();
+                // }, 2000);
 
                  dispatch(setViewingOrderHistory(false));
 
+                  setTimeout(() => {
+                                             dispatch(setIsInitalDataLoad(true));
+                                          }, 500);
+
 
                 
-                // Refresh program details if the function exists
-                if (typeof fetchProgramDetails === 'function') {
-                    fetchProgramDetails();
-                }
-                
-                // Move to next step if setStep function exists
-                if (typeof setStep === 'function') {
-                    setStep(prevStep => prevStep + 1);
-                }
+              
             } else {
                 // Handle API error
                 setFieldError('order_file', 'Failed to upload files. Please try again.');
@@ -150,6 +147,13 @@ function UploadInvoiceForm({ setStep, fetchProgramDetails }) {
             setSubmitting(false);
         }
     };
+
+
+
+//     useEffect(()=>{
+//         dispatch(setIsInitalDataLoad(false));
+// console.log("hi");
+//     },[])
 
     return (
         <Formik 

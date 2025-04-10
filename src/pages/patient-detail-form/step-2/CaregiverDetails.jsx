@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import InputField from "../../../components/Form/InputField";
 import SelectField from "../../../components/Form/SelectField";
@@ -8,6 +8,7 @@ import { transformToPatientDetailsFormData } from "../../../utils/forms";
 import { setCaregiver_enroll_consent, setCaregiver_enroll_consent_privacy, setIsCaregiverSkipVisible, setIsKycHistoryModalOpen } from "../../../slice/patient-detail-form";
 import { useDispatch } from "react-redux";
 import { ReactComponent as IconToggleTick } from "../../../assets/images/svg/checkbox-tick.svg";
+import { LoaderContext } from "../../../context/LoaderContextProvider";
 // Relationship options for the dropdown
 const relationshipOptions = [
   { id: "Father", label: "Father" },
@@ -70,7 +71,7 @@ const CaregiverDetails = ({ formik }) => {
 const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
   // State to track if initialization has been done
   const [initialized, setInitialized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { setLoading, isLoading } = useContext(LoaderContext);
 
   // State for timers
   const [timers, setTimers] = useState({});
@@ -181,7 +182,7 @@ const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
   // Send OTP to caregiver's mobile
   const sendOtp = (caregiverId) => {
 
-    setIsLoading(true); // Set loading to true before the fetch starts
+    setLoading(true); // Set loading to true before the fetch starts
 
     const caregiverIdVerify = {
       mobile: formik.values[`caregiver_${caregiverId}_mobile_verify`],
@@ -224,7 +225,7 @@ const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
         console.error("Error sending OTP:", error);
       })
       .finally(() => {
-        setIsLoading(false); // Ensure loading is set to false whether success or error
+        setLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -274,7 +275,7 @@ const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
   // Verify the OTP entered by the user
   const verifyOtp = (caregiverId) => {
 
-    setIsLoading(true);
+    setLoading(true);
     const caregiver = caregivers.find((c) => c.id === caregiverId);
     const enteredOtp = caregiver.otp.join("");
 
@@ -343,7 +344,7 @@ const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
         );
       })
       .finally(() => {
-        setIsLoading(false); // Ensure loading is set to false whether success or error
+        setLoading(false); // Ensure loading is set to false whether success or error
       });
   };
 
@@ -795,13 +796,13 @@ const handlePrivacyModal = () => {
                     >
                       GET OTP
                     </button>
-                    {formik.values[`caregiver_${caregiverId}_mobile_verify`] &&
+                    {/* {formik.values[`caregiver_${caregiverId}_mobile_verify`] &&
                       formik.values[`caregiver_${caregiverId}_mobile_verify`]
                         .length < 10 && (
                         <div className="text-red-500 text-xs mt-1">
                           Please enter 10 digit mobile number
                         </div>
-                      )}
+                      )} */}
                   </>
                 ) : (
                   <div className="flex flex-col gap-4 pt-4">

@@ -1,7 +1,7 @@
 
 // export default AppNavigation;
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "../pages/Home";
 import PatientDetailForm from "../pages/patient-detail-form";
@@ -31,6 +31,7 @@ import CompleteKycModal from "../pages/Menu/completedKyc/CompleteKycModal";
 import AddCaregiverModal from "../pages/Menu/Profile/addCaregiver/AddCaregiverModal";
 import CaregiverConcentModal from "../pages/patient-detail-form/caregiverConcent/CaregiverConcentModal";
 import CareTakerPrivacyModal from "../pages/patient-detail-form/caregiverConcent/CareTakerPrivacy/CareTakerPrivacyModal";
+import { LoaderContext } from "../context/LoaderContextProvider";
 
 const AppNavigation = () => {
 // Token functionality
@@ -121,7 +122,7 @@ const AppNavigation = () => {
   
 
   const isInitalDataLoad = useSelector(selectIsInitalDataLoad)
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading,isLoading } = useContext(LoaderContext);
   
   // Get data from Redux
   const dispatch = useDispatch();
@@ -141,7 +142,7 @@ const AppNavigation = () => {
     // }
 
     try {
-      setIsLoading(true);
+      setLoading(true);
       const url = `/patient_dashboard/?current_step=initialize`;
       const { response, success } = await triggerApi({
         url: url,
@@ -158,13 +159,11 @@ const AppNavigation = () => {
     } catch (error) {
       console.error("Error in makeApiCall:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  // useEffect(()=>{
-  //   dispatch(setIsInitalDataLoad('route_page'));
-  // },[])
+
    
 
 //   useEffect(() => {
@@ -271,24 +270,26 @@ useEffect(() => {
   // console.log("initialData!!!",initialData.data)
 
   // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center bg-white p-6 pt-11">
-        <div className="flex-col justify-center">
-        <div className="overlay-spinner" />
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex h-full w-full items-center justify-center bg-white p-6 pt-11">
+  //       <div className="flex-col justify-center">
+  //       <div className="overlay-spinner" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Determine if footer should be hidden
   const hideFooter =  current_page_state === 'program_enrolment' && doc_upload_status === 'scheme_enroll_doc' || 
-                     current_page_state === 'patient_enrolment';
-                    
+                     current_page_state === 'patient_enrolment' ||  current_page_state === '' ;
+              
+                     const hideLogo =  current_page_state === '' ;
   // Return the Home layout with the content
   return (
     <Home 
       hideFooter={hideFooter} 
+      hideLogo = {hideLogo}
     >
         <ToastContainer />
       {renderContent()}

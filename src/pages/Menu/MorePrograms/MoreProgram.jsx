@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { selectInitializeData, setCurrentPageState, setCurrentView, setInitializeData, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
 import useApi from "../../../hooks/useApi";
+import { LoaderContext } from "../../../context/LoaderContextProvider";
 
 
   
@@ -110,13 +111,14 @@ function MoreProgram() {
   const dispatch = useDispatch();
 
   const AVAILABLE_PROGRAMS = initiaData?.program_data?.available_programs||[];
-
-
+  let hasApiBeenCalled = false;
+  const isApiCallInProgress = useRef(false);
 
 
       const triggerApi = useApi();
 
-        const [isLoading, setIsLoading] = useState(false);
+        // const [isLoading, setLoading] = useState(false);
+          const { setLoading, isLoading } = useContext(LoaderContext);
     
     
          const makeApiCall_1 = async () => {
@@ -126,9 +128,22 @@ function MoreProgram() {
             //   // You might want to add a redirect logic here
             //   return;
             // }
+             // First check module-level flag
+    if (hasApiBeenCalled) {
+      console.log("API has already been called previously. Skipping.");
+      return;
+    }
+    
+    // Then check component-level ref
+    if (isApiCallInProgress.current) {
+      console.log("API call already in progress. Skipping.");
+      return;
+    }
         
             try {
-              setIsLoading(true);
+              console.log("Starting API call");
+              isApiCallInProgress.current = true;
+              setLoading(true);
               const url = `/patient_dashboard/?current_step=program_data`;
               const { response, success } = await triggerApi({
                 url: url,
@@ -139,13 +154,17 @@ function MoreProgram() {
               if (success && response) {
                 dispatch(setInitializeData(response));
                 dispatch(setCurrentPageState(response.current_step)); 
+
+                // Set the module-level flag to true after successful call
+        hasApiBeenCalled = true;
               } else {
                 console.error("API call failed or returned no data.");
               }
             } catch (error) {
               console.error("Error in makeApiCall:", error);
             } finally {
-              setIsLoading(false);
+              isApiCallInProgress.current = false;
+              setLoading(false);
             }
           };
         
@@ -153,13 +172,15 @@ function MoreProgram() {
           //   dispatch(setIsInitalDataLoad('route_page'));
           // },[])
            
-        
-          useEffect(() => {
-          
-                makeApiCall_1();
-            // }
-        }, [ ]);
+         // This will make sure we only call the API once, even in StrictMode  
+  useEffect(() => {
+    // Only attempt the API call if it hasn't been called yet at the module level
+    if (!hasApiBeenCalled) {
+      makeApiCall_1();
+    }
+
     
+  }, []);
 
 
     const handleRequest = (program) => {

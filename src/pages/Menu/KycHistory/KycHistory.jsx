@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectInitializeData, setCurrentPageState, setInitializeData } from "../../../slice/patient-detail-form";
 import { CheckCircle, Clock, XCircle, AlertCircle } from "lucide-react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import useApi from "../../../hooks/useApi";
+import { LoaderContext } from "../../../context/LoaderContextProvider";
 function KycHistory() {
   const initialization_data = useSelector(selectInitializeData);
   // ekyc_history
@@ -13,14 +14,15 @@ function KycHistory() {
   // KYC history data from API
   const kycData = initialization_data?.ekyc_history;
 
-  
+  // This will maintain state even with StrictMode's double invocation
+let hasApiBeenCalled = false;
 
-
+const isApiCallInProgress = useRef(false);
 
     const triggerApi = useApi();
       const dispatch = useDispatch();
-      const [isLoading, setIsLoading] = useState(false);
-  
+        const { setLoading,isLoading } = useContext(LoaderContext);
+   
   
        const makeApiCall_1 = async () => {
           // Check token before making API call
@@ -29,9 +31,22 @@ function KycHistory() {
           //   // You might want to add a redirect logic here
           //   return;
           // }
+
+           // First check module-level flag
+    if (hasApiBeenCalled) {
+      console.log("API has already been called previously. Skipping.");
+      return;
+    }
+    
+    // Then check component-level ref
+    if (isApiCallInProgress.current) {
+      console.log("API call already in progress. Skipping.");
+      return;
+    }
       
           try {
-            setIsLoading(true);
+            isApiCallInProgress.current = true;
+            setLoading(true);
             const url = `/patient_dashboard/?current_step=ekyc_history`;
             const { response, success } = await triggerApi({
               url: url,
@@ -42,26 +57,30 @@ function KycHistory() {
             if (success && response) {
               dispatch(setInitializeData(response));
               dispatch(setCurrentPageState(response.current_step)); 
+
+              // Set the module-level flag to true after successful call
+        hasApiBeenCalled = true;
             } else {
               console.error("API call failed or returned no data.");
             }
           } catch (error) {
             console.error("Error in makeApiCall:", error);
           } finally {
-            setIsLoading(false);
+            isApiCallInProgress.current = false;
+      setLoading(false);
           }
         };
       
-        // useEffect(()=>{
-        //   dispatch(setIsInitalDataLoad('route_page'));
-        // },[])
-         
+     
       
-        useEffect(() => {
-        
-              makeApiCall_1();
-          // }
-      }, [ ]);
+     // This will make sure we only call the API once, even in StrictMode  
+  useEffect(() => {
+    // Only attempt the API call if it hasn't been called yet at the module level
+    if (!hasApiBeenCalled) {
+      makeApiCall_1();
+    }
+  }, []);
+
   
 
 

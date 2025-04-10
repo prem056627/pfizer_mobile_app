@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FabButton from "../../components/FabButton";
 import MenuFooter from "../../components/MenuFooter";
@@ -13,25 +13,31 @@ import {
 } from "../../slice/patient-detail-form";
 import { ReactComponent as Back } from "../../assets/images/svg/back.svg";
 import useApi from "../../hooks/useApi";
+import { LoaderContext } from "../../context/LoaderContextProvider";
 
 const OrderHistory = () => {
   const [activeTab, setActiveTab] = useState("paid");
   const dispatch = useDispatch();
   const program = useSelector(selectSelectedProgram);
-    const [isLoading, setIsLoading] = useState(true);
-      const triggerApi = useApi();
-      const [loadingFile, setLoadingFile] = useState(null);
+  const { setLoading, isLoading } = useContext(LoaderContext);
+  const triggerApi = useApi();
+  const [loadingFile, setLoadingFile] = useState(null);
+  // Add a new state variable to track if data has loaded
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const [visit, setVisit] = useState(false);
+
+
+  
   // Use actual data from Redux store, no fallback dummy data
   const paidOrders = program?.orders?.paid_orders || [];
   const focOrders = program?.orders?.foc_orders || [];
 
-    const currentView = useSelector(selectCurrentView);
-    const hasOpenOrders = paidOrders.some(order => order.order_status === "Open");
-    const hasOpenFocOrders = focOrders.some(order => order.order_status === "Open");
+  const currentView = useSelector(selectCurrentView);
+  const hasOpenOrders = paidOrders.some(order => order.order_status === "Open");
+  const hasOpenFocOrders = focOrders.some(order => order.order_status === "Open");
   
-  console.log('paidOrders,focOrders', program?.orders?.paid_orders
-
-    );
+  console.log('paidOrders,focOrders', program?.orders?.paid_orders);
   
   // Handle back navigation
   const handleBack = () => {
@@ -39,109 +45,84 @@ const OrderHistory = () => {
   };
 
   const UploadInvoiceHandle = () => {
-
     dispatch(setUploadInvoiceModalOpen(true));
   };
 
   const RequestFocHandle = () => {
-
     dispatch(setRequestFocModalOpen(true));
   };
 
-// In your React web code
-// const handleFileView = (file) => {
-//   // Check if running inside a WebView (React Native)
-//   if (window.ReactNativeWebView) {
-//     // Send message to React Native
-//     window.ReactNativeWebView.postMessage(
-//       JSON.stringify({
-//         type: 'VIEW_FILE',
-//         fileUrl: file
-//       })
-//     );
-//   } else {
-//     // Fallback for web browsers (when testing on web)
-//     window.open(file, '_blank');
-//   }
-// };
-
-const handleFileView = (file) => {
-  // Extract file name and type (if possible)
-  const fileName = file.split('/').pop() || 'document';
-  const fileType = fileName.split('.').pop().toLowerCase() || 'pdf';
-  
-  // Set loading state for this file
-  setLoadingFile(file);
-  
-  // Check if running inside a WebView (React Native)
-  if (window.ReactNativeWebView) {
-    // Send message to React Native
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({
-        type: 'VIEW_FILE',
-        fileUrl: file,
-        fileName: fileName,
-        fileType: fileType
-      })
-    );
+  const handleFileView = (file) => {
+    // Extract file name and type (if possible)
+    const fileName = file.split('/').pop() || 'document';
+    const fileType = fileName.split('.').pop().toLowerCase() || 'pdf';
     
-    // Reset loading state after a short delay
-    setTimeout(() => setLoadingFile(null), 1500);
-  } else {
-    // Fallback for web browsers (when testing on web)
-    window.open(file, '_blank');
-    setLoadingFile(null);
-  }
-};
-
-
-
-    const makeApiCall = async () => {
-      try {
-        setIsLoading(true);
-        const url = `/patient_dashboard/?current_step=initialize`;
-        const { response, success } = await triggerApi({
-          url: url,
-          type: "GET",
-          loader: true,
-        });
+    // Set loading state for this file
+    setLoadingFile(file);
     
-        if (success && response) {
-          dispatch(setInitializeData(response));
-          // console.log('responseresponseresponse!!',response);
-          dispatch(setCurrentPageState(response.current_step)); 
-          // dispatch(setProgramStatus(response.program_status)); 
-        } else {
-          console.error("API call failed or returned no data.");
-        }
-      } catch (error) {
-        console.error("Error in makeApiCall:", error);
-      } finally {
-        setIsLoading(false); // Ensure loading state is reset
-      }
-    };
-  
-    // console.log('initialDatainitialData',initialData);
-    
-  
-    // useEffect(() => {
-    //   makeApiCall();
-     
-    // }, []);
-
-
-    useEffect(() => {
-    
-          // console.log("2",isInitalDataLoad);
-            makeApiCall();
+    // Check if running inside a WebView (React Native)
+    if (window.ReactNativeWebView) {
+      // Send message to React Native
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: 'VIEW_FILE',
+          fileUrl: file,
+          fileName: fileName,
+          fileType: fileType
+        })
+      );
       
-    }, [ ]);
+      // Reset loading state after a short delay
+      setTimeout(() => setLoadingFile(null), 1500);
+    } else {
+      // Fallback for web browsers (when testing on web)
+      window.open(file, '_blank');
+      setLoadingFile(null);
+    }
+  };
 
-    // useEffect(() => {
-    //   makeApiCall();
-     
-    // }, [activeTab]);
+  // const makeApiCall = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const url = `/patient_dashboard/?current_step=initialize`;
+  //     const { response, success } = await triggerApi({
+  //       url: url,
+  //       type: "GET",
+  //       loader: true,
+  //     });
+  
+  //     if (success && response) {
+  //       dispatch(setInitializeData(response));
+  //       dispatch(setCurrentPageState(response.current_step)); 
+  //       // Set dataLoaded to true after successful API call
+  //       setDataLoaded(true);
+  //     } else {
+  //       console.error("API call failed or returned no data.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in makeApiCall:", error);
+  //   } finally {
+  //     setLoading(false); // Ensure loading state is reset
+  //   }
+  // };
 
+  useEffect(() => {
+    console.log("visitCount",visit);
+    // This will run once when the component mounts (user comes to this page)
+    setVisit(true);
+    console.log("visitCount",visit);
+  }, []);
+
+  // Show loading state until data is loaded
+  // if (!dataLoaded) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+  //       <div className="text-center p-4">
+  //         <p>Loading data...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // If no program is selected, show a fallback or redirect
   if (!program) {
@@ -186,12 +167,9 @@ const handleFileView = (file) => {
                       : ''
                   
                   } text-[#3B3B3B] px-[8px] rounded-[6px] text-[12px]`}>
-            {/* {program.program_status} */}
-
             {program.program_status === "applied" ? "Applied" 
-        :program.program_status === "active" ? "Active" 
-
-: ""}
+              :program.program_status === "active" ? "Active" 
+              : ""}
           </span>
         </div>
 
@@ -228,7 +206,9 @@ const handleFileView = (file) => {
                 ? "border-bg-text-primary border-b-2 border-primary"
                 : "text-gray-600"
             }`}
-            onClick={() => setActiveTab("paid")}
+            onClick={() => setActiveTab("paid")
+              
+            }
           >
             Paid Orders
           </button>
@@ -245,61 +225,36 @@ const handleFileView = (file) => {
         </div>
         {/* Upload Invoice or Request FOC Section based on active tab */}
         <div className="flex justify-start gap-4 items-center mb-4">
-         
+          {program.program_status === "active" && (
+            <>
+              {/* Show "Have new orders?" only if activeTab is "paid" and no open orders */}
+              <p className="text-[#767676] font-open-sans text-[14px] font-normal">
+                {activeTab === "paid"
+                  ? (!hasOpenOrders && "Have new orders?")
+                  : (!hasOpenFocOrders && "Need more free samples?")}
+              </p>
 
-            {program.program_status === "active" && (
-    //  <>
-    //     <p className="text-[#767676] font-open-sans text-14px font-normal text-[14px]">
-    //       {activeTab === "paid" ? "Have new orders?" : "Need more free samples?"}
-    //     </p>
-    //     {activeTab === "paid" ? (
-    //       <button
-    //         onClick={UploadInvoiceHandle}
-    //         className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-    //       >
-    //         Upload Invoice
-    //       </button>
-    //     ) : (
-    //       <button
-    //         onClick={RequestFocHandle}
-    //         className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-    //       >
-    //         Request FOC
-    //       </button>
-    //     )}
-    //   </> 
-
-    <>
-    {/* Show "Have new orders?" only if activeTab is "paid" and no open orders */}
-    <p className="text-[#767676] font-open-sans text-[14px] font-normal">
-  {activeTab === "paid"
-    ? (!hasOpenOrders && "Have new orders?")
-    : (!hasOpenFocOrders && "Need more free samples?")}
-</p>
-
-    {/* Show "Upload Invoice" only if activeTab is "paid" and no open orders */}
-    {activeTab === "paid" && !hasOpenOrders && (
-      <button
-        onClick={UploadInvoiceHandle}
-        className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-      >
-        Upload Invoice
-      </button>
-    )}
-  
-    {/* Always show "Request FOC" when activeTab is NOT "paid" */}
-    {activeTab !== "paid" && !hasOpenFocOrders && (
-      <button
-        onClick={RequestFocHandle}
-        className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
-      >
-        Request FOC
-      </button>
-    )}
-  </>
-    )}
-
-
+              {/* Show "Upload Invoice" only if activeTab is "paid" and no open orders */}
+              {activeTab === "paid" && !hasOpenOrders && (
+                <button
+                  onClick={UploadInvoiceHandle}
+                  className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+                >
+                  Upload Invoice
+                </button>
+              )}
+            
+              {/* Always show "Request FOC" when activeTab is NOT "paid" */}
+              {activeTab !== "paid" && !hasOpenFocOrders && (
+                <button
+                  onClick={RequestFocHandle}
+                  className="border-bg-text-primary font-bold text-[14px] font-sans text-primary"
+                >
+                  Request FOC
+                </button>
+              )}
+            </>
+          )}
         </div>
         <div className="pb-30">
           {/* Render orders based on active tab */}
@@ -325,23 +280,33 @@ const handleFileView = (file) => {
                   <p className="text-[#767676] text-[14px]">
                     Order Date: {order.order_date}
                   </p>
-                  {/* <p className="text-[#767676] text-[14px]">
-                    Scheme: {order.order_scheme}
-                  </p> */}
-                  {
-                    order?.onemg_status ?  <p className="text-[#767676] text-[14px] ">
-                    Onemg Status: {order?.onemg_status || "N/A"}
-                    </p>:null
-                  }
-                 
+                  {order?.onemg_status ? (
+                    <p className="text-[#767676] text-[14px]">
+                      One mg Status: {order?.onemg_status || "N/A"}
+                    </p>
+                  ) : null}
+                  
+                  {/* Display any additional fields from API response */}
+                  {Object.entries(order).map(([key, value]) => {
+                    // Skip fields we already display explicitly or array/object values
+                    if (['order_id', 'order_date', 'order_status', 'onemg_status', 'order_file'].includes(key) || 
+                        typeof value === 'object') {
+                      return null;
+                    }
+                    return (
+                      <p key={key} className="text-[#767676] text-[14px]">
+                        {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}: {value}
+                      </p>
+                    );
+                  })}
                   
                   {/* File list section */}
                   <div className="flex gap-1"> 
-                  {order.order_file.map((file, fileIndex) => (
+                    {order.order_file.map((file, fileIndex) => (
                       <button 
                         key={fileIndex}
                         onClick={() => handleFileView(file)}
-                        className={`inline-block text-[12px]  py-1 px-3 rounded-full border ${
+                        className={`inline-block text-[12px] py-1 px-3 rounded-full border ${
                           loadingFile === file 
                             ? 'bg-gray-200 text-gray-600 border-gray-400' 
                             : 'bg-primary-200 text-primary border-primary'

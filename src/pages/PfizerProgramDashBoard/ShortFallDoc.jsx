@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import MultiFileUpload from '../../components/Form/MultiFileUpload';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,10 +7,11 @@ import { toast } from 'react-toastify';
 import { ReactComponent as Tick } from "../../../../pfizer-app/src/assets/images/physicalVerify/tick_1.svg";
 import { transformToFormData } from '../../utils/forms';
 import useApi from '../../hooks/useApi';
+import { LoaderContext } from '../../context/LoaderContextProvider';
 
 const ShortFallDoc = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const dispatch = useDispatch();
   const triggerApi = useApi();
   const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
@@ -101,7 +102,7 @@ const ShortFallDoc = () => {
   // Function to make API call with FormData
   const makeApiCall = async (values) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
   
     let tempValues = values;
 		tempValues['program_id'] = selectedEnrollProgram?.program_id;
@@ -140,7 +141,7 @@ const ShortFallDoc = () => {
       console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 

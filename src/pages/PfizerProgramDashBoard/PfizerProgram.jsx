@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Home, Bell, Menu } from "lucide-react";
 import MenuFooter from "../../components/MenuFooter";
 import { ReactComponent as ProgramCard1 } from "../../assets/images/ProgramCards/Program_card_1.svg";
@@ -21,6 +21,7 @@ import {
   setDocUploadStatus,
   setInitializeData,
   setIsEkySuccessModalOpen,
+  setIsInitalDataLoad,
   setPhysicalVerificationModalOpen,
   setProgramEnrollmentConsent,
   setSelectedEnrollProgram,
@@ -30,13 +31,14 @@ import {
 import OrderHistory from "../uploadInvoice/OrderHistory";
 import useApi from "../../hooks/useApi";
 import { transformToPatientDetailsFormData } from "../../utils/forms";
+import { LoaderContext } from "../../context/LoaderContextProvider";
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
 // APPLIED_PROGRAMS
 
 const PfizerProgram = () => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const programStatus = useSelector(selectProgramStatus);
   const viewingOrderHistory = useSelector(selectViewingOrderHistory);
   const triggerApi = useApi();
@@ -72,6 +74,9 @@ const PfizerProgram = () => {
     // console.log('selected program !!!',program)
     dispatch(setSelectedProgram(program));
     dispatch(setViewingOrderHistory(true));
+          dispatch(setIsInitalDataLoad(false));
+
+  
   };
 
   const handlePhysicalVerification = () => {
@@ -82,7 +87,7 @@ const PfizerProgram = () => {
 
   const makeApiCall = async (values) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       const payload_val = values;
 
       const { response, success } = await triggerApi({
@@ -105,7 +110,7 @@ const PfizerProgram = () => {
         error: error.message || "An unexpected error occurred",
       };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -124,7 +129,30 @@ const PfizerProgram = () => {
   if (viewingOrderHistory) {
     return <OrderHistory />;
   }
+  function PoweredByFooter() {
+    const phoneNumber = "18002587008"; // Define the phone number
 
+    return (
+      <div className="flex flex-row justify-between items-center mt-2 px-5">
+        <div className="flex flex-row items-center">
+          <p className="text-xs text-gray-500 italic">
+            Powered by <span className="font-bold text-black">TATA 1mg</span>
+          </p>
+        </div>
+
+        <div className="flex items-center">
+          <span className="text-xs text-gray-500">Contact: </span>
+          <a
+            href={`tel:${phoneNumber}`}
+            className="text-primary font-bold text-xs no-underline"
+          >
+            {phoneNumber}
+          </a>
+        </div>
+      </div>
+    );
+  }
+  
   function NoAvailablePrograms() {
     return (
       <div className="flex flex-col items-center justify-center h-96   p-6">

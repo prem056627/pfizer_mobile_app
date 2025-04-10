@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import moment from 'moment';
@@ -11,6 +11,7 @@ import { setPhysicalVerificationModalOpen } from '../../slice/patient-detail-for
 import { useDispatch } from 'react-redux';
 import useApi from '../../hooks/useApi';
 import { transformToPatientDetailsFormData } from '../../utils/forms';
+import { LoaderContext } from '../../context/LoaderContextProvider';
 
 const PhysicalVerification = () => {
   const [selectedDateRange, setSelectedDateRange] = useState({
@@ -26,7 +27,7 @@ const PhysicalVerification = () => {
   const halfDayRef = useRef();
 
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const triggerApi = useApi();
 
   // Slot options for the select field
@@ -77,7 +78,7 @@ const PhysicalVerification = () => {
     
   const makeApiCall = async () => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       
       // Validate date and half day before API call
       if (!selectedDateRange.from || !selectedHalf) {
@@ -114,7 +115,7 @@ const PhysicalVerification = () => {
       console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 

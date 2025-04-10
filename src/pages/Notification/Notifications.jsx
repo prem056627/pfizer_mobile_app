@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import MenuFooter from '../../components/MenuFooter';
 import FabButton from '../../components/FabButton';
 import { ReactComponent as Notification } from "../../assets/images/svg/Notification.svg";
@@ -9,13 +9,18 @@ import { selectInitializeData, setCurrentPageState, setInitializeData } from '..
 import { useDispatch, useSelector } from 'react-redux';
 import useApi from '../../hooks/useApi';
 import { transformToPatientDetailsFormData } from '../../utils/forms';
+import { LoaderContext } from '../../context/LoaderContextProvider';
+import { cardio } from 'ldrs';
+
+// Register the cardio component
+cardio.register();
 
 const Notifications = () => {
   const triggerApi = useApi();
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+   const { setLoading,isLoading } = useContext(LoaderContext);
+    
   const [removingIds, setRemovingIds] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const initialData = useSelector(selectInitializeData);
   const apiNotifications = initialData.notifications || [];
@@ -32,7 +37,7 @@ const Notifications = () => {
       try {
         // Mark that we're starting a request
         isRequestInProgress.current = true;
-        setIsLoading(true);
+        setLoading(true);
         
         const url = `/patient_dashboard/?current_step=notification_history`;
         const { response, success } = await triggerApi({
@@ -66,8 +71,8 @@ const Notifications = () => {
       } finally {
         // Mark that the request is complete
         isRequestInProgress.current = false;
-        setIsLoading(false);
         setLoading(false);
+
       }
     };
 
@@ -95,6 +100,8 @@ const Notifications = () => {
     }
 
     try {
+
+      setLoading(true);
       // Make API call to mark notification as read
       const apiResponse = await triggerApi({
         url: `/patient_dashboard/?current_step=mark_read`,
@@ -112,6 +119,10 @@ const Notifications = () => {
       console.error('Error dismissing notification:', error);
       // Remove from removing list if there was an error
       setRemovingIds(prev => prev.filter(removeId => removeId !== id));
+    }finally {
+    
+      setLoading(false);
+
     }
   };
 
@@ -136,8 +147,15 @@ const Notifications = () => {
       <div className="px-2 bg-white mx-4 rounded-[20px]">
         {notifications.length !== 0 ? <h2 className="text-lg font-semibold w-full mb-4">Transaction</h2> : null}
         
-        {loading ? (
-          <div className="overlay-spinner" />
+        {isLoading ? (
+          <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
+           <l-cardio
+            size="70"
+            stroke="4"
+            speed="2" 
+            color="#0101C8"
+          ></l-cardio>
+        </div>
         ) : notifications.length === 0 ? (
           <div className="flex justify-center items-center h-[60vh]">
             <div className='p-4 text-center flex flex-col items-center gap-4'>

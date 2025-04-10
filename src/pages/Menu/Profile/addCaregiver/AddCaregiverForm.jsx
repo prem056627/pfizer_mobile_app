@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 
@@ -20,12 +20,14 @@ import { getAddCaregiverDetailsInitialValues } from "./intialValues";
 import { combinedAddValidationSchema } from "./validationSchemas";
 import AddCaregiverDetails from "./AddCaregiverDetails";
 import FormSubmitFooter from "../../../patient-detail-form/components/FormSubmitFooter";
+import { LoaderContext } from "../../../../context/LoaderContextProvider";
 
 const AddCaregiverForm = () => {
   const dispatch = useDispatch();
   const currentPageState = useSelector(selectCurrentPageState);
   const [formData, setFormData] = useLocalStorage("formData", {});
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setLoading] = useState(true);
+  const { setLoading, isLoading } = useContext(LoaderContext);
   const triggerApi = useApi();
   
   const initialValues = {
@@ -39,7 +41,7 @@ const AddCaregiverForm = () => {
 
   const makeApiCall = async (values) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
 
       const url = `/patient_dashboard/?current_step=update_caregiver`;
       
@@ -64,7 +66,7 @@ const AddCaregiverForm = () => {
       console.error("Error in makeApiCall:", error);
       return { success: false, error };
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
