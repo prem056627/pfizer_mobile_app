@@ -10,7 +10,7 @@ let initialData = {
     // before enrollment submit
     // patient_enrolment
     // current_step: "caregiver_addition",
-    current_step: "program_enrolment_done",
+    current_step: "patient_enrolment",
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2332,7 +2332,7 @@ let initialData = {
             { id: 'rroof', label: 'Addrer' },
             
           ],
-          program_status: "active",
+          program_status: "shortfall",
           // shortfall
           // suspended
           // rejected

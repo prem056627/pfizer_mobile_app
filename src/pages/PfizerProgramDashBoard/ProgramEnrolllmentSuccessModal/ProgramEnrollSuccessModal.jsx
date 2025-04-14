@@ -17,7 +17,7 @@ function ProgramEnrollSuccessModal() {
 
     function closeModal() {
     //    dispatch(setProgramEnrollmentConsent(false));
-        console.log("Modal closed");
+        // console.log("Modal closed");
     }
 const programEnrollmentSuccess =  useSelector(selectProgramEnrollmentSuccess);
 

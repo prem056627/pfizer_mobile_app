@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectInitializeData, setCurrentPageState, setInitializeData, setIsAddCaregiverFormOpen } from '../../../slice/patient-detail-form';
 import useApi from '../../../hooks/useApi';
 import { LoaderContext } from '../../../context/LoaderContextProvider';
+import { cardio } from 'ldrs';
+
+// Register the cardio component
+cardio.register();
 
 function MyProfileDetails() {
 	const patient_profile_data = useSelector(selectInitializeData);
@@ -36,13 +40,13 @@ const isApiCallInProgress = useRef(false);
 
 				   // First check module-level flag
 					if (hasApiBeenCalled) {
-						console.log("API has already been called previously. Skipping.");
+						// console.log("API has already been called previously. Skipping.");
 						return;
 					}
 					
 					// Then check component-level ref
 					if (isApiCallInProgress.current) {
-						console.log("API call already in progress. Skipping.");
+						// console.log("API call already in progress. Skipping.");
 						return;
 					}
 			  
@@ -88,13 +92,19 @@ const isApiCallInProgress = useRef(false);
 	// console.log("Modal closed");
   }
 
-	return (
-		<div className="relative h-auto w-full overflow-scroll">
+  return isLoading ? (
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+      <l-cardio
+        size="70"
+        stroke="4"
+        speed="2"
+        color="#0101C8"
+      ></l-cardio>
+    </div>
+  ):
+	(<div className="relative h-auto w-full overflow-scroll">
 			<div className="flex flex-col gap-5 ">
-				<div>
-					{/* <button onClick={notify}>Make me a toast</button> */}
-					{/* <Toaster /> */}
-				</div>
+				
        			<div>
 					<h1 className="pb-2 font-open-sans text-[20px] font-semibold text-[#403939]">
 					Profile Details
@@ -338,8 +348,8 @@ const isApiCallInProgress = useRef(false);
 
 
 			</div>
-		</div>
-	);
+		</div>)
+	
 }
 
 export default MyProfileDetails;

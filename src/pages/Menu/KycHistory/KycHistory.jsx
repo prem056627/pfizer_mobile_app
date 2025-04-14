@@ -5,10 +5,14 @@ import { CheckCircle, Clock, XCircle, AlertCircle } from "lucide-react";
 import { ReactComponent as NoProgram } from "../../../assets/images/ProgramCards/no_program.svg";
 import useApi from "../../../hooks/useApi";
 import { LoaderContext } from "../../../context/LoaderContextProvider";
+import { cardio } from 'ldrs';
+
+// Register the cardio component
+cardio.register();
 function KycHistory() {
   const initialization_data = useSelector(selectInitializeData);
   // ekyc_history
-  console.log('initialization_data',initialization_data?.ekyc_history);
+  // console.log('initialization_data',initialization_data?.ekyc_history);
   // const eky_status = patient_profile_data?.ekyc_verification?.status;
 
   // KYC history data from API
@@ -34,13 +38,13 @@ const isApiCallInProgress = useRef(false);
 
            // First check module-level flag
     if (hasApiBeenCalled) {
-      console.log("API has already been called previously. Skipping.");
+      // console.log("API has already been called previously. Skipping.");
       return;
     }
     
     // Then check component-level ref
     if (isApiCallInProgress.current) {
-      console.log("API call already in progress. Skipping.");
+      // console.log("API call already in progress. Skipping.");
       return;
     }
       
@@ -149,8 +153,17 @@ const isApiCallInProgress = useRef(false);
   // Check if there's data to display
   const hasData = safeKycData.length > 0;
 
-  return (
-    <div className="bg-white rounded-lg">
+  return isLoading ? (
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+      <l-cardio
+        size="70"
+        stroke="4"
+        speed="2"
+        color="#0101C8"
+      ></l-cardio>
+    </div>
+  ):
+   ( <div className="bg-white rounded-lg">
       <div>
         <div className="flex flex-col items-start gap-4 mb-6">
           <h1 className="font-open-sans text-xl font-semibold text-gray-800">
@@ -233,8 +246,7 @@ const isApiCallInProgress = useRef(false);
           </div>
         )}
       </div>
-    </div>
-  );
+    </div>)
 }
 
 export default KycHistory;

@@ -89,7 +89,7 @@ const Notifications = () => {
     
     if (!notificationToDismiss) return;
     
-    console.log("notificationToDismiss", notificationToDismiss.id);
+    // console.log("notificationToDismiss", notificationToDismiss.id);
     
     // Add the ID to the removing list to trigger animation
     setRemovingIds(prev => [...prev, id]);

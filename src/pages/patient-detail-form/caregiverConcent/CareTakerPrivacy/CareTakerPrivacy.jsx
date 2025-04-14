@@ -16,7 +16,7 @@ export const CaregiverConcentPrivacy = () => {
           <div className="h-1 w-8 rounded-full bg-primary"></div>
         </div>
   
-        <div className="space-y-4 mt-5">
+        <div className="space-y-4 mt-5 concent_form">
           <div className="modal-body">
             <ul style={{ textAlign: "justify", listStyleType: "none" }}>
               <li>
@@ -142,7 +142,7 @@ export const CaregiverConcentPrivacy = () => {
                     Personal Information from the Users (hereinafter collectively
                     referred to as "User Information"):</span>
                 </li>
-                <ul>
+                <ul className="list-spacing">
                   <li style={{ textAlign: "justify", listStyleType: "none" }}><span className="boldText">
                       i. Name;</span>
                   </li>
@@ -521,12 +521,12 @@ export const CaregiverConcentPrivacy = () => {
                     of the Users expeditiously but within one month from the date of
                     receipt of grievance, and who can be reached by:</span>
                 
-                  <li className="boldText">
+                  <li className=" font-bold list-spacing">
                     i. Sending a letter marked to the attention of Grievance
                     Officer, Tata 1mg to Level 3, Vasant Square Mall, Pocket V,
                     Sector B, Vasant Kunj, New Delhi-110070, or
                   </li>
-                  <li className="boldText">
+                  <li className=" font-bold list-spacing">
                     ii. Sending an email to access@mediangels.com
                   </li>
                 </li>
@@ -553,7 +553,7 @@ function CareTakerPrivacy() {
       <CaregiverConcentPrivacy />
     </div>
   
-    <div className="sticky bg-white py-5  bottom-0 flex flex-col gap-[8px] pt-[24px] font-lato text-[#696969] md:items-end px-4">
+    <div className="sticky bg-white py-1  bottom-0 flex flex-col gap-[8px] pt-[12px] font-lato text-[#696969] md:items-end px-4">
       <button
         type="button"
         onClick={handleClose} // Replace this with your actual modal close logic

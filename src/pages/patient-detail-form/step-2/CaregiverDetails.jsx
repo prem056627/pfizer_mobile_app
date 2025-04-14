@@ -951,7 +951,7 @@ const handlePrivacyModal = () => {
 
             {/* Caregiver details section (after verification) */}
             {caregiver.isVerified && (
-              <div className="flex flex-col gap-2 pt-4">
+              <div className="flex flex-col gap-2 pt-4 mb-16">
                 {/* Verified mobile number (readonly) */}
                 <InputField
                   label="Caregiver's Mobile Number"
@@ -1040,7 +1040,7 @@ const handlePrivacyModal = () => {
 
                   {/* Document Upload field */}
                   <MultiFileUpload
-                    label="Primary Doc Upload"
+                    label="Primary Document Upload"
                     isMultiple={true}
                     formik={formik}
                     id={`id_doc_upload_${caregiverId}`}
@@ -1085,7 +1085,7 @@ const handlePrivacyModal = () => {
 
                   {/* Additional Document Upload field */}
                   <MultiFileUpload
-                    label="Additional Doc Upload"
+                    label="Additional Document Upload"
                     isMultiple={true}
                     formik={formik}
                     id={`id_doc_1_upload_${caregiverId}`}

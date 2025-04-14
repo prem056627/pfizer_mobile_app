@@ -14,6 +14,9 @@ function InvoiceModal({
     type = 'side',
     isScroll = true,
 }) {
+
+
+   
     return (
         <Transition appear show={show} as={Fragment}>
             <Dialog 

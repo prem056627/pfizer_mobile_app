@@ -157,7 +157,7 @@ const skipCaregiverStep = async () => {
   ];
 
   return (
-    <div className="w-full pb-24">
+    <div className="w-full ">
       <div className="mx-auto w-full rounded-2xl">
         <Formik
           initialValues={initialValues}

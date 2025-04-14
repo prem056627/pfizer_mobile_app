@@ -13,7 +13,7 @@ function PatientEnrollmentSuccessModal() {
 
     function closeModal() {
        dispatch(setPatientEnrollmentSuccessModalOpen(false));
-        console.log("Modal closed");
+        // console.log("Modal closed");
     }
 const patientEnrollmentSuccess =  useSelector(selectPatientEnrollmentModalOpen);
 

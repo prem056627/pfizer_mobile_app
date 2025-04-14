@@ -16,7 +16,7 @@ function CaregiverConcentModal() {
     //    dispatch(setProgramEnrollmentConsent(false));
         dispatch(setCaregiver_enroll_consent(false));
     //    dispatch(setCurrentView("home"));
-        console.log("Modal closed");
+        // console.log("Modal closed");
     }
 const enrollmentConsent =  useSelector(selectCaregiver_enroll_consent);
 // console.log('enrollmentConsent:',enrollmentConsent.consent

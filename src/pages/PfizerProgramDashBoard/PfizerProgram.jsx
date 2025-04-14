@@ -32,6 +32,11 @@ import OrderHistory from "../uploadInvoice/OrderHistory";
 import useApi from "../../hooks/useApi";
 import { transformToPatientDetailsFormData } from "../../utils/forms";
 import { LoaderContext } from "../../context/LoaderContextProvider";
+
+import { cardio } from 'ldrs';
+
+// Register the cardio component
+cardio.register();
 // import ProgramEnrollSuccess from "./ProgramEnrollSuccess";
 
 // APPLIED_PROGRAMS
@@ -171,8 +176,18 @@ const PfizerProgram = () => {
     );
   }
 
-  // Component to render all unactive/unenrolled programs
-  const renderAvailablePrograms = () => (
+// Component to render all unactive/unenrolled programs
+const renderAvailablePrograms = () => {
+  return isLoading ? (
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+      <l-cardio
+        size="70"
+        stroke="4"
+        speed="2"
+        color="#0101C8"
+      ></l-cardio>
+    </div>
+  ) : (
     <div className="space-y-4 w-full pb-20">
       {AVAILABLE_PROGRAMS.length > 0 ? (
         AVAILABLE_PROGRAMS.map((program) => (
@@ -217,8 +232,9 @@ const PfizerProgram = () => {
       )}
     </div>
   );
+};
 
-  console.log("program,program", APPLIED_PROGRAMS);
+  // console.log("program,program", APPLIED_PROGRAMS);
 
   // console.log('initiaData?.physical_verification?.show_verification_button',initiaData?.ekyc_verification?.show_verification_button);
   const renderActiveProgram = () => (
@@ -533,11 +549,11 @@ const PfizerProgram = () => {
 
       {/* {APPLIED_PROGRAMS  && renderActiveProgram()} */}
 
-      <div className="fixed bottom-24 z-30 right-0">
+      <div className="fixed bottom-30 z-30 right-0">
         <FabButton />
       </div>
 
-      <PatientConsentModal />
+     
       {/* <MenuFooter /> */}
     </div>
   );

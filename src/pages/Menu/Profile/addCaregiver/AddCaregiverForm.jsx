@@ -73,7 +73,7 @@ const AddCaregiverForm = () => {
   const onSubmit = async (values, { setSubmitting }) => {
     try {
       // Log values to debug
-      console.log("Form Values:", values);
+      // console.log("Form Values:", values);
 
       setFormData({
         ...formData,

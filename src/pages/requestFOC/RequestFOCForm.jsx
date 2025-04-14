@@ -150,7 +150,32 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
     //      dispatch(setIsInitalDataLoad(false));
     // console.log("hi");
     //     },[])
-    
+
+     function PoweredByFooter() {
+            const phoneNumber = "18002587008"; // Define the phone number
+        
+            return (
+              <div className="flex flex-row justify-between items-center mt-2 px-5">
+                <div className="flex flex-row items-center">
+                  <p className="text-xs text-gray-500 italic">
+                    Powered by <span className="font-bold text-black">TATA 1mg</span>
+                  </p>
+                </div>
+        
+                <div className="flex items-center">
+                  <span className="text-xs text-gray-500">Contact: </span>
+                  <a
+                    href={`tel:${phoneNumber}`}
+                    className="text-primary font-bold text-xs no-underline"
+                  >
+                    {phoneNumber}
+                  </a>
+                </div>
+              </div>
+            );
+          }
+        
+         
 
     return (
         <Formik 
@@ -183,11 +208,17 @@ function RequestFOCForm({ setStep, fetchProgramDetails }) {
                          
                         </div>
 
-                        <div className="flex flex-col gap-5">
+          
+    
+
+                        <div className="flex flex-col ">
+                        <div className='  w-full bg-[#F4F4FF] py-2 '>
+            {PoweredByFooter()}
+           </div>
                             <button
                                 type="submit"
                                 disabled={!isFileUploaded || hasErrors || formik.isSubmitting || isLoading}
-                                className={`flex mt-6 w-full items-center justify-center rounded-b-[8px] bg-primary py-6 font-lato text-[18px] font-bold leading-[20px] text-white transition-opacity duration-300 ${
+                                className={`flex  w-full items-center justify-center rounded-b-[8px] bg-primary py-6 font-lato text-[18px] font-bold leading-[20px] text-white transition-opacity duration-300 ${
                                     isFileUploaded && !hasErrors && !formik.isSubmitting && !isLoading ? 'opacity-100' : 'opacity-30'
                                 }`}
                             >

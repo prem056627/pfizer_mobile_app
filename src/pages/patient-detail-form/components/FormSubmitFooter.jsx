@@ -62,10 +62,47 @@ function FormSubmitFooter({ formik ,onSkip}) {
    }, [skipVisible]);
 
 
+
+
+  function PoweredByFooter() {
+    const phoneNumber = "18002587008"; // Define the phone number
+
+    return (
+      <div className="flex flex-row justify-between items-center mt-2 px-5">
+        <div className="flex flex-row items-center">
+          <p className="text-xs text-gray-500 italic">
+            Powered by <span className="font-bold text-black">TATA 1mg</span>
+          </p>
+        </div>
+
+        <div className="flex items-center">
+          <span className="text-xs text-gray-500">Contact: </span>
+          <a
+            href={`tel:${phoneNumber}`}
+            className="text-primary font-bold text-xs no-underline"
+          >
+            {phoneNumber}
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  
+
+ 
+
   // useEffect()
   // skipVisible
   return (
-    <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full border-t bg-white px-6 py-6">
+
+  <div className="fixed bottom-0 left-0 z-50 w-full">
+
+   <div className=' bg-[#F4F4FF] py-2'>
+    {PoweredByFooter()}
+   </div>
+   
+    <div className=" flex justify-center w-full border-t bg-white px-6 py-6">
       <div className="max-w-screen-lg flex w-full justify-between">
         <button
           type="button"
@@ -100,6 +137,7 @@ function FormSubmitFooter({ formik ,onSkip}) {
 
       </div>
     </div>
+  </div>
   );
 }
 

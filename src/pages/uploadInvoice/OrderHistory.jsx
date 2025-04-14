@@ -37,7 +37,7 @@ const OrderHistory = () => {
   const hasOpenOrders = paidOrders.some(order => order.order_status === "Open");
   const hasOpenFocOrders = focOrders.some(order => order.order_status === "Open");
   
-  console.log('paidOrders,focOrders', program?.orders?.paid_orders);
+  // console.log('paidOrders,focOrders', program?.orders?.paid_orders);
   
   // Handle back navigation
   const handleBack = () => {
@@ -107,10 +107,10 @@ const OrderHistory = () => {
   // };
 
   useEffect(() => {
-    console.log("visitCount",visit);
+    // console.log("visitCount",visit);
     // This will run once when the component mounts (user comes to this page)
     setVisit(true);
-    console.log("visitCount",visit);
+    // console.log("visitCount",visit);
   }, []);
 
   // Show loading state until data is loaded
@@ -141,6 +141,8 @@ const OrderHistory = () => {
     );
   }
 
+
+ 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header with Back Button */}
@@ -287,7 +289,7 @@ const OrderHistory = () => {
                   ) : null}
                   
                   {/* Display any additional fields from API response */}
-                  {Object.entries(order).map(([key, value]) => {
+                  {/* {Object.entries(order).map(([key, value]) => {
                     // Skip fields we already display explicitly or array/object values
                     if (['order_id', 'order_date', 'order_status', 'onemg_status', 'order_file'].includes(key) || 
                         typeof value === 'object') {
@@ -298,7 +300,7 @@ const OrderHistory = () => {
                         {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}: {value}
                       </p>
                     );
-                  })}
+                  })} */}
                   
                   {/* File list section */}
                   <div className="flex gap-1"> 
@@ -328,7 +330,7 @@ const OrderHistory = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-24 z-30 right-0">
+      <div className="fixed bottom-30 z-30 right-0">
         <FabButton />
       </div>
       <MenuFooter />

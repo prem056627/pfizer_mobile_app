@@ -626,7 +626,7 @@ const handleOtpTouchStart = (caregiverId, index, e) => {
 
 const handleChangePrivacy = (e) => {
   setPrivacyPolicyChecked(e.target.checked);
-  console.log("print e", e.target.checked);
+  // console.log("print e", e.target.checked);
 };
 
   // Add this function to your component (inside the CaregiverDetails component but outside the return statement)
@@ -1047,7 +1047,7 @@ const handlePrivacyModal = () => {
 
                   {/* Document Upload field */}
                   <MultiFileUpload
-                    label="Primary Doc Upload"
+                    label="Primary Document Upload"
                     isMultiple={true}
                     formik={formik}
                     id={`id_doc_upload_${caregiverId}`}
@@ -1092,7 +1092,7 @@ const handlePrivacyModal = () => {
 
                   {/* Additional Document Upload field */}
                   <MultiFileUpload
-                    label="Additional Doc Upload"
+                    label="Additional Document Upload"
                     isMultiple={true}
                     formik={formik}
                     id={`id_doc_1_upload_${caregiverId}`}

@@ -12,7 +12,7 @@ function ProfileModal() {
 
   function closeModal() {
     dispatch(setIsProfilePageOpen(false));
-    console.log("Modal closed");
+    // console.log("Modal closed");
   }
   const isProfilePageOpen = useSelector(selectIsProfilePageOpen);
 

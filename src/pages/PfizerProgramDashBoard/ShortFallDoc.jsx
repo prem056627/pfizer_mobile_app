@@ -17,17 +17,17 @@ const ShortFallDoc = () => {
   const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
 
   const initiaData = useSelector(selectInitializeData);
-  const uploadFieldsforShoetfall = initiaData?.program_data?.applied_programs;
+  const uploadFieldsforShortfall = initiaData?.program_data?.applied_programs;
 
   // Initialize with empty array
   let uploadFields = [];
 
-  // Check if uploadFieldsforShoetfall exists and has data
-  console.log("uploadFieldsforShoetfall", uploadFieldsforShoetfall);
-  if (uploadFieldsforShoetfall && uploadFieldsforShoetfall.length > 0) {
+  // Check if uploadFieldsforShortfall exists and has data
+ 
+  if (uploadFieldsforShortfall && uploadFieldsforShortfall.length > 0) {
     // Map the data to the format you need
-    uploadFields = uploadFieldsforShoetfall.flatMap(program => {
-      console.log("hi");
+    uploadFields = uploadFieldsforShortfall.flatMap(program => {
+
       
       // Check if reupload_document exists and is an array
       if (program.reupload_document && Array.isArray(program.reupload_document)) {
@@ -46,7 +46,7 @@ const ShortFallDoc = () => {
       }
     });
   } else {
-    // Use empty array if uploadFieldsforShoetfall is not available
+    // Use empty array if uploadFieldsforShortfall is not available
     uploadFields = [];
   }
 

@@ -32,16 +32,6 @@ const FormDebugger = ({ values, errors, touched }) => {
   return null;
 };
 
-
-
-
-
-
-
-
-
-
-
 const PersonalDetails = () => {
   const dispatch = useDispatch();
   // const currentStep = useSelector(selectCurrentStep);
@@ -70,7 +60,7 @@ const makeApiCall = async (values) => {
   tempValues['date_of_birth'] = values?.date_of_birth
   ? moment(values.date_of_birth).format('DD/MM/YYYY')  // Convert to string
   : '';
-  console.log("form Val!!! " , tempValues ) ;
+  // console.log("form Val!!! " , tempValues ) ;
   const payload_val =  transformToPatientDetailsFormData(tempValues)
   try {
     setLoading(true);
@@ -91,7 +81,7 @@ const makeApiCall = async (values) => {
     });
 
     if (success && response) {
-      console.log("Form data submitted successfully:", response.current_step);
+      // console.log("Form data submitted successfully:", response.current_step);
       dispatch(setCurrentPageState(response?.current_step))
       return { success: true, data: response };
     } else {
@@ -109,7 +99,7 @@ const makeApiCall = async (values) => {
 
   const onSubmit = async (values, { setSubmitting }) => {
 
-    console.log('valuessss!!',values);
+    // console.log('valuessss!!',values);
     try {
       // Save to local storage
       setFormData({
@@ -131,55 +121,6 @@ const makeApiCall = async (values) => {
     }
   };
 
-  //   {
-  //     title: "Personal Details",
-  //     isSubmitted: false,
-  //     isDefaultOpen: true,
-  //     component: <PersonlDetailsForm />,
-  //     fields: [
-  //       'full_name',
-  //       'gender',
-  //       'date_of_birth',
-  //       'mobile_number',
-  //       'email',
-  //       'nationality'
-  //     ]
-  //   },
-  //   {
-  //     title: "Address proof",
-  //     isSubmitted: false,
-  //     isDefaultOpen: false,
-  //     component: <AddressProofForm />,
-  //     fields: [
-  //       'permanent_addressline1',
-  //       'permanent_addressline2',
-  //       'permanent_city',
-  //       'permanent_state',
-  //       'permanent_pincode'
-  //     ]
-  //   },
-  //   {
-  //     title: "Current Residential Address",
-  //     isSubmitted: false,
-  //     isDefaultOpen: false,
-  //     component: <CurrentResidentialAddress />,
-  //     fields: [
-  //       'same_as_permanent',
-  //       'current_addressline1',
-  //       'current_addressline2',
-  //       'current_city',
-  //       'current_state',
-  //       'current_pincode'
-  //     ]
-  //   },
-  //   {
-  //     title: "ID Details",
-  //     isSubmitted: false,
-  //     isDefaultOpen: false,
-  //     component: <IDDetails />,
-  //     fields: ['id_card_type', 'id_number']
-  //   },
-  // ];
   const formSections = [
     {
       title: "Personal Details",

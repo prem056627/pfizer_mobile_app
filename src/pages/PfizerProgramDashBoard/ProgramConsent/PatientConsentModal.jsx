@@ -37,6 +37,7 @@ const enrollmentConsent =  useSelector(selectProgramEnrollmentConsent);
             // isScroll = false"
             type="center"
             isCloseVisible={true}
+            moreZindex={true}
         />
     );
 }

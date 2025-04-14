@@ -108,7 +108,7 @@ function MenuFooter() {
         // Only update if currentView exists in the store and has a corresponding menu item
         if (currentView && viewToMenuMap[currentView]) {
             setActiveMenu(viewToMenuMap[currentView]);
-            console.log('currentView',currentView)
+            // console.log('currentView',currentView)
         }
     }, [currentView]); // This will run whenever currentView changes
 
@@ -135,8 +135,44 @@ function MenuFooter() {
         }
     };
 
+
+
+  function PoweredByFooter() {
+    const phoneNumber = "18002587008"; // Define the phone number
+
     return (
-        <nav className="fixed bottom-0 left-0 flex w-full justify-between gap-4 bg-white px-10 py-4 shadow-[0_-2px_4px_rgba(0,0,0,0.05)]">
+      <div className="flex flex-row justify-between items-center mt-2 px-5">
+        <div className="flex flex-row items-center">
+          <p className="text-xs text-gray-500 italic">
+            Powered by <span className="font-bold text-black">TATA 1mg</span>
+          </p>
+        </div>
+
+        <div className="flex items-center">
+          <span className="text-xs text-gray-500">Contact: </span>
+          <a
+            href={`tel:${phoneNumber}`}
+            className="text-primary font-bold text-xs no-underline"
+          >
+            {phoneNumber}
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+
+    return (
+
+
+     <div className="fixed bottom-0 left-0 w-full">
+
+<div className=' bg-[#F3F3FF] py-2'>
+ {PoweredByFooter()}
+</div>
+
+        <nav className=" flex w-full justify-between gap-4 bg-white px-10 py-4 shadow-[0_-2px_4px_rgba(0,0,0,0.05)]">
+          
             {menuItems.map((item) => (
                 <MenuItem
                     key={item.label}
@@ -147,6 +183,7 @@ function MenuFooter() {
                 />
             ))}
         </nav>
+     </div>
     );
 }
 

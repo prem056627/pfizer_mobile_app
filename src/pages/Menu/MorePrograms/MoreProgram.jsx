@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectInitializeData, setCurrentPageState, setCurrentView, setInitializeData, setIsMoreProgramPageOpen, setProgramEnrollmentConsent, setSelectedEnrollProgram } from "../../../slice/patient-detail-form";
 import useApi from "../../../hooks/useApi";
 import { LoaderContext } from "../../../context/LoaderContextProvider";
+import { cardio } from 'ldrs';
+
+// Register the cardio component
+cardio.register();
 
 
   
@@ -130,18 +134,18 @@ function MoreProgram() {
             // }
              // First check module-level flag
     if (hasApiBeenCalled) {
-      console.log("API has already been called previously. Skipping.");
+      // console.log("API has already been called previously. Skipping.");
       return;
     }
     
     // Then check component-level ref
     if (isApiCallInProgress.current) {
-      console.log("API call already in progress. Skipping.");
+      // console.log("API call already in progress. Skipping.");
       return;
     }
         
             try {
-              console.log("Starting API call");
+              // console.log("Starting API call");
               isApiCallInProgress.current = true;
               setLoading(true);
               const url = `/patient_dashboard/?current_step=program_data`;
@@ -185,7 +189,7 @@ function MoreProgram() {
 
     const handleRequest = (program) => {
        
-        dispatch(setCurrentView("home"));
+        // dispatch(setCurrentView("home"));
        dispatch(setSelectedEnrollProgram(program));
       // dispatch(setProgramEnrollmentConsent(true));
        dispatch(setProgramEnrollmentConsent({ program, consent: true }));
@@ -210,8 +214,17 @@ function MoreProgram() {
     
 
 
-  return (
-    <div>
+      return isLoading ? (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+          <l-cardio
+            size="70"
+            stroke="4"
+            speed="2"
+            color="#0101C8"
+          ></l-cardio>
+        </div>
+      ):
+   ( <div>
       <div>
         <h1 className="pb-2 font-open-sans text-[20px] font-semibold text-[#403939]">
           Available Programs List
@@ -300,8 +313,8 @@ function MoreProgram() {
        </>
       )}
   </div>
-    </div>
-  );
+    </div>)
+
 }
 
 export default MoreProgram;

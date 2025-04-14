@@ -11,7 +11,7 @@ import { ReactComponent as PfizerLogo } from '../../assets/images/svg/pfizer_log
 function Home({ hideFooter,hideLogo, children }) {
   const currentStep = useSelector(selectCurrentStep);
 
-  console.log('hideFooter,hideFooter,hideFooter',hideFooter);
+  // console.log('hideFooter,hideFooter,hideFooter',hideFooter);
   return (
     <div className="flex flex-col  bg-[#FBFCFF]">
       {/* Header */}

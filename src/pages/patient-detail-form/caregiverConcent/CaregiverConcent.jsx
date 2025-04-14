@@ -18,7 +18,7 @@ export const CaregiverConcentTermsCondition = () => {
         </div>
   
         <div className="space-y-4 mt-5">
-          <div className="modal-body">
+          <div className="modal-body concent_form">
             <ul style={{ textAlign: "justify" }} className="space-y-3">
               <li className="flex">
                 <span className="mr-2">•</span>
@@ -360,7 +360,7 @@ function CaregiverConcent() {
       <CaregiverConcentTermsCondition />
     </div>
   
-    <div className="sticky bg-white py-5  bottom-0 flex flex-col gap-[8px] pt-[24px] font-lato text-[#696969] md:items-end px-4">
+    <div className="sticky bg-white py-1  bottom-0 flex flex-col gap-[8px] pt-[12px] font-lato text-[#696969] md:items-end px-4">
       <button
         type="button"
         onClick={handleClose} // Replace this with your actual modal close logic

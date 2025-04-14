@@ -32,6 +32,7 @@ import AddCaregiverModal from "../pages/Menu/Profile/addCaregiver/AddCaregiverMo
 import CaregiverConcentModal from "../pages/patient-detail-form/caregiverConcent/CaregiverConcentModal";
 import CareTakerPrivacyModal from "../pages/patient-detail-form/caregiverConcent/CareTakerPrivacy/CareTakerPrivacyModal";
 import { LoaderContext } from "../context/LoaderContextProvider";
+import PatientConsentModal from "../pages/PfizerProgramDashBoard/ProgramConsent/PatientConsentModal";
 
 const AppNavigation = () => {
 // Token functionality
@@ -179,7 +180,7 @@ const AppNavigation = () => {
 //   useEffect(() => {
 //     makeApiCall();
 //   }, []);
-console.log('isInitalDataLoad',isInitalDataLoad)
+// console.log('isInitalDataLoad',isInitalDataLoad)
 useEffect(() => {
   if (isInitalDataLoad) {
     console.log('isInitalDataLoad',isInitalDataLoad)
@@ -307,6 +308,7 @@ useEffect(() => {
       <AddCaregiverModal/>
       <CaregiverConcentModal/>
       <CareTakerPrivacyModal/>
+      <PatientConsentModal />
     </Home>
   );
 };

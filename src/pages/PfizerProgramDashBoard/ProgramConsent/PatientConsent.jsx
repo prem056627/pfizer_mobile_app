@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectProgramEnrollmentConsent,
   selectSelectedProgram,
+  setCurrentView,
   setDocUploadStatus,
+  setProgramEnrollmentConsent,
 } from "../../../slice/patient-detail-form";
 import { ReactComponent as PfizerLogo } from '../../../assets/images/svg/pfizer_logo.svg';
 
@@ -22,12 +24,12 @@ export const LorbriquaCareConsent = () => {
       </div>
 
 
-      <div className="space-y-4 mt-5">
+      <div className="space-y-4 mt-5 concent_form">
         {/* <div className="modal-header">
             <h5 className="modal-title" id="modal-label">Patient Certification</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> */}
-        <div className="modal-body">
+        <div className="modal-body concent_form">
             <ul style={{ textAlign: "justify" }} className="space-y-3">
                 <li className="flex">
                     <span className="mr-2">•</span>
@@ -413,7 +415,7 @@ export const CrizalkProgramConsent = () => {
         <div className="h-1 w-8 rounded-full bg-primary"></div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 concent_form">
         <ul className="list-disc pl-6 space-y-3 text-justify">
           <li>
             I hereby voluntarily agree, consent and authorize Pfizer Products India Private Limited (Pfizer), Crizalk Patient
@@ -583,8 +585,6 @@ export const CrizalkProgramConsent = () => {
             had the opportunity to ask questions and get clarification on them, and have fully understood the contents.
           </li>
         </ul>
-
-        <p>&nbsp;</p>
   <p style={{ textAlign: 'left' }}>
     1 MG Technologies Pvt. Ltd.<br />
     5<sup>th</sup> floor, Block B, Presidency Tower, 46/4 Mehrauli Road, Opp. Govt. Girl's College, Anamika Enclave, Sector 14, Gurugram, Haryana – 122001<br />
@@ -621,7 +621,7 @@ export const PalbaceProgramConsent = () => {
         <div className="h-1 w-8 rounded-full bg-primary"></div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 concent_form">
         <ul className="list-disc pl-5 space-y-2 text-justify">
           <li>
             I hereby voluntarily agree, consent and authorize Pfizer Product India
@@ -922,11 +922,13 @@ function PatientConsent({
   const dispatch = useDispatch();
 
   const handleRequest = () => {
+    dispatch(setProgramEnrollmentConsent({  consent: false }));
+    dispatch(setCurrentView("home"));
     dispatch(setDocUploadStatus("scheme_enroll_doc"));
   };
 
   const selectedProgram = useSelector(selectProgramEnrollmentConsent);
-  console.log("selectedProgram", selectedProgram?.program?.program_name);
+  // console.log("selectedProgram", selectedProgram?.program?.program_name);
 
   const Program_name = selectedProgram?.program?.program_name;
   const handleSubmit = (e) => {
@@ -957,7 +959,7 @@ function PatientConsent({
         {renderConsentComponent()}
       </div>
 
-      <div className="sticky bottom-0 flex flex-col gap-[8px]  pt-[24px] font-lato text-[#696969] md:items-endpx-4 ">
+      <div className="sticky bottom-0 flex flex-col gap-[8px] py-2 bg-white   font-lato text-[#696969] md:items-endpx-4 ">
         <button
           type="submit"
           className={`  w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-lg`}

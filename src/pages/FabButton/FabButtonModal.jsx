@@ -15,7 +15,7 @@ function FabButtonModal() {
 // console.log("hi from fabButton modal");
     function closeModal() {
         dispatch(setIsFabButtonOpen(false)); 
-        console.log("Modal closed");
+        // console.log("Modal closed");
     }
     // console.log(" is FabButton is open ",isFabButtonOpen);
 

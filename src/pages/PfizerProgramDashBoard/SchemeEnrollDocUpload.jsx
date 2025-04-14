@@ -242,12 +242,12 @@ const SchemeEnrollDocUpload = () => {
       {(formik) => (
         <form
           onSubmit={formik.handleSubmit}
-          className="relative flex flex-col pt-6  container mx-auto  mb-20 "
+          className="relative flex flex-col pt-6  container mx-auto  mb-50  "
         >
           {/* Pfizer Logo */}
           <div className=" ">
             {!showUploadFields && (
-              <div className="w-full">
+              <div className="w-full  mb-10 h-1/2 ">
              <div>
              <div className=" mt-8 px-[20px]">
                   <Radio
