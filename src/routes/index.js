@@ -16,7 +16,7 @@ import PhysicalVerificationModal from "../pages/physicalVerification/PhysicalVer
 import MenuScreen from "../pages/Menu/MenuScreen";
 import Notifications from "../pages/Notification/Notifications";
 import useApi from "../hooks/useApi";
-import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus, selectIsInitalDataLoad, setIsInitalDataLoad } from "../slice/patient-detail-form";
+import { selectCurrentPageState, selectCurrentView, selectInitializeData, selectDocUploadStatus, setInitializeData, setCurrentPageState, setProgramStatus, selectIsInitalDataLoad, setIsInitalDataLoad, setIsProgramEnrollDocDuplicateFound, setProgramEnrollmentSuccess } from "../slice/patient-detail-form";
 import ProgramEnrollSuccessModal from "../pages/PfizerProgramDashBoard/ProgramEnrolllmentSuccessModal/ProgramEnrollSuccessModal";
 import ShortFallDoc from "../pages/PfizerProgramDashBoard/ShortFallDoc";
 import RequestFOCModal from "../pages/requestFOC/RequestFOCModal";
@@ -33,6 +33,8 @@ import CaregiverConcentModal from "../pages/patient-detail-form/caregiverConcent
 import CareTakerPrivacyModal from "../pages/patient-detail-form/caregiverConcent/CareTakerPrivacy/CareTakerPrivacyModal";
 import { LoaderContext } from "../context/LoaderContextProvider";
 import PatientConsentModal from "../pages/PfizerProgramDashBoard/ProgramConsent/PatientConsentModal";
+import DemoAdharModal from "../pages/PfizerProgramDashBoard/MaskedAdharModal";
+import ProgramEnrollDocDuplicateFoundModal from "../pages/PfizerProgramDashBoard/ProgramEnrollDocDuplicateFound/ProgramEnrollDocDuplicateFoundModal";
 
 const AppNavigation = () => {
 // Token functionality
@@ -183,12 +185,62 @@ const AppNavigation = () => {
 // console.log('isInitalDataLoad',isInitalDataLoad)
 useEffect(() => {
   if (isInitalDataLoad) {
-    console.log('isInitalDataLoad',isInitalDataLoad)
+    // console.log('isInitalDataLoad',isInitalDataLoad)
     makeApiCall();
   } else if (currentView === 'home') {
     makeApiCall();
   }
 }, [isInitalDataLoad, currentView]);
+
+
+
+// Handle profile suspenmded
+
+
+// current_step: "program_enrolment_done",
+
+
+
+
+if(initialData?.current_step === "program_enrolment_done" || initialData?.current_step === "program_enrolment"){
+  if (initialData?.patient_status === "Inactive") {
+    dispatch(setIsProgramEnrollDocDuplicateFound({ showModal: true, status: "inactive" }));
+  } else {
+    dispatch(setIsProgramEnrollDocDuplicateFound({ showModal: false }));
+  }
+}
+
+
+
+
+// Handle program Applied status 
+
+
+const appliedPrograms = initialData?.program_data?.applied_programs;
+
+// Check if any program has a status of 'active'
+const isActiveProgram = appliedPrograms?.some(program => program?.program_status === "active");
+
+
+
+
+
+useEffect(() => {
+
+
+if(initialData?.current_step === "program_enrolment_done"){
+  console.log("hello prem");
+
+  if (!isActiveProgram) {
+
+    // Slight delay to ensure modal renders before we close it
+      dispatch(setProgramEnrollmentSuccess(true));
+  
+  }
+  }
+ 
+}, [isActiveProgram]);
+
 
 
   // useEffect(() => {
@@ -309,6 +361,8 @@ useEffect(() => {
       <CaregiverConcentModal/>
       <CareTakerPrivacyModal/>
       <PatientConsentModal />
+      <DemoAdharModal/>
+      <ProgramEnrollDocDuplicateFoundModal/>
     </Home>
   );
 };

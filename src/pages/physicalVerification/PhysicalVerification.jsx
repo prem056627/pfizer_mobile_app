@@ -32,8 +32,8 @@ const PhysicalVerification = () => {
 
   // Slot options for the select field
   const slotOptions = [
-    { value: 'Morning', label: 'Morning' },
-    { value: 'Afternoon', label: 'Afternoon' }
+    { value: 'Morning', label: 'Morning (10AM - 1PM)' },
+    { value: 'Afternoon', label: 'Afternoon (2PM - 6PM)' }
   ];
 
   const handleDateChange = (selectedDay) => {

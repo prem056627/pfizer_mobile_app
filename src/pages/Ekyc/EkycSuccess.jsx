@@ -34,7 +34,7 @@ function EkycSuccess() {
         <div className="flex gap-4 px-6  justify-center items-center">
           <Pap className="w-28 h-20" />
           <p className="font-italic font-open-sans text-[14px] italic text-white">
-            Please connect with the PAP Team if you have not received the KYC
+            Please connect with Our Team if you have not received the KYC
             link
           </p>
         </div>

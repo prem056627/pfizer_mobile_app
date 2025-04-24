@@ -4,8 +4,11 @@ import MultiFileUpload from "../../components/Form/MultiFileUpload";
 import Radio from "../../components/Form/Radio";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectIsSampleAadharOpenActive,
   selectSelectedEnrollProgram,
   setCurrentPageState,
+  setIsSampleAadharOpen,
+  setIsSampleAadharOpenActive,
   setProgramEnrollmentConsent,
   setProgramEnrollmentSuccess,
   setSchemaShown,
@@ -16,10 +19,12 @@ import { ReactComponent as Lorla } from "../../assets/images/svg/Lorbriqua_PAP_S
 import { ReactComponent as Palbace } from "../../assets/images/svg/palbace_scheme.svg";
 import { ReactComponent as Crizalk } from "../../assets/images/svg/Crizalk_Scheme.svg";
 import { LoaderContext } from "../../context/LoaderContextProvider";
-
+import { ReactComponent as ToolTip } from '../../assets/images/svg/tooltip.svg';
+import { ReactComponent as ToolTip_red } from '../../assets/images/svg/tooltip_red.svg';
 const SchemeEnrollDocUpload = () => {
   const [showUploadFields, setShowUploadFields] = useState(false);
   const { setLoading, isLoading } = useContext(LoaderContext);
+  const isActive= useSelector(selectIsSampleAadharOpenActive)
   const dispatch = useDispatch();
   const triggerApi = useApi();
   const selectedEnrollProgram = useSelector(selectSelectedEnrollProgram);
@@ -177,10 +182,10 @@ const SchemeEnrollDocUpload = () => {
         dispatch(setCurrentPageState(response?.current_step));
 
         // Close modal and change page state after 5 seconds
-        setTimeout(() => {
-          // dispatch(setProgramEnrollmentSuccess(false));
-          window.location.reload();
-        }, 5000);
+        // setTimeout(() => {
+        //   // dispatch(setProgramEnrollmentSuccess(false));
+        //   window.location.reload();
+        // }, 5000);
 
         return { success: true, data: response };
       } else {
@@ -232,6 +237,16 @@ const SchemeEnrollDocUpload = () => {
     }, 200);
   }
 
+
+  function HandleToolTipModal(event){
+    event.preventDefault();
+    event.stopPropagation();
+    dispatch(setIsSampleAadharOpenActive(true));
+    dispatch(setIsSampleAadharOpen(true));
+    console.log("hello Modal!!");
+  }
+
+  
   return (
     <Formik
       initialValues={initialValues}
@@ -303,13 +318,9 @@ const SchemeEnrollDocUpload = () => {
                 </a> */}
                 </div>
 
-                <div className="text-sm text-black  font-sans font-italic italic mb-4 px-4">
-                  The file must be in jpg/pdf/png format.
-                  <br />
-                  Maximum size of the document should be 5mb.
-                </div>
+              
 
-                <div className="space-y-4 px-4 mb-40">
+                <div className="space-y-4 px-4 mb-10">
                   {combinedUploadFields.map((field) => (
                     <MultiFileUpload
                       key={field.id}
@@ -327,6 +338,38 @@ const SchemeEnrollDocUpload = () => {
                     />
                   ))}
                 </div>
+
+                <div className="text-sm text-[#CC3300] italic font-sans mb-4 px-4 space-y-2">
+  <p>The file must be in jpg/pdf/png format.</p>
+
+  <p>In case you need to upload more than one image, you can convert it into a PDF and upload it as one single PDF which has multiple images.</p>
+
+  <p>Maximum size of the document should be 5MB.</p>
+
+  <ul className="list-disc list-inside space-y-1">
+    <p>Mentioned below is the list of acceptable ID and Address proof</p>
+    <li>Passport</li>
+    <li>Voter ID</li>
+    <li>Driving License</li>
+    <li>PAN card</li>
+    <li>Home Lease Agreement</li>
+    <li>Bank statement / Agreement</li>
+    <li className="flex  justify-start items-center gap-2 pl-4">Redacted Aadhar Card <button className="text-[#CC3300]" onClick={HandleToolTipModal}>
+      
+      {
+        isActive ?  <ToolTip/>  : <ToolTip_red/>
+      }
+    
+     
+      
+      </button></li>
+  </ul>
+
+  <p className="pl-4">
+    (To mask Aadhar card number, QR code, VID number, and photo use a black pen)
+  </p>
+</div>
+
               </div>
             )}
           </div>

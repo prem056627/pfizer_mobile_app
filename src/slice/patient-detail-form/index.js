@@ -53,7 +53,13 @@ export const ProgramEnrollmentSlice = createSlice({
     isKycHistoryModalOpen:false,
     isCaregiverSkipVisible:false,
     isInitalDataLoad:false,
-    isCompletedKycHistoryModalOpen:false
+    isCompletedKycHistoryModalOpen:false,
+    isSampleAadharOpen:false,
+    isSampleAadharOpenActive:false,
+    isProgramEnrollDocDuplicateFound: {
+      showModal: false,
+      status: null,
+    },
   },
   reducers: {
     changeStep: (state, action) => {
@@ -152,7 +158,18 @@ setIsInitalDataLoad:(state, action)=>{
 
 setIsCompletedKycHistoryModalOpen:(state, action)=>{
   state.isCompletedKycHistoryModalOpen = action.payload;
-}
+},
+setIsSampleAadharOpen:(state, action)=>{
+  state.isSampleAadharOpen = action.payload;
+},
+setIsSampleAadharOpenActive:(state, action)=>{
+  state.isSampleAadharOpenActive = action.payload;
+},
+setIsProgramEnrollDocDuplicateFound: (state, action) => {
+  state.isProgramEnrollDocDuplicateFound = action.payload;
+},
+
+
   },
 });
 
@@ -182,6 +199,9 @@ export const {
   setSelectedEnrollProgram,
   setIsInitalDataLoad,
   setIsCompletedKycHistoryModalOpen,
+  setIsSampleAadharOpen,
+  setIsSampleAadharOpenActive,
+  setIsProgramEnrollDocDuplicateFound,
   setCaregiver_enroll_consent,
   setCaregiver_enroll_consent_privacy
 } = ProgramEnrollmentSlice.actions;
@@ -262,6 +282,14 @@ export const selectIsInitalDataLoad = (state) =>
 
 export const selectIsCompletedKycHistoryModalOpen = (state) =>
   state.patientDetailForm.isCompletedKycHistoryModalOpen;
+export const selectIsSampleAadharOpen = (state) =>
+  state.patientDetailForm.isSampleAadharOpen;
+
+export const selectIsSampleAadharOpenActive = (state) =>
+  state.patientDetailForm.isSampleAadharOpenActive;
+
+export const selectIsProgramEnrollDocDuplicateFound = (state) =>
+  state.patientDetailForm.isProgramEnrollDocDuplicateFound;
 
 
 export default ProgramEnrollmentSlice.reducer;

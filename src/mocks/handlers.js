@@ -10,7 +10,11 @@ let initialData = {
     // before enrollment submit
     // patient_enrolment
     // current_step: "caregiver_addition",
-    current_step: "patient_enrolment",
+    current_step: "program_enrolment_done",
+    // patient_status: "Inactive",
+    patient_status: "Active",
+    duplicate: false,
+    
     city: [
       [1, "Abhanpur"],
       [2, "Abohar"],
@@ -2287,7 +2291,7 @@ let initialData = {
     available_programs: [
 		{
 			program_name: "Lorbriqua Care",
-			program_status: "active",
+			program_status: "acive",
 			program_id: 10011,
 			program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
@@ -2296,24 +2300,24 @@ let initialData = {
 		},
 		{
 			program_name: "Palbace Program",
-			program_status: "active",
+			program_status: "ctive",
 			program_id: 10014,
 		    program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
 			
 		},
-		{
-			program_name: "Crizalk Program",
-			program_status: "active",
-			program_id: 10018,
-			program_image: ProgramCard1,
-			program_type: ["Oncology", "Patient Assistance"],
-		}
+		// {
+		// 	program_name: "Crizalk Program",
+		// 	program_status: "acive",
+		// 	program_id: 10018,
+		// 	program_image: ProgramCard1,
+		// 	program_type: ["Oncology", "Patient Assistance"],
+		// }
       ],
     
     applied_programs: [
         {
-          // program_name: "c",
+          // program_name: "c",onemg_status
           // program_status: "rejected",
           // program_status: "suspend",
           // program_id: 10018,
@@ -2332,19 +2336,21 @@ let initialData = {
             { id: 'rroof', label: 'Addrer' },
             
           ],
-          program_status: "shortfall",
+          program_status: "ative",
           // shortfall
           // suspended
           // rejected
           program_enrollmentDate: "23 Mar 2025",
           program_scheme: "9+LFT",
           program_image: "NA",
+          show_foc_button:false,
 
           orders: {
               paid_orders: [
                   {
                       order_id: "10001",
-                      order_status: "Close",
+                      pending_status:"1234",
+                      order_status: "Cancelled",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2353,7 +2359,7 @@ let initialData = {
                   },
                   {
                       order_id: "10002",
-                      order_status: "Approved",
+                      order_status: "Open",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2364,7 +2370,7 @@ let initialData = {
               foc_orders: [
                   {
                       order_id: "10003",
-                      order_status: "closed",
+                      order_status: "Open",
                       scn_executor: "MDB Chennai",
                       order_date: "24 Dec 2024",
                       status_date: "27 Dec 2024",
@@ -2667,7 +2673,7 @@ verification_history: [
       // }
   ],
   physical_verification: {
-    show_verification_button: true,
+    show_verification_button: false,
     details : {
       status : "Verified",
        date : "22 Jan 2025",

@@ -91,6 +91,16 @@ export default function MultiFileUpload({
     }
   };
 
+  // Function to truncate file name if it's too long
+  const getTruncatedFileName = (name) => {
+    if (name.length > 25) {
+      const extension = name.split('.').pop();
+      const baseName = name.substring(0, name.lastIndexOf('.'));
+      return `${baseName.substring(0, 20)}...${extension ? '.' + extension : ''}`;
+    }
+    return name;
+  };
+
   return (
     <div className="flex flex-col gap-[12px]">
       <div className="flex flex-col gap-[4px]">
@@ -104,7 +114,7 @@ export default function MultiFileUpload({
           ) : (
             <span>Click here to upload more</span>
           )}
-          <UploadIcon className="relative" />
+          <UploadIcon className="relative flex-shrink-0" />
         </div>
         {description ? (
           <p className="text-xs italic leading-4 text-dark-gray">
@@ -120,11 +130,11 @@ export default function MultiFileUpload({
       ) : null}
       
       {get(formik.values, id, [])?.length > 0 && (
-        <div className="flex gap-[8px] flex-col">
+        <div className="flex gap-[8px] flex-col w-full">
           {get(formik.values, id, []).map((file) => (
-            <div key={file.name + '_' + file.size} className="flex justify-between items-center">
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary">
-                {file.name}
+            <div key={file.name + '_' + file.size} className="flex justify-between items-center w-full">
+              <div className="max-w-[85%] overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold text-primary" title={file.name}>
+                {getTruncatedFileName(file.name)}
               </div>
               <button
                 type="button"
@@ -147,7 +157,6 @@ export default function MultiFileUpload({
         name={id}
         className="hidden h-0 w-0"
         onChange={handleFileChange}
-  
       />
     </div>
   );

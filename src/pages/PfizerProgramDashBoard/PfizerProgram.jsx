@@ -10,7 +10,7 @@ import { ReactComponent as PhysicalverificationSheduled } from "../../assets/ima
 import { ReactComponent as Ekyc } from "../../assets/images/ProgramCards/ekyc.svg";
 import { ReactComponent as NoProgram } from "../../assets/images/ProgramCards/no_program.svg";
 
-import { ReactComponent as Upload } from "../../../src/assets/images/svg/upload.svg";
+import { ReactComponent as Warning } from "../../../src/assets/images/svg/warning.svg";
 import { ReactComponent as Pap } from "../../../src/assets/images/Ekyc/pap.svg";
 import {
   selectCurrentView,
@@ -24,6 +24,7 @@ import {
   setIsInitalDataLoad,
   setPhysicalVerificationModalOpen,
   setProgramEnrollmentConsent,
+  setProgramEnrollmentSuccess,
   setSelectedEnrollProgram,
   setSelectedProgram,
   setViewingOrderHistory,
@@ -52,6 +53,9 @@ const PfizerProgram = () => {
   
   const number_of_programs_enrollled =
     initiaData?.program_data?.enrolled_programs;
+
+    const patient_inactive = initiaData?.patient_status;
+    console.log(patient_inactive);
   // console.log('number_of_programs_enrollled,',number_of_programs_enrollled);
   const APPLIED_PROGRAMS = initiaData?.program_data?.applied_programs || [];
 
@@ -68,6 +72,8 @@ const PfizerProgram = () => {
   const handleRequest = (program) => {
     dispatch(setSelectedEnrollProgram(program));
     dispatch(setProgramEnrollmentConsent({ program, consent: true }));
+
+      dispatch(setProgramEnrollmentSuccess(false));
   };
 
   const handleRequestShortfallProgram = (program) => {
@@ -180,15 +186,21 @@ const PfizerProgram = () => {
 const renderAvailablePrograms = () => {
   return isLoading ? (
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
-      <l-cardio
-        size="70"
-        stroke="4"
-        speed="2"
-        color="#0101C8"
-      ></l-cardio>
+      <l-cardio size="70" stroke="4" speed="2" color="#0101C8"></l-cardio>
     </div>
   ) : (
     <div className="space-y-4 w-full pb-20">
+
+{/* {patient_inactive === "Inactive" && (
+  <div className="bg-[#FFF5F5] rounded-lg p-2 flex gap-2 justify-start items-start">
+        <Warning className="w-13 h-8" />
+        <p className="text-[#AB3436] text-[14px]">
+          Your profile is suspended for the enrolled program. Please connect
+          with the PAP Team for the next steps
+        </p>
+      </div>
+)} */}
+      
       {AVAILABLE_PROGRAMS.length > 0 ? (
         AVAILABLE_PROGRAMS.map((program) => (
           <div
@@ -219,12 +231,14 @@ const renderAvailablePrograms = () => {
                 </div>
               </div>
             </div>
+
             <button
-              onClick={() => handleRequest(program)}
-              className="w-full text-[14px] font-sans font-bold bg-primary text-white py-4 rounded-b-lg"
-            >
-              ENROL
-            </button>
+  onClick={() => handleRequest(program)}
+  className={`w-full text-[14px] font-sans font-bold py-4 rounded-b-lg bg-primary text-white`}
+>
+  ENROL
+</button>
+
           </div>
         ))
       ) : (
@@ -287,7 +301,7 @@ const renderAvailablePrograms = () => {
                   UID - {initiaData?.patient_data?.patient_uid}
            
                 </p> */}
-
+  
               {initiaData?.program_data?.applied_programs?.find(
                     (p) => p?.patient_uid
                   ) && (
@@ -361,18 +375,8 @@ const renderAvailablePrograms = () => {
                       }
                     </p>
                   )}
-
-                  {/* need to update */}
-                  {/* <p className="text-[#767676] text-[14px] font-open-sans">
-                  FOC Orders - 01
-                </p>
-                <p className="text-[#767676] text-[14px] font-open-sans">
-                Enrollment Date - {program.program_enrollmentDate}
-                </p> */}
-                  {/* <p className="text-[#767676] text-[14px]">Schemes - {program.program_scheme}</p>
-                <p className="text-[#767676] text-[14px] font-open-sans">
-                Doctor's Name - {program.doctor_name}
-                </p> */}
+  
+                 
                 </div>
               </div>
               {program?.program_status === "shortfall" && (
@@ -404,135 +408,140 @@ const renderAvailablePrograms = () => {
           )
         )}
       </div>
-
-      {(initiaData?.ekyc_verification?.show_verification_button ||
-        initiaData?.physical_verification?.show_verification_button) && (
-        <div className="w-full pb-20">
-          <h2 className="text-lg font-semibold w-full mb-6">
-            Value Added Services
-          </h2>
-          <div className="space-y-6 pb-30  mb-20">
-          
-            {/* defautl physical very card */}
-            {initiaData?.physical_verification?.show_verification_button && (
-              <div className="bg-white rounded-lg shadow-sm p-4 border ">
-                <div className="flex gap-4 mb-3">
-                  <div className="p-3 rounded-lg">
-                    <Physicalverification width={70} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-[#616161]">
-                      Physical Verification
-                    </h3>
-                    <p className="text-[13px] text-[#606060]">
-                      Complete your physical verification by submitting
-                      documents and booking an appointment.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={handlePhysicalVerification}
-                  className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium"
-                >
-                  START YOUR PHYSICAL VERIFICATION
-                </button>
-              </div>
-            )}
-
-            {initiaData?.physical_verification?.show_verification_button ===
-              false &&
-              (initiaData?.physical_verification?.details?.status === "Open" ? (
-                <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
-                  <div className="flex gap-4 items-center">
-                    <div className="p-3 rounded-lg">
-                      <PhysicalverificationSheduled width={70} />
-                    </div>
-                    <div>
-                      <p className="text-[15px] font-sans font-semibold text-[#606060]">
-                        Your{" "}
-                        <span className="text-primary">
-                          physical verification
-                        </span>{" "}
-                        has been <span className="text-primary">scheduled</span>
-                        .
-                      </p>
-                    </div>
-                  </div>
-                  <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
-                    <span className="pl-4">
-                      <Pap className="w-8 h-8" />
-                    </span>
-                    PAP Team will soon reach out for verification
-                  </button>
-                </div>
-              ) : initiaData?.physical_verification?.details?.status ===
-                "Verified" ? (
-                <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
-                  <div className="flex gap-4 items-center">
-                    <div className="p-3 rounded-lg">
-                      <PhysicalverificationSheduled width={70} />
-                    </div>
-                    <div>
-                      <p className="text-[15px] font-sans font-semibold text-[#606060]">
-                        Your{" "}
-                        <span className="text-primary">
-                          physical verification
-                        </span>{" "}
-                        is scheduled for
-                        <span className="text-primary">
-                          {" "}
-                          {initiaData?.physical_verification?.details?.date}
-                        </span>{" "}
-                        at
-                        <span className="text-primary">
-                          {" "}
-                          {initiaData?.physical_verification?.details?.time}
-                        </span>
-                        .
-                      </p>
-                    </div>
-                  </div>
-                  <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
-                    <span className="pl-2">
-                      <Pap className="w-8 h-8" />
-                    </span>
-                    {initiaData?.physical_verification?.details?.phlebo_name}{" "}
-                    will soon reach out for verification
-                  </button>
-                </div>
-              ) : (
-                <div></div> // Empty div if neither "open" nor "verified"
-              ))}
-
-            {initiaData?.ekyc_verification?.show_verification_button && (
-              <div className="bg-white rounded-lg shadow-sm p-4 border">
-                <div className="flex gap-4 mb-3">
-                  <div className="p-3 rounded-lg">
-                    <Ekyc width={70} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-[#616161]">
-                      eKYC Verification
-                    </h3>
-                    <p className="text-[13px] text-[#606060]">
-                      Verify your identity digitally using Aadhaar and other
-                      valid documents.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleEkyRequest}
-                    className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium"
-                  >
-                    INITIATE YOUR EKYC VERIFICATION
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+  
+  
+     {/* Changed this part - Looking for active programs instead of referencing a single program variable */}
+     {APPLIED_PROGRAMS.some(program => program.program_status === 'active') && 
+       (initiaData?.ekyc_verification?.show_verification_button ||
+       initiaData?.physical_verification?.show_verification_button) && (
+       <div className="w-full pb-20">
+         <h2 className="text-lg font-semibold w-full mb-6">
+           Verification Services
+         </h2>
+         <div className="space-y-6 pb-30  mb-20">
+         
+           {/* defautl physical very card */}
+           {initiaData?.physical_verification?.show_verification_button && (
+             <div className="bg-white rounded-lg shadow-sm p-4 border ">
+               <div className="flex gap-4 mb-3">
+                 <div className="p-3 rounded-lg">
+                   <Physicalverification width={70} />
+                 </div>
+                 <div>
+                   <h3 className="font-semibold mb-1 text-[#616161]">
+                     Physical Verification
+                   </h3>
+                   <p className="text-[13px] text-[#606060]">
+                   Schedule your physical verification by submitting
+                     documents and booking an appointment.
+                   </p>
+                 </div>
+               </div>
+               <button
+                 onClick={handlePhysicalVerification}
+                 className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium"
+               >
+                 START YOUR PHYSICAL VERIFICATION
+               </button>
+             </div>
+           )}
+  
+           {initiaData?.physical_verification?.show_verification_button ===
+             false &&
+             (initiaData?.physical_verification?.details?.status === "Open" ? (
+               <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
+                 <div className="flex gap-4 items-center">
+                   <div className="p-3 rounded-lg">
+                     <PhysicalverificationSheduled width={70} />
+                   </div>
+                   <div>
+                     <p className="text-[15px] font-sans font-semibold text-[#606060]">
+                       Your{" "}
+                       <span className="text-primary">
+                         physical verification
+                       </span>{" "}
+                       has been <span className="text-primary">scheduled</span>
+                       .
+                     </p>
+                   </div>
+                 </div>
+                 <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
+                   <span className="pl-4">
+                     <Pap className="w-8 h-8" />
+                   </span>
+                   Our Team will soon reach out for verification
+                 </button>
+               </div>
+             ) : initiaData?.physical_verification?.details?.status ===
+               "Verified" ? (
+               <div className="bg-white rounded-lg shadow-sm border rounded-b-[20px]">
+                 <div className="flex gap-4 items-center">
+                   <div className="p-2 rounded-lg">
+                     <PhysicalverificationSheduled width={70} />
+                   </div>
+                   <div>
+                     <p className="text-[14px] font-sans font-semibold text-[#606060] py-4 px-2">
+                       Your{" "}
+                       <span className="text-primary">
+                         physical verification
+                       </span>{" "}
+                       is scheduled for
+                       <span className="text-primary">
+                         {" "}
+                         {initiaData?.physical_verification?.details?.date}
+                       </span>{" "}
+                       at
+                       <span className="text-primary">
+                         {" "}
+                         {initiaData?.physical_verification?.details?.time}
+                       </span>. {" "}
+                       
+                       For any change in the PV appointment, <span className="text-primary">please reach out to us on our toll-free number</span>
+                       .
+                     </p>
+                   </div>
+                 </div>
+                 <button className="flex items-center w-full text-[14px] italic bg-primary text-white py-1 gap-2 rounded-b-[20px] font-medium">
+                   <span className="pl-2">
+                     <Pap className="w-8 h-8" />
+                   </span>
+                   {initiaData?.physical_verification?.details?.phlebo_name}{" "}
+                   will soon reach out for verification
+                 </button>
+               </div>
+             ) : (
+               <div></div> // Empty div if neither "open" nor "verified"
+             ))}
+  
+           {initiaData?.ekyc_verification?.show_verification_button && (
+             <div className="bg-white rounded-lg shadow-sm p-4 border">
+               <div className="flex gap-4 mb-3">
+                 <div className="p-3 rounded-lg">
+                   <Ekyc width={70} />
+                 </div>
+                 <div>
+                   <h3 className="font-semibold mb-1 text-[#616161]">
+                     eKYC Verification
+                   </h3>
+                   <p className="text-[13px] text-[#606060]">
+                     Verify your identity digitally using Aadhaar and other
+                     valid documents.
+                   </p>
+                 </div>
+               </div>
+               <div className="flex items-center gap-2">
+                 <button
+                   onClick={handleEkyRequest}
+                   className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium"
+                 >
+                   INITIATE YOUR EKYC VERIFICATION
+                 </button>
+               </div>
+             </div>
+           )}
+         </div>
+       </div>
+     )}
     </>
   );
 

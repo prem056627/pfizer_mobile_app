@@ -30,7 +30,7 @@ function Home({ hideFooter,hideLogo, children }) {
     }
 
       {/* Content */}
-      <main className="flex-1 overflow-y-auto container mx-auto md:px-14 py-24 bg-[##F9FAFB] ">
+      <main className="flex-1  container mx-auto md:px-14 py-24 bg-[##F9FAFB] ">
         {children}
       </main>
 

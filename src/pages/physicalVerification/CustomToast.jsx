@@ -15,14 +15,14 @@ function CustomToast({ date, time, closeToast }) {
         <div className=" mx-2text-center">
           <p className="text-gray-700 text-[14px] font-medium font-sans mx-6">
           Your  <strong className="text-primary">physical verification</strong>{" "}
-      request  has been submitted to the PAP Team !!  <Tick className="ml-1 inline" />
+      request  has been submitted to Our Team !!  <Tick className="ml-1 inline" />
           </p>
         </div>
       </div>
       <div className="bg-[#208376] w-full flex py-[2px] justify-center items-center">
       <Pap className="w-8 h-8 mx-2" />
         <p className="text-[13px] text-white  w-full">
-          PAP Team will soon reach out for verification.
+          Our Team will soon reach out for verification.
         </p>
       </div>
       {/* Close Button */}

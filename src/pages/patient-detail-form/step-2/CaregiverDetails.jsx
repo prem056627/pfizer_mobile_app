@@ -15,7 +15,6 @@ const relationshipOptions = [
   { id: "Mother", label: "Mother" },
   { id: "Daughter", label: "Daughter" },
   { id: "Son", label: "Son" },
-  { id: "Son-In-Law", label: "	Son-In-Law" },
   { id: "Spouse", label: "Spouse" },
   { id: "Sister", label: "Sister" },
   { id: "Brother", label: "Brother" },
