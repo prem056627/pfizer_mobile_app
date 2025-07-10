@@ -38,13 +38,17 @@ export const combinedValidationSchema = Yup.object().shape({
   full_name: Yup.string().required("Full Name is required"),
   gender: Yup.string().required("Gender is required"),
   
-  date_of_birth: Yup.date()
-  // .required("Date of Birth is required")
+ date_of_birth: Yup.date()
+  .nullable() // Allow null values
+  .transform((value, originalValue) => {
+    // If the original value is empty string, convert to null
+    return originalValue === '' ? null : value;
+  })
   .test(
     "is-over-18",
     "You must be at least 18 years old",
-    (value) => {
-      if (!value) return false;
+    function (value) {
+      if (!value) return true; // Skip validation if empty
       const today = new Date();
       const eighteenYearsAgo = new Date(
         today.getFullYear() - 18,
@@ -54,6 +58,7 @@ export const combinedValidationSchema = Yup.object().shape({
       return value <= eighteenYearsAgo;
     }
   ),
+
   
   email: Yup.string()
     .email("Invalid email format")

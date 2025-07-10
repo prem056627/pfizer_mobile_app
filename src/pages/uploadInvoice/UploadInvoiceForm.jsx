@@ -193,55 +193,71 @@ function UploadInvoiceForm() {
                 const hasErrors = Object.keys(formik.errors).length > 0 && formik.touched.order_file;
 
                 return (
-                    <Form className="complete-hidden-scroll-style flex flex-grow flex-col gap-4 overflow-y-auto">
-                        <div className="px-5 flex flex-col gap-4">
-                            <MultiFileUpload
-                                isMultiple={true}
-                                formik={formik}
-                                id="order_file"
-                                name="order_file"
-                                label="Invoice *"
-                                // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
-                            />
+                  <Form className="complete-hidden-scroll-style flex flex-grow flex-col gap-4 overflow-y-auto">
+                    <div className="px-5 flex flex-col gap-4">
+                      <MultiFileUpload
+                        isMultiple={true}
+                        formik={formik}
+                        id="order_file"
+                        name="order_file"
+                        label={
+                          <>
+                            Invoice <span className="text-red-500">*</span>
+                          </>
+                        }
+                        // description="The file must be in jpg/pdf/png format. Maximum size of the document should be 5MB. You can upload up to 5 files."
+                      />
 
-                        <MultiFileUpload
-                                isMultiple={true}
-                                formik={formik}
-                                id="extra_doc"
-                                name="extra_doc"
-                                label="Please Upload the QR code mentioned at the box of your medicine"
-                                description="* - manditory fields"
-                            />
-                            {/* {hasErrors && (
+                      <MultiFileUpload
+                        isMultiple={true}
+                        formik={formik}
+                        id="extra_doc"
+                        name="extra_doc"
+                        label="Please Upload the QR code mentioned at the box of your medicine"
+                        description= {
+                          <>
+                          <span className="text-red-500">* </span> manditory fields
+                          </>
+                        }
+                      />
+                      {/* {hasErrors && (
                                 <div className="text-red-500 text-sm mt-1">
                                     {formik.errors.order_file}
                                 </div>
                             )} */}
 
-                        <p className="text-red-500 text-[12px] italic text-start mb-4">
-                                The file must be in jpg/pdf/png format.In case of multiple file upload please upload as a single pdf.
-                                Maximum size of the document should be 5MB.
-                        </p>
+                      <p className="text-red-500 text-[12px] italic text-start mb-4">
+                        The file must be in jpg/pdf/png format.In case of
+                        multiple file upload please upload as a single pdf.
+                        Maximum size of the document should be 5MB.
+                      </p>
+                    </div>
 
-                        
-                        </div>
-
-                        <div className="flex flex-col">
-
-                        <div className='  w-full bg-[#F4F4FF] py-2 '>
-          {PoweredByFooter()}
-         </div>
-                            <button
-                                type="submit"
-                                disabled={!isFileUploaded || hasErrors || formik.isSubmitting || isLoading}
-                                className={`flex  w-full items-center justify-center rounded-b-[8px] bg-primary py-6 font-lato text-[18px] font-bold leading-[20px] text-white transition-opacity duration-300 ${
-                                    isFileUploaded && !hasErrors && !formik.isSubmitting && !isLoading ? 'opacity-100' : 'opacity-30'
-                                }`}
-                            >
-                                <span>{isLoading ? 'Uploading...' : 'Submit'}</span>
-                            </button>
-                        </div>
-                    </Form>
+                    <div className="flex flex-col">
+                      <div className="  w-full bg-[#F4F4FF] py-2 ">
+                        {PoweredByFooter()}
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={
+                          !isFileUploaded ||
+                          hasErrors ||
+                          formik.isSubmitting ||
+                          isLoading
+                        }
+                        className={`flex  w-full items-center justify-center rounded-b-[8px] bg-primary py-6 font-lato text-[18px] font-bold leading-[20px] text-white transition-opacity duration-300 ${
+                          isFileUploaded &&
+                          !hasErrors &&
+                          !formik.isSubmitting &&
+                          !isLoading
+                            ? "opacity-100"
+                            : "opacity-30"
+                        }`}
+                      >
+                        <span>{isLoading ? "Uploading..." : "Submit"}</span>
+                      </button>
+                    </div>
+                  </Form>
                 );
             }}
         </Formik>

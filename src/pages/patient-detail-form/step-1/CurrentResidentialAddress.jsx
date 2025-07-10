@@ -117,7 +117,11 @@ const CurrentResidentialAddress = ({ formik }) => {
 
       <InputField
         key="address.current.line1"
-        label="Address Line 1"
+        label={
+          <>
+            Address Line 1 <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.line1"
         id="address.current.line1"
         placeholder="Enter Address Line 1"
@@ -133,7 +137,11 @@ const CurrentResidentialAddress = ({ formik }) => {
 
       <InputField
         key="address.current.line2"
-        label="Address Line 2"
+          label={
+          <>
+            Address Line 2 <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.line2"
         id="address.current.line2"
         placeholder="Enter Address Line 2"
@@ -149,7 +157,11 @@ const CurrentResidentialAddress = ({ formik }) => {
 
       <SelectField
         key="address.current.city"
-        label={<>City</>}
+        label={
+          <>
+            City <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.city"
         id="address.current.city"
         formik={formik}
@@ -173,7 +185,11 @@ const CurrentResidentialAddress = ({ formik }) => {
    
       <SelectField
         key="address.current.state"
-        label={<>State</>}
+         label={
+          <>
+            State <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.state"
         id="address.current.state"
         formik={formik}
@@ -197,7 +213,11 @@ const CurrentResidentialAddress = ({ formik }) => {
 
       <InputField
         key="address.current.pincode"
-        label="Pincode"
+        label={
+          <>
+            Pincode <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.pincode"
         id="address.current.pincode"
         placeholder="Enter Pincode"
@@ -214,7 +234,11 @@ const CurrentResidentialAddress = ({ formik }) => {
       
       <SelectField
         key="address.current.address_proof_type"
-        label="Address Proof Type"
+        label={
+          <>
+            Address Proof Type <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.address_proof_type"
         id="address.current.address_proof_type"
         formik={formik}
@@ -232,7 +256,11 @@ const CurrentResidentialAddress = ({ formik }) => {
 
       <InputField
         key="address.current.address_proof_number"
-        label="Address Proof Number"
+         label={
+          <>
+            Address Proof Number <span className="text-red-500">*</span>
+          </>
+        }
         name="address.current.address_proof_number"
         id="address.current.address_proof_number"
         placeholder="Enter Address Proof Number"

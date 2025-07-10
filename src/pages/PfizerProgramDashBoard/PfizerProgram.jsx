@@ -429,7 +429,7 @@ const renderAvailablePrograms = () => {
                  </div>
                  <div>
                    <h3 className="font-semibold mb-1 text-[#616161]">
-                     Physical Verification
+                     Physical Verification (PV)
                    </h3>
                    <p className="text-[13px] text-[#606060]">
                    Schedule your physical verification by submitting
@@ -441,7 +441,7 @@ const renderAvailablePrograms = () => {
                  onClick={handlePhysicalVerification}
                  className="w-full text-sm bg-primary text-white py-3 rounded-[6px] font-medium"
                >
-                 START YOUR PHYSICAL VERIFICATION
+                 SCHEDULE YOUR PHYSICAL VERIFICATION (PV)
                </button>
              </div>
            )}
@@ -455,12 +455,13 @@ const renderAvailablePrograms = () => {
                      <PhysicalverificationSheduled width={70} />
                    </div>
                    <div>
-                     <p className="text-[15px] font-sans font-semibold text-[#606060]">
+                     <p className="text-[13px] font-sans font-semibold text-[#606060]">
                        Your{" "}
                        <span className="text-primary">
-                         physical verification
+                         physical verification (PV)
                        </span>{" "}
                        has been <span className="text-primary">scheduled</span>
+                       .  For any change in the PV appointment, <span className="text-primary">please reach out to us on our toll-free number</span>
                        .
                      </p>
                    </div>
@@ -483,7 +484,7 @@ const renderAvailablePrograms = () => {
                      <p className="text-[14px] font-sans font-semibold text-[#606060] py-4 px-2">
                        Your{" "}
                        <span className="text-primary">
-                         physical verification
+                         physical verification (PV)
                        </span>{" "}
                        is scheduled for
                        <span className="text-primary">
@@ -496,8 +497,7 @@ const renderAvailablePrograms = () => {
                          {initiaData?.physical_verification?.details?.time}
                        </span>. {" "}
                        
-                       For any change in the PV appointment, <span className="text-primary">please reach out to us on our toll-free number</span>
-                       .
+                     
                      </p>
                    </div>
                  </div>
@@ -505,7 +505,8 @@ const renderAvailablePrograms = () => {
                    <span className="pl-2">
                      <Pap className="w-8 h-8" />
                    </span>
-                   {initiaData?.physical_verification?.details?.phlebo_name}{" "}
+                   {/* {initiaData?.physical_verification?.details?.phlebo_name} */}
+                   Our Team{" "}
                    will soon reach out for verification
                  </button>
                </div>

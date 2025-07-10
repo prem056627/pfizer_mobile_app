@@ -229,9 +229,10 @@ useEffect(() => {
 
 
 if(initialData?.current_step === "program_enrolment_done"){
-  console.log("hello prem");
-
-  if (!isActiveProgram) {
+ const hasAppliedPrograms = Array.isArray(appliedPrograms) && appliedPrograms.length > 0;
+//  console.log('hasAppliedPrograms',hasAppliedPrograms);
+//   console.log('isActiveProgram',isActiveProgram);
+  if (hasAppliedPrograms && !isActiveProgram) {
 
     // Slight delay to ensure modal renders before we close it
       dispatch(setProgramEnrollmentSuccess(true));

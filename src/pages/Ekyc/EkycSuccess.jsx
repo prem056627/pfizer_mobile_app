@@ -14,7 +14,7 @@ function EkycSuccess() {
               <Tick className="ml-1 w-12" />
               <p className="text-gray-700 text-[16px] font-medium font-sans">
                 We have shared the{" "}
-                <strong className="text-primary">KYC link</strong> on your{" "}
+                <strong className="text-primary">E-KYC link</strong> on your{" "}
                 <strong className="text-primary">registered number</strong>{" "}
               </p>
             </div>
@@ -34,7 +34,7 @@ function EkycSuccess() {
         <div className="flex gap-4 px-6  justify-center items-center">
           <Pap className="w-28 h-20" />
           <p className="font-italic font-open-sans text-[14px] italic text-white">
-            Please connect with Our Team if you have not received the KYC
+            Please connect with Our Team if you have not received the E-KYC
             link
           </p>
         </div>

@@ -31,7 +31,11 @@ export default function PersonalDetailsForm({ formik }) {
     <div className="flex grow flex-col gap-[16px]">
       <InputField
         key="full_name"
-        label="Full Name"
+        label={
+                <>
+                  Full Name <span className="text-red-500">*</span>
+                </>
+              }
         name="full_name"
         id="full_name"
         placeholder="Enter"
@@ -42,7 +46,11 @@ export default function PersonalDetailsForm({ formik }) {
       <div className="md:grid md:grid-cols-2 flex flex-col gap-4">
         <SelectField
           key="gender"
-          label="Gender"
+          label={
+                <>
+                  Gender <span className="text-red-500">*</span>
+                </>
+              }
           name="gender"
           id="gender"
           formik={formik}
@@ -55,17 +63,17 @@ export default function PersonalDetailsForm({ formik }) {
           className="w-1/2"
         />
 
-      <FormDatePicker
-  key={'date_of_birth'}
-  label="Date of Birth"
-  name={'date_of_birth'}
-  id={'date_of_birth'}
-  placeholder="Select"
-  value={formik.values.date_of_birth}
-  formik={formik}
-  min={moment().subtract(100, 'years')}
-  max={moment()}
-/>
+        <FormDatePicker
+        key={'date_of_birth'}
+        label="Date of Birth"
+        name={'date_of_birth'}
+        id={'date_of_birth'}
+        placeholder="Select"
+        value={formik.values.date_of_birth}
+        formik={formik}
+        min={moment().subtract(100, 'years')}
+        max={moment()}
+      />
         
       </div>
 
@@ -95,7 +103,11 @@ export default function PersonalDetailsForm({ formik }) {
       </div>
       <InputField
         key="email"
-        label="Email ID"
+         label={
+                <>
+                  Email ID <span className="text-red-500">*</span>
+                </>
+              }
         name="email"
         id="email"
         placeholder="john.doe@xyz.com"
@@ -106,7 +118,11 @@ export default function PersonalDetailsForm({ formik }) {
 
       <SelectField
         key="nationality"
-        label="Nationality"
+        label={
+                <>
+                  Nationality <span className="text-red-500">*</span>
+                </>
+              }
         name="nationality"
         id="nationality"
         formik={formik}

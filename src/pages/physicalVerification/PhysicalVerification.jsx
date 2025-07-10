@@ -192,7 +192,7 @@ const PhysicalVerification = () => {
 
         {/* Date Picker */}
         <div className="w-full relative">
-          <label className="text-sm text-gray-600 mb-1 block">Select Date Range</label>
+          <label className="text-sm text-gray-600 mb-1 block">Select Date Range <span className="text-red-500"> *</span></label>
           <div className="relative">
             <input
               ref={inputRef}
@@ -221,7 +221,8 @@ const PhysicalVerification = () => {
 
         {/* Half Day Picker */}
         <div className="w-full pt-4">
-  <label className="text-sm text-gray-600 mb-1 block">Select Slot</label>
+  <label className="text-sm text-gray-600 mb-1 block">Select Slot<span className="text-red-500"> *</span></label>
+
   <Select
     options={slotOptions}
     value={slotOptions.find(option => option.value === selectedHalf)}
@@ -229,6 +230,8 @@ const PhysicalVerification = () => {
     placeholder="Select"
     className="w-full"
   />
+
+  <p className='text-sm font-sans text-[#AB3436] mb-1 block italic pt-2'>The PV will be scheduled on one of the selected dates</p>
 </div>
 
 

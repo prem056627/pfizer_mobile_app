@@ -255,167 +255,142 @@ const SchemeEnrollDocUpload = () => {
     >
       {/* flex-1 overflow-y-auto container mx-auto md:px-14 py-24 bg-[##F9FAFB]  */}
       {(formik) => (
-        <form
-          onSubmit={formik.handleSubmit}
-          className="relative flex flex-col pt-6  container mx-auto  mb-50  "
-        >
-          {/* Pfizer Logo */}
-          <div className=" ">
-            {!showUploadFields && (
-              <div className="w-full  mb-10 h-1/2 ">
-             <div>
-             <div className=" mt-8 px-[20px]">
-                  <Radio
-                    label="Select a scheme"
-                    name="scheme"
-                    radioData={radioData}
-                    formik={formik}
-                    value={formik.values.scheme}
-                    checkboxType="circle"
-                  />
-                  {/* {formik.touched.scheme && formik.errors.scheme && (
-                <div className="text-red-500 text-sm mt-1">{formik.errors.scheme}</div>
-              )} */}
-                </div>
-
-                {/* Render the correct image based on the selected program */}
-                {selectedEnrollProgram.program_name === "Lorbriqua Care" && (
-                  <div className="rounded-lg">
-                    <Lorla className="max-w-full w-auto p-5 rounded-lg  h-[300px]" />
-                    <p className="text-[14px] px-[20px] text-gray-700 font-open-sans">
-                      your enrolment and allotment to a scheme shall be subject
-                      to verification of all the documents and information
-                      shared by you.
-                    </p>
-                  </div>
-                )}
-                {selectedEnrollProgram.program_name === "Palbace Program" && (
-                  <Palbace className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
-                )}
-                {selectedEnrollProgram.program_name === "Crizalk Program" && (
-                 <> <Crizalk className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
-
-
-                 <p className="text-[14px] px-[20px] text-gray-700 font-open-sans">Your enrolment and allotment to a scheme shall be subject to verification of all the documents and information shared by you.</p></>
-                )}
+   <form
+   onSubmit={formik.handleSubmit}
+   className="relative flex flex-col pt-6 container mx-auto mb-50"
+ >
+   {/* Main scrollable container */}
+   <div className="h-[calc(100vh-140px)] overflow-y-auto pb-20">
+     {!showUploadFields && (
+       <div className="w-full mb-10">
+         <div>
+           <div className="mt-8 px-[20px]">
+             <Radio
+               label="Select a scheme"
+               name="scheme"
+               radioData={radioData}
+               formik={formik}
+               value={formik.values.scheme}
+               checkboxType="circle"
+             />
+           </div>
+ 
+           {/* Render the correct image based on the selected program */}
+           {selectedEnrollProgram.program_name === "Lorbriqua Care" && (
+             <div className="rounded-lg">
+               <Lorla className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
+               <p className="text-[14px] px-[20px] text-gray-700 font-open-sans">
+                 your enrolment and allotment to a scheme shall be subject
+                 to verification of all the documents and information
+                 shared by you.
+               </p>
              </div>
-
-          
-
-               
-              </div>
-            )}
-
-            {/* Document Upload Section */}
-            {showUploadFields && (
-              <div className="mb-8 overflow-y-auto  h-[600px] pb-0">
-                <div className="flex flex-col justify-between items-start mt-12 mb-6 px-4">
-                  <h2 className="text-[18px] font-sans  font-semibold">
-                    Upload Documents
-                  </h2>
-                  {/* <a href="#" className="text-primary text-[14px]">
-                  Know more <span className="text-[#767676] font-sans font-semibold">about the program</span>
-                </a> */}
-                </div>
-
-              
-
-                <div className="space-y-4 px-4 mb-10">
-                  {combinedUploadFields.map((field) => (
-                    <MultiFileUpload
-                      key={field.id}
-                      formik={formik}
-                      label={field.label}
-                      id={field.id}
-                      isMultiple={true}
-                      // description="Upload jpg/pdf/png format file"
-                      onFileUpload={(files) =>
-                        console.log(`${field.id} files:`, files)
-                      }
-                      onFileRemove={(files) =>
-                        console.log(`${field.id} files after remove:`, files)
-                      }
-                    />
-                  ))}
-                </div>
-
-                <div className="text-sm text-[#CC3300] italic font-sans mb-4 px-4 space-y-2">
-  <p>The file must be in jpg/pdf/png format.</p>
-
-  <p>In case you need to upload more than one image, you can convert it into a PDF and upload it as one single PDF which has multiple images.</p>
-
-  <p>Maximum size of the document should be 5MB.</p>
-
-  <ul className="list-disc list-inside space-y-1">
-    <p>Mentioned below is the list of acceptable ID and Address proof</p>
-    <li>Passport</li>
-    <li>Voter ID</li>
-    <li>Driving License</li>
-    <li>PAN card</li>
-    <li>Home Lease Agreement</li>
-    <li>Bank statement / Agreement</li>
-    <li className="flex  justify-start items-center gap-2 pl-4">Redacted Aadhar Card <button className="text-[#CC3300]" onClick={HandleToolTipModal}>
-      
-      {
-        isActive ?  <ToolTip/>  : <ToolTip_red/>
-      }
-    
-     
-      
-      </button></li>
-  </ul>
-
-  <p className="pl-4">
-    (To mask Aadhar card number, QR code, VID number, and photo use a black pen)
-  </p>
-</div>
-
-              </div>
-            )}
-          </div>
-         
-          
-
-
-          {/* Fixed Footer */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
-
-          { (<div className={`'
-                } `}>{PoweredByFooter()}</div>)}
-
-            <div className="max-w-2xl mx-auto">
-              <div className="flex items-center gap-4 px-4 py-8">
-                <button
-                  type="button"
-                  onClick={handleLater}
-                  className="flex-1 py-3 px-4 border shadow-[inset_0_0_0_1px_#0101C8] text-primary rounded-md"
-                >
-                  Finish Later
-                </button>
-                <button
-                  type="submit"
-                  className={`flex-1 py-3 px-4 text-white rounded-md ${
-                    (!showUploadFields && formik.values.scheme) ||
-                    showUploadFields
-                      ? "bg-primary"
-                      : "bg-blue-200"
-                  }`}
-                  disabled={
-                    (!showUploadFields && !formik.values.scheme) ||
-                    formik.isSubmitting ||
-                    isLoading
-                  }
-                >
-                  {isLoading
-                    ? "Loading..."
-                    : showUploadFields
-                      ? "Submit"
-                      : "Next"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+           )}
+           {selectedEnrollProgram.program_name === "Palbace Program" && (
+             <Palbace className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
+           )}
+           {selectedEnrollProgram.program_name === "Crizalk Program" && (
+             <>
+               <Crizalk className="max-w-full w-auto p-5 rounded-lg h-[300px]" />
+               <p className="text-[14px] px-[20px] text-gray-700 font-open-sans">
+                 Your enrolment and allotment to a scheme shall be subject to verification of all the documents and information shared by you.
+               </p>
+             </>
+           )}
+         </div>
+       </div>
+     )}
+ 
+     {/* Document Upload Section */}
+     {showUploadFields && (
+       <div className="mb-8">
+         <div className="flex flex-col justify-between items-start mt-12 mb-6 px-4">
+           <h2 className="text-[18px] font-sans font-semibold">
+             Upload Documents
+           </h2>
+         </div>
+ 
+         <div className="space-y-4 px-4 mb-10">
+           {combinedUploadFields.map((field) => (
+             <MultiFileUpload
+               key={field.id}
+               formik={formik}
+                 label={
+                <>
+                  {field.label} <span className="text-red-500">*</span>
+                </>
+              }
+               id={field.id}
+               isMultiple={true}
+               onFileUpload={(files) =>
+                 console.log(`${field.id} files:`, files)
+               }
+               onFileRemove={(files) =>
+                 console.log(`${field.id} files after remove:`, files)
+               }
+             />
+           ))}
+         </div>
+ 
+         <div className="text-sm text-[#CC3300] italic font-sans  px-4 space-y-2 mb-20">
+           <p>The file must be in jpg/pdf/png format.</p>
+           <p>In case you need to upload more than one image, you can convert it into a PDF and upload it as one single PDF which has multiple images.</p>
+           <p>Maximum size of the document should be 5MB.</p>
+           <ul className="list-disc list-inside space-y-1">
+             <p>Mentioned below is the list of acceptable ID and Address proof</p>
+             <li>Passport</li>
+             <li>Voter ID</li>
+             <li>Driving License</li>
+             <li>PAN card</li>
+             <li>Home Lease Agreement</li>
+             <li>Bank statement / Agreement</li>
+             <li className="flex justify-start items-center gap-2 pl-4">
+               Redacted Aadhar Card
+               <button className="text-[#CC3300]" onClick={HandleToolTipModal}>
+                 {isActive ? <ToolTip /> : <ToolTip_red />}
+               </button>
+             </li>
+           </ul>
+           <p className="pl-4">
+             (To mask Aadhar card number, QR code, VID number, and photo use a black pen)
+           </p>
+         </div>
+       </div>
+     )}
+   </div>
+ 
+   {/* Fixed Footer */}
+   <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
+     {<div>{PoweredByFooter()}</div>}
+ 
+     <div className="max-w-2xl mx-auto">
+       <div className="flex items-center gap-4 px-4 py-8">
+         <button
+           type="button"
+           onClick={handleLater}
+           className="flex-1 py-3 px-4 border shadow-[inset_0_0_0_1px_#0101C8] text-primary rounded-md"
+         >
+           Finish Later
+         </button>
+         <button
+           type="submit"
+           className={`flex-1 py-3 px-4 text-white rounded-md ${
+             (!showUploadFields && formik.values.scheme) || showUploadFields
+               ? "bg-primary"
+               : "bg-blue-200"
+           }`}
+           disabled={
+             (!showUploadFields && !formik.values.scheme) ||
+             formik.isSubmitting ||
+             isLoading
+           }
+         >
+           {isLoading ? "Loading..." : showUploadFields ? "Submit" : "Next"}
+         </button>
+       </div>
+     </div>
+   </div>
+ </form>
       )}
     </Formik>
   );

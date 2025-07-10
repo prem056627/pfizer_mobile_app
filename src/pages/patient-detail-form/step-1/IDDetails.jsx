@@ -90,7 +90,7 @@ export default function IDDetails({ formik }) {
       <div className="flex grow flex-col gap-[16px]  mb-16">
         <SelectField
           key="id_card_type"
-          label={<>ID Card Type</>}
+          label={<>ID Card Type <span className="text-red-500">*</span></> }
           name="id_card_type"
           id="id_card_type"
           formik={formik}
@@ -108,7 +108,7 @@ export default function IDDetails({ formik }) {
 
         <InputField
           key="id_number"
-          label={<>ID Number</>}
+           label={<>ID Number <span className="text-red-500">*</span></> }
           name="id_number"
           id="id_number"
           placeholder={formik.values.id_card_type ? `Enter ${formik.values.id_card_type} Number` : "Enter ID Number"}

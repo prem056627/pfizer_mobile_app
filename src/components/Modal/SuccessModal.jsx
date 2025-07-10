@@ -52,7 +52,7 @@ function SuccessModal({
                     center: "",
                     large: "",
                   }[type]
-                }  transform flex-col gap-[32px] overflow-hidden bg-white  text-left align-middle shadow-xl transition-all md:pl-[32px] md:pr-[72px]`}
+                }  transform flex-col  overflow-hidden bg-white  text-left align-middle shadow-xl transition-all md:pl-[32px] md:pr-[72px]`}
               >
                 <Dialog.Title
                   as="div"

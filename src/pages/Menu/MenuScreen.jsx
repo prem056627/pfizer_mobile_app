@@ -153,7 +153,7 @@ const MenuScreen = () => {
       </div>
 
       {/* Menu Items */}
-      <div className="px-6">
+      <div className="px-6 mb-10">
         <div className="bg-white shadow-sm border border-[#F5F5F5] rounded-2xl p-4 py-4">
           {menuItems.map((item, index) => (
             <div 

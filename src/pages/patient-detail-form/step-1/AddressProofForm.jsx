@@ -22,7 +22,11 @@ const AddressProofForm = ({ formik }) => {
     <div className="flex grow flex-col gap-4">
       <InputField
         key="address.permanent.line1"
-        label="Address Line 1"
+        label={
+          <>
+            Address Line 1 <span className="text-red-500">*</span>
+          </>
+        }
         name="address.permanent.line1"
         id="address.permanent.line1"
         placeholder="Enter Address Line 1"
@@ -52,7 +56,11 @@ const AddressProofForm = ({ formik }) => {
 
       <SelectField
         key="address.permanent.city"
-        label={<>City</>}
+        label={
+          <>
+            City<span className="text-red-500">*</span>
+          </>
+        }
         name="address.permanent.city"
         id="address.permanent.city"
         formik={formik}
@@ -75,7 +83,11 @@ const AddressProofForm = ({ formik }) => {
 
       <SelectField
         key="address.permanent.state"
-        label={<>State</>}
+        label={
+          <>
+            State<span className="text-red-500">*</span>
+          </>
+        }
         name="address.permanent.state"
         id="address.permanent.state"
         formik={formik}
@@ -98,7 +110,11 @@ const AddressProofForm = ({ formik }) => {
 
       <InputField
         key="address.permanent.pincode"
-        label="Pincode"
+        label={
+          <>
+            Pincode<span className="text-red-500">*</span>
+          </>
+        }
         name="address.permanent.pincode"
         id="address.permanent.pincode"
         type="number"
@@ -107,42 +123,50 @@ const AddressProofForm = ({ formik }) => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.address?.permanent?.pincode && 
+          formik.touched.address?.permanent?.pincode &&
           formik.errors.address?.permanent?.pincode
         }
       />
- {/* address_proof_type:storedData.address?.permanent?.address_proof_type||"",
+      {/* address_proof_type:storedData.address?.permanent?.address_proof_type||"",
  address_proof_number:storedData.address?.permanent?.address_proof_number||"" */}
 
-<SelectField
-  label="Address Proof Type"
-  name="address.permanent.address_proof_type"
-  id="address.permanent.address_proof_type"
-  formik={formik}
-  placeholder="Select Additional ID Card Type"
-  value={formik.values.address.permanent.address_proof_type}
-  optionsData={idCardOptions}
-  onChange={formik.handleChange}
-  onBlur={formik.handleBlur}
-  error={
-    formik.touched.address?.permanent?.address_proof_type &&
-    formik.errors.address?.permanent?.address_proof_type
-  }
-/>
+      <SelectField
+        label={
+          <>
+            Address Proof Type<span className="text-red-500">*</span>
+          </>
+        }
+        name="address.permanent.address_proof_type"
+        id="address.permanent.address_proof_type"
+        formik={formik}
+        placeholder="Select Additional ID Card Type"
+        value={formik.values.address.permanent.address_proof_type}
+        optionsData={idCardOptions}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={
+          formik.touched.address?.permanent?.address_proof_type &&
+          formik.errors.address?.permanent?.address_proof_type
+        }
+      />
 
-<InputField
-  label="Address Proof Number"
-  name="address.permanent.address_proof_number"
-  id="address.permanent.address_proof_number"
-  placeholder="Enter Additional ID Number"
-  value={formik.values.address.permanent.address_proof_number}
-  onChange={formik.handleChange}
-  onBlur={formik.handleBlur}
-  error={
-    formik.touched.address?.permanent?.address_proof_number &&
-    formik.errors.address?.permanent?.address_proof_number
-  }
-/>
+      <InputField
+        label={
+          <>
+            Address Proof Number<span className="text-red-500">*</span>
+          </>
+        }
+        name="address.permanent.address_proof_number"
+        id="address.permanent.address_proof_number"
+        placeholder="Enter Additional ID Number"
+        value={formik.values.address.permanent.address_proof_number}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={
+          formik.touched.address?.permanent?.address_proof_number &&
+          formik.errors.address?.permanent?.address_proof_number
+        }
+      />
     </div>
   );
 };
