@@ -10,10 +10,10 @@ let initialData = {
     // before enrollment submit
     // patient_enrolment
     // current_step: "caregiver_addition",
-    current_step: "program_enrolment_done",
+    current_step: "program_enrolment",
     // patient_status: "Inactive",
-    patient_status: "Active",
-    duplicate: false,
+    // patient_status: "Active",
+    duplicate: true,
     
     city: [
       [1, "Abhanpur"],
@@ -2291,7 +2291,7 @@ let initialData = {
     available_programs: [
 		{
 			program_name: "Lorbriqua Care",
-			program_status: "acive",
+			program_status: "active",
 			program_id: 10011,
 			program_image: ProgramCard1,
 			program_type: ["Oncology", "Patient Assistance"],
@@ -2336,7 +2336,7 @@ let initialData = {
             { id: 'rroof', label: 'Addrer' },
             
           ],
-          program_status: "ative",
+          program_status: "active",
           // shortfall
           // suspended
           // rejected
@@ -2347,25 +2347,25 @@ let initialData = {
 
           orders: {
               paid_orders: [
-                  {
-                      order_id: "10001",
-                      pending_status:"1234",
-                      order_status: "Cancelled",
-                      scn_executor: "MDB Chennai",
-                      order_date: "24 Dec 2024",
-                      status_date: "27 Dec 2024",
-                      order_scheme:"9LD",
-                      order_file: [Doc_1, Doc_2],
-                  },
-                  {
-                      order_id: "10002",
-                      order_status: "Open",
-                      scn_executor: "MDB Chennai",
-                      order_date: "24 Dec 2024",
-                      status_date: "27 Dec 2024",
-                      order_scheme:"9LD",
-                      order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
-                  }
+                  // {
+                  //     order_id: "10001",
+                  //     pending_status:"1234",
+                  //     order_status: "Cancelled",
+                  //     scn_executor: "MDB Chennai",
+                  //     order_date: "24 Dec 2024",
+                  //     status_date: "27 Dec 2024",
+                  //     order_scheme:"9LD",
+                  //     order_file: [Doc_1, Doc_2],
+                  // },
+                  // {
+                  //     order_id: "10002",
+                  //     order_status: "Open",
+                  //     scn_executor: "MDB Chennai",
+                  //     order_date: "24 Dec 2024",
+                  //     status_date: "27 Dec 2024",
+                  //     order_scheme:"9LD",
+                  //     order_file: ["invoice-10001-1.pdf", "invoice-10001-2.pdf", "receipt-10001.pdf"],
+                  // }
               ],
               foc_orders: [
                   {
@@ -2673,7 +2673,8 @@ verification_history: [
       // }
   ],
   physical_verification: {
-    show_verification_button: false,
+    // false and Open
+    show_verification_button: true,
     details : {
       status : "Verified",
        date : "22 Jan 2025",
@@ -2688,7 +2689,7 @@ ekyc_verification: {
     
     status : "Inactive",
     details: {
-      // status: "Approved",
+      status: "Open",
       // date: "25-Mar-2025",
       // selfie_pan_match: "90",
       submitted_date: "25-Mar-2025",

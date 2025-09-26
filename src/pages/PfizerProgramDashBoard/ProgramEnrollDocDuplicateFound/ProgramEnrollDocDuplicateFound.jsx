@@ -29,14 +29,14 @@ function ProgramEnrollDocDuplicateFound() {
         {/* Text Content */}
         <div className="flex flex-col items-center gap-3 text-center mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-[#595454]">
-            Your profile is suspended for the enrolled program
+           Your enrollment is temporarily on hold
           </h2>
 
           <p className="text-sm sm:text-base font-semibold text-[#595454]">
             {isDuplicate ? (
               <>
-                due to <span className="text-[#AB3436]">duplication found</span> in the document and profile details provided.{" "}
-                <span className="text-[#AB3436]">Please connect with the PAP Team for the next steps</span>
+                 Please connect with us on the toll-free number<br />
+                <span className="text-[#AB3436]">1800 258 7008</span> for further support.
               </>
             ) : (
               <>

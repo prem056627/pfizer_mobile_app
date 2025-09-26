@@ -973,7 +973,7 @@ const AddCaregiverDetails = ({ formik }) => {
                 <InputField
                   label={
                     <>
-                      Caregiver's Name <span className="text-red-500">*</span>
+                      Caregiver's Email ID <span className="text-red-500">*</span>
                     </>
                   }
                   name={`caregiver_${caregiverId}_email`}
